@@ -224,8 +224,8 @@ router.post('/sign_up' , file_uploader.single('picture') ,   async function(req 
       const usertoken = await createusertoken(newuser._id);
       res.cookie(process.env.COOKIE_NAME  , usertoken , {
         httpOnly: true,
-        secure:false,
-        sameSite: 'Lax',
+        secure:true,
+        sameSite: 'None',
         maxAge: 3600000*5
       })
       return res.status(200).json({error:false , message:'account created successfully'});
@@ -244,8 +244,8 @@ else{
   const usertoken = await createusertoken(newuser._id);
   res.cookie(process.env.COOKIE_NAME  , usertoken , {
     httpOnly: true,
-    secure: false,
-    sameSite: 'Lax',
+    secure: true,
+    sameSite: 'None',
     maxAge: 3600000*5
   })
   return res.status(200).json({error:false , message:'account created successfully'});
@@ -279,8 +279,8 @@ router.post('/log_in' , async function(req , res){
     
         res.cookie(process.env.COOKIE_NAME , token , {
           httpOnly: true,
-          secure: false,
-          sameSite: 'Lax',
+          secure: true,
+          sameSite: 'None',
           maxAge: 3600000*5
         })
    
