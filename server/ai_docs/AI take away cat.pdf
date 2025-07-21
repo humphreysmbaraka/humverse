@@ -1,0 +1,123 @@
+
+UNIVERSITY OF NAIROBI
+AI TAKE AWAY CAT II  
+REG NO. F17/2049/2022
+
+QUESTION 1.
+
+(a).VARIABLES
+              The variables for this problem are:
+ 
+                      (A)variablse for classes   1.day
+                                                 2.subjects for the classes
+                                                 3.class duration
+                                                 4.class venue
+                                                 5.time slot
+
+                      (B)variables for exams     1.day
+                                                 2.exammined subjects
+                                                 3.exam duration
+                                                 4.exam venue
+                                                 5.time slot
+
+                      (C)variables for events    1.day
+                                                 2.time slot
+                                                 3.event duration
+                                                 4.event venue
+                                                
+
+                                      
+(b).DOMAINS
+            These are all possible values that can be assigned to the variables involved in the problem.they include:
+
+             Possible time slots, days, and available classrooms for each class.
+             Available time slots, days, and examination halls for each exam.
+             Appropriate time slots and venues for each event.
+
+         examples:
+            for subjects,the allowed subjects inputs are(math english science religion)
+            fof class venues,the allowed input venues are(LT201,LT101,LT404,LT201)
+            for duration,the allowed durations for classes exams and events inputs are from 0 to 2 hours
+            for exam and events venues,the allowed venues inputs are(dinning hall,hall 11,hall 12,hall 13,hall 15,hall 16)
+            allowed inputs for days are (monday tuesdat wednesday thursday friday)
+
+            those are the only values that can be assigned to the parameters(variables)
+
+(c).CONSTRAINTS
+               
+             The constraints which will define and regulate the relationship between the variables(subject,duration, events and venues
+             will set the following limits to the problem:
+
+
+            no class exam and event should be given the same time slot and venue in the same day.
+            no class, exam or event should last more than two hours
+            a maximum 60% of venues should be used in a single day to avoid exhaustion of resources. 
+
+(D)OBJECTIVE FUNCTIONS
+            gaps between classes and events must be minimal
+            assigned venues for classes,exams and venues must be able to hold the number of students.
+            exams should not be very close in shedule
+
+
+
+
+
+
+
+
+
+
+
+
+
+QUESTION 2:
+
+(1).STATE SPACE
+       this is a set of all possible configurations that can be achieved from a certain state.
+       In this context, the state space referes to all possible configurations the robot can have with respect to the maze
+
+(2).INITIAL STATE AND GOAL STATE
+       The initial state of the robot is its first position or configuration in the maze before taking any actions while the
+       goal state is the robot's desired final destination which in this context is the exit of the maze.
+
+(3).ACTIONS
+       in this context, the actions the rodot can take in the maze are in form of directional movements.These movements will
+       change the robot's position in the maze and the positions can be expressed in the cartessian plane form(x,y).The actions
+       iclude:
+                 a.moving forward
+                 b.moving downwards
+                 c.moving left
+                 d.moving right
+
+(4)TRANSITION MODEL
+         A transition model defines the states attainable by actions done by an agent.In this context,the state is the position
+         of the robot in the maze and the actions are its movements in the maze which are movements forward,backward,left and right.
+         These movements affect the robots position or state in the maze as follows:
+
+             .MOVING FORWARD will cause an increment in the y coordinate of the robot's position such that if it moves n units forward,
+              its new position if its initial position was(x,y), will be (x,y+n).
+
+             .MOVING BACKWARD will cause a decrement in the y coordinate of the robot's position such that if it moves n units backwards,
+              its new position if its initial position was(x,y), will be (x,y-n).
+
+             .MOVING RIGHT will cause an increment in the x coordinate of the robot's position such that if it moves R units right,
+              its new position if its initial position was(x,y), will be (x+R,y).
+
+             .MOVING LEFT will cause a decrement in the x coordinate of the robot's position such that if it moves R units left,
+              its new position if its initial position was(x,y), will be (x-R,y).
+
+
+(5).COST FUNCTION
+        Every action will have its cost or all can also have a uniform cost.Since some actions will be more strategic than other actions,
+        they will have a greater cost compared to less strategic actions.As well defined costfunction N can be used to determine the cost
+        of an action a.i.e N(a).
+
+
+(6).SEARCH ALGORITHM
+         Since the initial state,the goal state and the maze's structure are all known, this maze can be best solved using AN INFORMED SEARCH ALGORITHM.
+         In my opinion, an A* search algorithm will work best because since different sequences of actions can be taken to reach the goal state,not all
+         will be optimal.Therefore before any action is taken,the distance of the robot from the goal state(exit)should be estimated or calculated using 
+         a well defined heusteric function and also the sum of costs accrued to reach the robot's current state calculated.The sum of these two values 
+         should be compared for different optionsof different sequences of actions and the option with the lowest sum will be taken.This increases the 
+         chances of coming up with an optimal solution
+         and that is why i would use the A* search algorithm to solve this maze problem.

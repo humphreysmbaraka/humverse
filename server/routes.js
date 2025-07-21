@@ -1,0 +1,1608 @@
+const dotenv = require('dotenv').config();
+const express = require('express');
+const mongoose = require('mongoose');
+const {GridFSBucket, ObjectId, Timestamp} = require('mongodb');
+const multer = require('multer');
+const bcrypt = require('bcrypt');
+const jwt  = require('jsonwebtoken');
+const fs = require('fs')
+const  pdfParse = require('pdf-parse')
+
+const User = require('./configs/schemas/user');
+const Request = require('./configs/schemas/request');
+const Ai = require('./configs/schemas/AI');
+const ai = require('./configs/openAi');
+const index = require('./configs/pineconedb');
+const Query = require('./configs/schemas/queries');
+// const humverseindex = require('./configs/pineconedb');
+// const  pineconedb  = require('./configs/pineconedb');
+// console.log('TYPE OF INDEX' , index , typeof(index));
+
+// user token generator;
+
+const createusertoken = async function(id){
+  try{
+    const token =  jwt.sign({id} , process.env.USER_TOKEN_SIGN , {expiresIn: '40m'});
+    console.log('token created')
+    return token;
+
+  }
+  catch(err){
+    console.log('error generating user token' , err);
+    
+  }
+}
+
+
+
+
+
+const verifytoken = async function(req , res , next){
+   
+  try{
+    const token = req.cookies[process.env.COOKIE_NAME];
+    if(token){
+      const decode =  jwt.verify(token , process.env.USER_TOKEN_SIGN);
+      if (decode){
+        const user = await User.findOne({_id:decode.id});
+        // return res.status(200).json({error:false , loggedin:true});
+        if(user){
+          req.user = user;
+          next();
+        }
+        else{
+          return res.status(400).json({error:true , loggedin:false})
+
+        }
+      
+
+      }
+      else{
+        return res.status(400).json({error:true , loggedin:false})
+      }
+    }
+    else{
+      return res.status(400).json({error:true , loggedin:false})
+    }
+   
+   
+  }
+  catch(err){
+    console.log('error verifying user token' , err);
+    return res.status(400).json({error:true , message:'error cerifying token' , error:err})
+  }
+}
+
+// const createusertoken = async function(id){
+//   try{
+//      jwt.sign(id , process.env.USER_TOKEN_SIGN , {})
+//   }
+//   catch(err){
+//     console.log('error generating user token' , err);
+//   }
+// }
+
+
+const conn =  mongoose.createConnection(process.env.ATLAS_CONNECTION_STRING);
+let requestbucket;
+let profilepicturesbucket;
+let aidocsbucket;
+
+conn.once('open' , function(){
+  requestbucket = new GridFSBucket(conn.db , {
+    bucketName:'request attachments',
+    chunkSizeBytes:1048576
+  });
+
+
+  profilepicturesbucket = new GridFSBucket(conn.db , {
+    bucketName:'profile_pictures',
+    chunkSizeBytes:1048576
+  });
+
+  aidocsbucket = new GridFSBucket(conn.db , {
+    bucketName:'assistant_docs',
+    chunkSizeBytes:1048576
+  })
+})
+
+
+const temporary_diskstorage = multer.diskStorage({
+  destination :  function(req , file , cd){
+    cd(null ,'./uploads' );
+  },
+  filename : function(req , file , cb){
+   cb(null , file.originalname);
+  }
+})
+
+
+const ai_docs_storage = multer.diskStorage({
+  destination :  function(req , file , cd){
+    cd(null ,'./ai_docs' );
+  },
+  filename : function(req , file , cb){
+   cb(null , file.originalname);
+  }
+})
+
+const memstore = multer.memoryStorage();
+
+
+const hhybid_multer_storage =   {
+  _handleFile(req , file , cb){
+    if (file.fieldname == 'docs_disk'){
+      temporary_diskstorage._handleFile(req , file , cb);
+    }
+    else if(file.fieldname == 'docs'){
+      const chunks = [];
+      file.stream.on('data' , function(chunk){
+        chunks.push(chunk);
+      })
+      file.stream.on('end' ,function(){
+        const buffer = Buffer.concat(chunks);
+        cb(null, {
+          buffer,
+          size: buffer.length,
+          originalname: file.originalname,
+          mimetype: file.mimetype,
+          encoding: file.encoding,
+          fieldname: file.fieldname
+        })
+      })
+      file.stream.on('error' , function(err){
+        cb(err);
+      })
+    }
+    else{
+      cb(new Error('Unexpected field: ' + file.fieldname));
+    }
+  }
+}
+
+const file_uploader = multer({storage:temporary_diskstorage});
+const ai_doc_uploader = multer({storage:ai_docs_storage});
+const memstorage = multer({storage:memstore});
+const hybrid_file_uploader = multer({storage:hhybid_multer_storage});
+
+const app = express();
+app.use(express.json());
+const router = express.Router();
+
+
+
+
+router.post('/sign_up' , file_uploader.single('picture') ,   async function(req , res){
+  try{
+    console.log('signing you up' , req.body , req.file);
+  const {username , email , password} = req.body;
+  const profilepic = req.file;
+  const userexists = await User.findOne({email:req.body.email});
+  if(userexists){
+    console.log('user already exists');
+    return res.status(409).json({error:true , message:'the email you entered already exists'});
+
+  }
+  else{    
+    if(profilepic){
+      const upload = new Promise(function(resolve , reject){
+        const name = profilepic.originalname;
+        const path = profilepic.path;
+        const type = profilepic.mimetype;
+        const size = profilepic.size;
+
+        const readstream = fs.createReadStream(path);
+        const uploadstream = profilepicturesbucket.openUploadStream(name , {
+          metadata:{
+            size , type
+          }
+        });
+        readstream.pipe(uploadstream);
+
+        uploadstream.on('finish' ,async  function(){
+          resolve(uploadstream.id);
+            fs.unlink(path , function(){
+              console.log('file deleted')
+            })
+        })
+        uploadstream.on('error' , function(err){
+          reject(err);
+          fs.unlink(path , function(){
+            console.log('file deleted')
+          })
+        })
+      
+      })
+
+      const picupload = await upload;
+      const hashed =  await bcrypt.hash(password , 10);
+      const newuser = new User({
+        username , email , password:hashed , picture:picupload
+      });
+    
+      await newuser.save();
+      const usertoken = await createusertoken(newuser._id);
+      res.cookie(process.env.COOKIE_NAME  , usertoken , {
+        httpOnly: true,
+        secure:false,
+        sameSite: 'Lax',
+        maxAge: 3600000*5
+      })
+      return res.status(200).json({error:false , message:'account created successfully'});
+       
+    }
+
+
+else{
+  const hashed =  await bcrypt.hash(password , 10);
+
+  const newuser = new User({
+    username , email , password:hashed
+  });
+
+  await newuser.save();
+  const usertoken = await createusertoken(newuser._id);
+  res.cookie(process.env.COOKIE_NAME  , usertoken , {
+    httpOnly: true,
+    secure: false,
+    sameSite: 'Lax',
+    maxAge: 3600000*5
+  })
+  return res.status(200).json({error:false , message:'account created successfully'});
+}
+    
+  }
+  }
+  catch(err){
+    console.log('error creating an account' , err);
+    return res.status(500).json({error:true , message:err});
+  }
+})
+
+
+
+
+
+
+router.post('/log_in' , async function(req , res){
+  try{
+     const {email , password} = req.body;
+     console.log(req.body)
+     const userexists = await User.findOne({email:email});
+     if(userexists){
+      const passwordcheck = await bcrypt.compare(password , userexists.password);
+      if (!passwordcheck) {
+        return res.status(400).json({ error: true, message: 'Incorrect password' });
+      }
+      else{
+        const token = await createusertoken(userexists._id);
+    
+        res.cookie(process.env.COOKIE_NAME , token , {
+          httpOnly: true,
+          secure: false,
+          sameSite: 'Lax',
+          maxAge: 3600000*5
+        })
+   
+      console.log('successfully logged in');
+      return res.status(200).json({error:false , message:'logged in successfully'});
+      }
+      
+     }
+     else{
+      console.log('user does not exist');
+      return res.status(400).json({error:true , message:'user does not exist'});
+     }
+  }
+  catch(err){
+    console.log('error logging in' , err);
+    return res.status(500).json({error:true , message:err});
+
+  }
+})
+
+
+
+
+router.get('/profile_pic/:pic_id' , async function(req , res){
+  try{
+     const pic_id = new ObjectId(req.params.pic_id);
+    console.log('id' , pic_id);
+     const imagefile = await  profilepicturesbucket.find({_id:pic_id}).toArray();
+     console.log('imegefile(s)' , imagefile);
+     if(imagefile.length > 0){
+      file  = imagefile[0];
+      console.log('image found'  , file)
+      res.set('Content-Type', file.metadata?.type || 'image/jpeg'  );
+
+      const downloadstream = await profilepicturesbucket.openDownloadStream(file._id);
+      downloadstream.pipe(res);
+      downloadstream.on('error' , function(err){
+       console.log('error streaming profile picture' , err);
+       return res.status(500).json({error:true , error:err , message:'error streaming profile picture'});
+      })
+     }
+     else{
+      console.log('image not found')
+      return res.status(404).json({error:true  , message:'user has no profile picture'});
+
+     }
+   
+  }
+  catch(err){
+    console.log('error fetching profile picture' , err);
+    return res.status(500).json({error:true , error:err , message:'error streaming profile picture'});
+
+
+  }
+})
+
+
+
+
+router.post('/send_request' , file_uploader.array('attachments' , 20) ,  async function(req , res){
+  try{
+  console.log('request received' , req.body , req.files);
+  const {type , description , timeunit , timequantity , names , number , email , user} = req.body;
+  const files = req.files;
+  // let attachment_ids = []
+  const sender = await User.findOne({_id:user});
+  if(sender){
+  
+
+    if(files?.length > 0){
+      const attachments_upload = await files.map(function(val , index){
+         return (
+          new Promise(function(resolve , reject){
+  
+            const path = val.path;
+            const name = val.originalname;
+            const type = val.mimetype;
+            const size = val.size;
+    
+            const readstream = fs.createReadStream(path);
+            const uploadstream = requestbucket.openUploadStream(name , {
+              metadata : {
+                name , type , size 
+              }
+            });
+    
+            readstream.pipe(uploadstream);
+    
+            uploadstream.on('finish' , function(){
+              resolve( uploadstream.id);
+  
+              fs.unlink(path , function(err){
+             if(err){
+              console.log('error unlinking file');
+             }
+             else{
+              console.log('file unlinked');
+             }
+              })
+            })
+  
+            uploadstream.on('error' , function(err){
+              reject(err);
+              fs.unlink(path , function(err){
+                if(err){
+                 console.log('error unlinking file');
+                }
+                else{
+                 console.log('file unlinked');
+                }
+                 })
+              
+            })
+  
+          })        
+         )
+      })
+  
+      const attachment_ids = await Promise.all(attachments_upload);
+      const newrequest = new Request({
+        client:user ,  type , description , timeunit , timequantity , names , number , email , attachments:[...attachment_ids]
+      })
+  
+      await newrequest.save();
+      await sender.requests.push(newrequest._id);
+      await sender.save();
+      return res.status(200).json({error:false , request:newrequest});
+      // include saving therequest's id in the user's requests
+  
+    }
+    else{
+      const newrequest = new Request({
+        client:user ,  type , description , timeunit , timequantity , names , number , email 
+      })
+  
+      await newrequest.save();
+      await sender.requests.push(newrequest._id);
+      await sender.save();
+      return res.status(200).json({error:false});
+  
+    }
+
+
+  }
+  else{
+    console.log('user unidentified');
+    return res.status(401).json({error:true , message:'user unidentified' })
+  }
+
+  }
+  catch(err){
+    console.log('error processing request' , err);
+    return res.status(500).json({error:true , message:err});
+  }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+router.post('/check_loggedin' , async function(req , res){
+  try{
+    console.log('checking auth status');
+     const token = req.cookies[process.env.COOKIE_NAME];
+     if(token){
+        const decode =   jwt.verify(token , process.env.USER_TOKEN_SIGN);
+        if(decode){
+          const user = await User.findOne({_id:decode.id});
+          if(user){
+            console.log('token user extracted')
+            return res.status(200).json({error:false , message:'token valid' , user:user});
+          }
+          else{
+            return res.status(401).json({error:true , message:'token invalid:user not found'});
+          }
+        }
+        else{
+          console.log('error decoding token');
+          return res.status(401).json({error:true , message:'token invalid'});
+        }
+     }
+     else{
+      console.log('no token found');
+      return res.status(401).json({error:true , message:'no token found'});
+     }
+  }
+  catch(err){
+    console.log('error checking logged in status' , err);
+    return res.status(500).json({error:true , message:err});
+  }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+router.get('/platform_data' , async function(req , res){
+  try{
+    const result = {}
+     const db = mongoose.connection.db;
+     const collections = await  db.listCollections().toArray();
+
+    //  for(let collection of collections){
+    //   const colname = collection.name;
+    //    const documents = await db.collection(colname).find({}).toArray();
+    //    data[colname] = documents;
+    //  }
+     
+     const documents = await collections.map(function(val , index){
+          return new Promise(async function(resolve , reject){
+                const name = val.name;
+                try{
+                  const documents = await db.collection(name).find({}).toArray();
+                  resolve(documents);
+                }
+                catch(err){
+                  resolve(err);
+                }
+                }
+                
+                 
+        )
+     })
+
+     const alldocuments = await Promise.all(documents);
+      collections.forEach(function(val , index){
+         result[val.name] = alldocuments[index]
+      })
+
+      return res.status(200).json({error:false , message:'data fetched successfully' , data:result})
+  
+  }
+  catch(err){
+    console.log('error fetching platform data' , err);
+    return res.status(500).json({error:true , message:err});
+  }
+})
+
+
+
+router.post('/logout' , async function(req , res){
+  try{
+      const token = req.cookies[process.env.COOKIE_NAME];
+      if(token){
+        res.cookie(process.env.COOKIE_NAME, '', {
+          httpOnly: true,
+          expires: new Date(0)
+          // sameSite: 'Lax',
+          // secure: process.env.NODE_ENV === 'production'
+        });
+
+        return res.status(200).json({error:false , message:'logged out successfully'});
+      }
+      else{
+        return res.status(400).json({error:true , message:'could not find token'});
+      }
+  }
+  catch(err){
+    console.log('error logging out' , err);
+    return res.status(500).json({error:true , message:'error logging out' , error:err})
+  }
+})
+
+
+
+
+
+router.get('/fetch_homedata/:id' , async function(req , res){
+    try{
+      console.log('gettting user info');
+      const id = req.params.id
+       const user = await User.findOne({_id:id}).populate('requests');
+       if(user){
+          console.log(user);
+          return res.status(200).json({error:false , message:'user_found' , data:user})
+       }
+       else{
+        console.log('user unidentified');
+        return res.status(400).json({error:true , message:'user unidentified'});
+       }
+    }
+    catch(err){
+      console.log('error fetching user home data' , err);
+      return res.status(500).json({error:true , mesage:'server error'})
+    }
+})
+
+
+
+
+
+router.get('/get_requests' , async function(req , res){
+  try{
+      console.log('fetching requests...');
+      const requests = await Request.find({}).populate('client');
+      if(requests.length > 0){
+        console.log('found requests' , requests);
+        return res.status(200).json({error:false , requests:requests , message:'fetched requests'});
+      }
+      else{
+        console.log('np requests found' , requests);
+        return res.status(200).json({error:false , requests:requests , message:'no requests found'});
+      }
+  }
+  catch(err){
+    console.log('error fetching requests' , err);
+    return res.status(500).json({error:true , message:'server error' , error:err})
+  }
+})
+
+
+router.patch('/accept_request'  , async function(req , res){
+    try{
+      console.log('PROCESSING ACCEPTANCE........')
+       const {makingcost , deploymentcost , hostingcost , currency , maintainance ,reqid } = req.body;
+       const request = await Request.findOne({_id:reqid});
+       if(request){
+        request.received = true;
+        request.accepted = true;
+        request.rejected = false;
+        request.initiated = false;
+        request.cancelled = false;
+        request.costs.makingcost = makingcost;
+        request.costs.deploymentcost.domain_name = deploymentcost;
+        request.costs.hostingcost = hostingcost;
+        request.costs.maintainance = maintainance;
+        request.costs.currency = currency;
+        request.costs.total = (Number(makingcost)+Number(deploymentcost)+Number(hostingcost)+Number(maintainance));
+
+        await request.save();
+        return res.status(200).json({error:false , message:'request accepted successfully' , request});
+
+
+       }
+       else{
+        console.log('no such request found');
+        return res.status(400).json({error:true , message:'no such request found'})
+       }
+     
+    }
+    catch(err){
+      console.log('error accepting request' , err);
+      return res.status(500).json({error:true , message:'server error' , error:err});
+    }
+})
+
+
+router.patch('/reject_request' , async function(req , res){
+  try{
+    const {reqid} = req.body;
+    console.log('rejecting' , reqid);
+    const request = await Request.findOne({_id:reqid});
+    if(request){
+       request.rejected=true;
+       request.accepted=false;
+
+       await request.save();
+       return res.status(200).json({error:false , message:'request rejected successfully'});
+    }
+    else{
+      console.log('no such request found');
+      return res.status(400).json({error:true , message:'no such request found'})
+    }
+  }
+  catch(err){
+    console.log('error when rejecting request' , err);
+    return res.status(500).json({error:true , message:'server error' , error:err});
+  }
+})
+
+
+
+
+
+
+
+router.post('/pay_for_product' , async function(req , res){
+  const {phonenumber , amount , product_id , user_id} = req.body;
+  let number;
+  if(phonenumber.startsWith('07')){
+    if(phonenumber.startsWith('070')  ||  phonenumber.startsWith('071') || phonenumber.startsWith('072')|| phonenumber.startsWith('074')  || phonenumber.startsWith('0757')  || phonenumber.startsWith('0758') || phonenumber.startsWith('0759')  || phonenumber.startsWith('079')){
+      console.log('payment details' , req.body);
+      const consumerkey = process.env.CONSUMER_KEY.trim();
+      const consumersecret = process.env.CONSUMER_SECRET.trim();
+      const shortcode = process.env.SHORTCODE;
+      const passkey = process.env.PASSKEY.trim();
+      const callbackurl = process.env.CALLBACK_URL.trim();
+      const timestamp = new Date().toISOString().replace(/[^0-9]/g , '').slice(0,14);
+      const authkey = new Buffer.from(`${consumerkey}:${consumersecret}`).toString('base64');
+      const password = new Buffer.from(`${shortcode}${passkey}${timestamp}`).toString('base64');
+      const cleanednumber = `254${phonenumber.substring(1)}`
+      console.log('phonenumber' , cleanednumber);
+      number = cleanednumber;
+
+      try{
+           console.log('fetching auth token');
+           const authtoken = await fetch(`${process.env.SANDBOX_AUTH_URL}` , {
+            headers: {
+              'Authorization' : `Basic ${authkey}`,
+              'Content-Type' : 'application/json'
+            },
+            method:'GET'
+           })
+    
+           if(authtoken.ok){
+            const tokeninfo = await authtoken.json();
+            const token = tokeninfo.access_token;
+            console.log('auth token successfully retrieved' , tokeninfo , token);
+    
+            
+    
+            const stkpayload = {
+              BusinessShortCode:shortcode,
+              Password:password,
+              Timestamp:timestamp,
+              TransactionType : 'CustomerPayBillOnline',
+              Amount :amount,
+              PartyA:number,
+              PartyB:shortcode,
+              PhoneNumber:number,
+              CallBackURL:callbackurl,
+              AccountReference :process.env.ACCOUNT_REF,
+              TransactionDesc:'joinin'
+    
+            }
+    
+            const response = await fetch(process.env.SANDBOX_LNM_URL.trim() , {
+              headers:{
+                'Authorization' : `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              },
+              
+              method:'POST',
+              body:JSON.stringify(stkpayload)
+            });
+    
+            console.log('sending payload' , JSON.stringify(stkpayload));
+            
+            if(response.ok){
+              console.log('stk pushed successfully');
+              const responseinfo = await response.json();
+              return res.status(200).json({error:false , message:'stk pushed successfully' , info:responseinfo});
+            }
+            else{
+              console.log('failed to  push stk');
+              const responseinfo = await response.json();
+              console.log(response , responseinfo);
+              return res.status(500).json({error:true , message:'error pushing stk' })
+            }
+    
+           }
+           else{
+            console.log('error getting auth token (from auth URL)');
+            return res.status(500).json({error:true , message:'server error getting auth token' , error:err});
+           }
+      }
+      catch(err){
+        console.log('error processing payment' , err);
+        return res.status(500).json({error:true , message:'server error getting auth token' , error:err});
+      }
+    }
+   
+    else{
+      return res.status(400).json({error:true , message:'you entered an invalid  number'})
+
+    }
+  }
+  else if(phonenumber.startsWith('254')){
+    if(phonenumber.startsWith('25470')  ||  phonenumber.startsWith('25471') || phonenumber.startsWith('25472')|| phonenumber.startsWith('25474')  || phonenumber.startsWith('254757')  || phonenumber.startsWith('254758') || phonenumber.startsWith('254759')  || phonenumber.startsWith('25479')){
+      console.log('payment details' , req.body);
+      const consumerkey = process.env.CONSUMER_KEY;
+      const consumersecret = process.env.CONSUMER_SECRET;
+      const shortcode = process.env.SHORTCODE;
+      const passkey = process.env.PASSKEY;
+      const callbackurl = process.env.CALLBACK_URL;
+      const timestamp = new Date().toISOString().replace(/[^0-9]/g , '').slice(0,14);
+      const authkey = new Buffer.from(`${consumerkey}:${consumersecret}`).toString('base64');
+      const password = new Buffer.from(`${shortcode}${passkey}${timestamp}`).toString('base64');
+      // const cleanednumber = `254${phonenumber.substring(2)}`
+      // console.log('phonenumber' , cleanednumber);
+      // number = cleanednumber;
+
+      try{
+           console.log('fetching auth token');
+           const authtoken = await fetch(`${process.env.SANDBOX_AUTH_URL.trim()}` , {
+            headers: {
+              'Authorization' : `Basic ${authkey}`,
+              'Content-Type' : 'application/json'
+            },
+            method:'GET'
+           })
+    
+           if(authtoken.ok){
+            const tokeninfo = await authtoken.json();
+            const token = tokeninfo.access_token;
+            console.log('auth token successfully retrieved' , tokeninfo , token);
+    
+            
+    
+            const stkpayload = {
+              BusinessShortCode:shortcode,
+              Password:password,
+              Timestamp:timestamp,
+              TransactionType : 'CustomerPayBillOnline',
+              Amount :amount,
+              PartyA:phonenumber,
+              PartyB:shortcode,
+              PhoneNumber:phonenumber,
+              CallBackURL:callbackurl,
+              AccountReference :process.env.ACCOUNT_REF,
+              TransactionDesc:'joinin'
+    
+            }
+    
+            const response = await fetch(process.env.SANDBOX_LNM_URL , {
+              headers:{
+                'Authorization' : `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              },
+              
+              method:'POST',
+              body:JSON.stringify(stkpayload)
+            });
+    
+            console.log('sending payload' , JSON.stringify(stkpayload));
+            
+            if(response.ok){
+              console.log('stk pushed successfully');
+              const responseinfo = await response.json();
+              return res.status(200).json({error:false , message:'stk pushed successfully' , info:responseinfo});
+            }
+            else{
+              console.log('failed to  push stk');
+              const responseinfo = await response.json();
+              console.log(response , responseinfo);
+              return res.status(500).json({error:true , message:'error pushing stk' })
+            }
+    
+           }
+           else{
+            console.log('error getting auth token (from auth URL)');
+            return res.status(500).json({error:true , message:'server error getting auth token' , error:err});
+           }
+      }
+      catch(err){
+        console.log('error processing payment' , err);
+        return res.status(500).json({error:true , message:'server error getting auth token' , error:err});
+      }
+    }
+   
+    else{
+      return res.status(400).json({error:true , message:'you entered an invalid number'})
+
+    }
+  }
+
+
+})
+
+
+
+
+router.post('/callback', express.json(), async function(req, res){
+ try{
+  
+  console.log('✅ M-Pesa Callback Received:', req.body);
+  console.log('params' , req.body.Body.stkCallback.CallbackMetadata)
+  res.sendStatus(200);
+ }
+ catch(err){
+  console.log('error in payment callback' , err);
+  res.sendStatus(500);
+
+ }
+});
+
+
+// router.post('/callback', express.json(), (req, res) => {
+//   try {
+//     console.log('✅ M-Pesa Callback Received:', req.body);
+    
+//     // Extract the actual callback data
+//     const callbackData = req.body.Body?.stkCallback;
+    
+//     if (callbackData) {
+//       console.log('Transaction Result:', callbackData.ResultCode === 0 ? 'Success' : 'Failed');
+//       console.log('CheckoutRequestID:', callbackData.CheckoutRequestID);
+//       console.log('MerchantRequestID:', callbackData.MerchantRequestID);
+      
+//       // Process payment result here
+//     } else {
+//       console.warn('⚠️ Unexpected callback format:', req.body);
+//     }
+    
+//     res.sendStatus(200);
+//   } catch (err) {
+//     console.error('❌ Callback Processing Error:', err);
+//     res.sendStatus(200); // Always respond with 200
+//   }
+// });
+
+
+
+
+
+
+
+
+
+router.patch('/edit_request' , file_uploader.array('attachments' , 20) ,  async function(req , res){
+  try{
+    
+  console.log('EDITTING REQUEST RECEIVED' , req.body ,   'FILES' , req.files);
+  const {type , description , timeunit , timequantity , names , number , email , user , reqid} = req.body;
+  const files = req.files;
+  // let attachment_ids = []
+  const request = await Request.findOne({_id:reqid});
+  if(request){
+  
+
+    if(files?.length > 0){
+      const attachments_upload = await files.map(function(val , index){
+         return (
+          new Promise(function(resolve , reject){
+  
+            const path = val.path;
+            const name = val.originalname;
+            const type = val.mimetype;
+            const size = val.size;
+    
+            const readstream = fs.createReadStream(path);
+            const uploadstream = requestbucket.openUploadStream(name , {
+              metadata : {
+                name , type , size 
+              }
+            });
+    
+            readstream.pipe(uploadstream);
+    
+            uploadstream.on('finish' , function(){
+              resolve( uploadstream.id);
+  
+              fs.unlink(path , function(err){
+             if(err){
+              console.log('error unlinking file');
+             }
+             else{
+              console.log('file unlinked');
+             }
+              })
+            })
+  
+            uploadstream.on('error' , function(err){
+              reject(err);
+              fs.unlink(path , function(err){
+                if(err){
+                 console.log('error unlinking file');
+                }
+                else{
+                 console.log('file unlinked');
+                }
+                 })
+              
+            })
+  
+          })        
+         )
+      })
+  
+      const attachment_ids = await Promise.all(attachments_upload);
+      request.client = user;
+      request.type = type;
+      request.description = description;
+      request.timeunit = timeunit;
+      request.timequantity = timequantity;
+      request.names = names;
+      request.number = number;
+      request.email =  email;
+      request.attachments = attachment_ids;
+      // const newrequest = new Request({
+      //   client:user ,  type , description , timeunit , timequantity , names , number , email , attachments:[...attachment_ids]
+      // })
+  
+      await request.save();
+      // await sender.requests.push(newrequest._id);
+      // await sender.save();
+      console.log('request upated successfully');
+      return res.status(200).json({error:false , request:request});
+      // include saving therequest's id in the user's requests
+  
+    }
+    else{
+      request.client = user;
+      request.type = type;
+      request.description = description;
+      request.timeunit = timeunit;
+      request.timequantity = timequantity;
+      request.names = names;
+      request.number = number;
+      request.email =  email;
+      request.attachments = [];
+      // const newrequest = new Request({
+      //   client:user ,  type , description , timeunit , timequantity , names , number , email 
+      // })
+  
+      await request.save();
+      // await sender.requests.push(newrequest._id);
+      // await sender.save();
+      console.log('request upated successfully');
+      return res.status(200).json({error:false});
+  
+    }
+
+
+  }
+  else{
+    console.log('request unidentified');
+    return res.status(401).json({error:true , message:'request unidentified' })
+  }
+
+  }
+  catch(err){
+    console.log('error processing request' , err);
+    return res.status(500).json({error:true , message:err});
+  }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// router.post('/upload_ai_doc' , ai_doc_uploader.array('docs' , 20)  , async function(req , res){
+//   try{
+//     const files = req.files;
+//    if(files.length > 0){
+//     console.log('FILES' , files)
+//     const fileuploads = files.map(function(val , index){
+//       return new Promise(function(resolve , reject){
+//          const path = val.path;
+//          const name = val.originalname;
+//          const size = val.size;
+//          const type = val.mimetype;
+
+//          const readstream = fs.createReadStream(path);
+//          const uploadstream = aidocsbucket.openUploadStream(name ,{
+//           metadata: {name , size , type}
+//          } )
+
+//          readstream.pipe(uploadstream);
+//          uploadstream.on('finish' , function(){
+//           console.log('doc upload finished');
+//           resolve(uploadstream.id);
+//           fs.unlink(path , function(err){
+//             if(err){
+//               console.log('failed to delete doc')
+//             }
+//             else{
+//               console.log('doc deleted')
+//             }
+//           })
+//          })
+
+//          uploadstream.on('error' , function(err){
+//           console.log('error occured during uploading' , err);
+//           reject(err);
+
+//           fs.unlink(path , function(err){
+//             if(err){
+//               console.log('failed to delete doc')
+//             }
+//             else{
+//               console.log('doc deleted')
+//             }
+//           })
+//          })
+//       })
+
+      
+//     })
+//     const upload_ids = await Promise.all(fileuploads);
+//     return res.status(200).json({error:false , message:'files uploaded successfully'})
+//    }
+//   else{
+//     console.log('empty files fields')
+//     return res.status(400).json('empty document fields');
+//   }
+
+//   }
+//   catch(err){
+//     console.log('error uploading doc' , err);
+//     return res.status(500).json({error:true , message:'server error'});
+//   }
+// } )
+
+
+router.get('/ai_doc_objects' , async function(req , res){
+  try{
+
+    console.log('GETTING DOCS....')
+    const docs = await aidocsbucket.find({}).toArray();
+
+    // const docs = await aidocsbucket.find({}).toArray();
+
+    if(docs.length == 0){
+      return res.status(200).json({error:false , docs})
+    }
+    else{
+      console.log('docs found' , docs)
+      
+      return res.status(200).json({error:false , docs})
+    }
+  }
+  catch(err){
+    console.log('error fetchung uploads' , err);
+    return res.status(500).json({error:true , message:'server error'});
+  }
+})
+
+
+
+
+
+router.post('/make_ai/:name' , async function(req , res){
+     try{
+      const name = req.params.name;
+      const newai = new Ai({
+        name
+      });
+      await newai.save();
+      return res.status(200).json({error:false , message:'ai instance created successfully'});
+     }
+     catch(err){
+      console.log('error making ai object' , err);
+      return res.status(500).json({error:true , message:`error making ai instance ,${err}`})
+     }
+})
+
+
+router.get('/ai_doc/:id' , async function(req , res){
+  try{
+    console.log('fetching ai docs');
+    const id = new ObjectId(req.params.id);
+  
+  
+   const files = await  aidocsbucket.find({_id:id}).toArray();
+   if(!files || files.length == 0){
+    console.log('file does not exist');
+    return res.status(400).json({error:true , message:'file does not exist'});
+   }
+   else{
+    const file = files[0]
+
+    res.set({
+     'Content-Type': file.metadata.type || 'application/octet-stream',
+     'Content-Disposition': `inline; filename="${file.filename}"`
+   });
+ 
+   const downstream = aidocsbucket.openDownloadStream(id);
+
+   downstream.on('error', (err) => {
+    console.error('Error while streaming:', err);
+    if (!res.headersSent) {
+      res.status(500).end('Error while streaming file');
+    }
+  });
+
+  downstream.on('end', () => {
+    console.log('✅ Successfully streamed file:', file.filename);
+  });
+   downstream.pipe(res);
+
+
+  //  res.on('error' , function(err){
+  //    console.log('error streaming' , err);
+  //    return res.status(500).json({error:true , message:'error streaming'});
+ 
+  //  })
+ 
+ 
+  //  res.on('finish' , function(){
+  //    console.log('successfully streamed' , );
+  //    // return res.status(500).json({error:true , message:'error streaming'});
+ 
+  //  })
+   }
+   
+     
+  
+  }
+  catch(err){
+    console.log('error getting ai doc' , err);
+    return res.status(500).json({error:true , message:'server error'});
+  }
+})
+
+
+
+
+router.delete('/delete_ai_doc/:id' , async function(req , res){
+  try{
+    const id = new ObjectId(req.params.id);
+    console.log('fetching ai doc for deletion' , id);
+    const humverseindex = await index();
+     const AIinstance = await Ai.findOne({});
+
+     if(!AIinstance){
+      console.log('AI instance not set up');
+      return res.status(404).json({error:true , messsage:'AI instance not set up'})
+     }
+  
+   const files = await  aidocsbucket.find({_id:id}).toArray();
+   if(!files || files.length == 0){
+    console.log('file does not exist');
+    return res.status(400).json({error:true , message:'file does not exist'});
+   }
+   else{
+    const file = files[0];
+    const info = file.metadata;
+    console.log('file' , file , 'metadata' , info);
+      await  aidocsbucket.delete(id);
+      console.log('deleted file from database');
+      //  res.status(200).json({error:false ,  message:'successfully deleted file'});
+      
+       const docvector = await  humverseindex._fetchCommand.run([info.name]).catch(function(err){
+        console.log('error fetching vector' , err)
+       })
+
+       console.log('VECTOR' , docvector);
+
+       if(docvector){
+        console.log('vector found' , docvector);
+        await humverseindex._deleteOne(file.metadata.name);
+
+        const remainingfiles = AIinstance.uploads.filter(function(val , index){
+          return val.toString() !== id.toString();
+        })
+
+        console.log('REMAINING FILES' , remainingfiles);
+        AIinstance.uploads = remainingfiles;
+        await AIinstance.save();
+        return res.status(200).json({error:false , message:'successfully deleted vectro'});
+       }
+       else{
+        console.log('the vector does not exist');
+        return res.status(404).json({error:true , message:'vevtor not found'});
+       }
+     
+    
+   }
+   
+     
+  
+  }
+  catch(err){
+    console.log('error deleting ai doc' , err);
+    return res.status(500).json({error:true , message:'server error'});
+  }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+router.post('/upload_to_ai' , hybrid_file_uploader.fields([{name:'docs' , maxCount:20}, {name:'docs_disk' , maxCount:20}]) ,  async function (req , res){
+  try{
+    const humverseindex = await index();
+    console.log('FILES.....' , req.files);
+    const files = req.files['docs'] || [];
+    const diskfiles = req.files['docs_disk'] || [];
+    let diskuploads;
+    let uploads;
+    const AIinstance = await Ai.findOne({});
+    if(!AIinstance){
+      console.log('AI instance not sye up')
+      return res.status(404).json({error:true , message:'AI instance not set up yet'});
+    }
+
+    if(diskfiles.length > 0){
+      diskuploads = diskfiles.map(async function(val , index){
+        return new Promise(async function(resolve , reject){
+          try{
+             const name = val.originalname;
+             const path = val.path;
+             const type = val.mimetype;
+             const size = val.size;
+
+             const readstream = fs.createReadStream(path);
+             const uploadstream = aidocsbucket.openUploadStream(name , {
+              metadata:{
+                name , type , size
+              }
+             });
+             readstream.pipe(uploadstream);
+            
+             uploadstream.on('finish' , function(){
+                  resolve(uploadstream.id);
+                  console.log('file uploaded to database');
+
+                  fs.unlink(path , function(err){
+                    if(err){
+                      console.log('error unlinking file');
+                    }
+                    else{
+                      console.log('file unlinked');
+                    }
+                  })
+             })
+
+
+             uploadstream.on('error' , function(){
+               reject(err);
+              console.log('file upload stream failed');
+
+              fs.unlink(path , function(err){
+                if(err){
+                  console.log('error unlinking file');
+                }
+                else{
+                  console.log('file unlinked');
+                }
+              })
+         })
+
+
+
+          }
+          catch(err){
+            console.log('error at disk uploa promise', err);
+          }
+        })
+      })
+    }
+    else{
+      console.log('no disk files found' );
+      return res.status(400).json({error:true , message:'no disk files uploadd'})
+    }
+    if(files.length > 0){
+       uploads =  files.map(function(val , index){
+          return new Promise(async function(resolve , reject){
+          try{
+            const name = val.originalname;
+            const path = val.path;
+            const type = val.mimetype;
+            const size = val.size;
+
+            // extract text from documents
+            const buffer = val.buffer;
+            const parsed = await pdfParse(buffer)
+            const text = parsed.text;
+
+            if(!text || text.trim()==''){
+              // return res.status(400).json({error:true , message:'you uploaed files/docs with no text'})
+              return reject('cannot process an empty file')
+            }
+            const chunks = text.match(/[\s\S]{1,1000}(?=\s|\n|$)/g);
+           
+
+           for(const chunk of chunks){
+            const emb = await ai.embeddings.create({
+              model:'text-embedding-3-small',
+              input : chunk
+            })
+
+
+
+            const embedding = emb.data[0].embedding;
+            const vector = {
+              id:name,
+              values :embedding,
+              metadata:{
+                name:name,
+                sender:'admin',
+                text:text
+              }
+            }
+           
+
+            
+            // const humverseindex = await pineconedb.index(process.env.PINECONE_INDEX_NAME).catch(function(err){
+            //   reject(err);
+            // });
+
+          
+             await  humverseindex.upsert(
+                [vector]
+             )
+
+          
+           }
+
+            resolve({error:false , message:'successfully embedded document'})
+          }
+          catch(err){
+      reject(err);
+          }
+
+
+
+          })
+        })
+        
+    }
+    else{
+      return res.status(400).json({error:true , message:'you sent an empty file field'})
+    }
+
+    const uploaded = await Promise.all(uploads);
+    const filediskuploads = await Promise.all(diskuploads);
+    // const aiobject = await Ai.findOne({});
+    // const aiobj = aiobject;
+    AIinstance.uploads = [...AIinstance.uploads , ...filediskuploads];
+    await AIinstance.save();
+    console.log('successfully embedded docs');
+    return res.status(200).json({error:false , message:'successfully embedde docs'});
+  }
+  catch(err){
+    console.log('error uploading to ai' , err);
+    return res.status(500).json({error:true , message:'server error'})
+  }
+ })
+
+
+
+ router.post('/delete_index/:id' , async function(req , res){
+             try{
+
+        const id = decodeURIComponent(req.params.id);
+        console.log('ID' , id);
+        const humverseindex = await index();
+        // console.log('HUMVERSEINGEX' , humverseindex);
+        
+        const deletion = await humverseindex._deleteOne(id);
+        return res.status(200).json({error:false , message:'successfully deleted index' });
+             }
+             catch(err){
+              console.log('error deleting inex' , err);
+              return res.status(500).json({error:true , message:'server error' , error:err});
+             }
+ })
+
+
+
+
+
+
+
+
+
+router.post('/ask_assistant' , async function(req , res){
+  try{
+    console.log(req.body);
+   const{ question ,user} = req.body;
+
+   const user_acc = await  User.findOne({_id:user});
+if(!user_acc){
+  return res.status(400).json({error:true , message:'user not found'});
+}
+
+const humverseindex = await index();
+if(!humverseindex){
+  return res.status(500).json({error:true , message:'pinecone index not found'});
+
+}
+
+
+
+
+
+   const embededq = await ai.embeddings.create({
+    model:'text-embedding-3-small',
+    input:question,
+   
+   })
+
+   
+
+   const emb = embededq.data[0].embedding;
+
+  
+  //  const vector = {
+  //   id:newquestion._id,
+  //   values: emb,
+  //   metadata:{
+  //     text:question,
+  //     sender:user
+  //   }
+  //  }
+  //  const storedemb = await humverseindex.upsert(vector);
+   const matches = await  humverseindex._queryCommand.run({
+    vector:emb,
+    topK:5,
+    includeMetadata:true
+   })
+
+   console.log('matches' , matches);
+
+  
+
+   if(!matches || matches.length == 0){
+    console.log('no matches found');
+    return res.status(400).json({error:true , message:'no match for your question found in database'})
+   }
+
+   const matchstrings = matches.matches.map(function(val ,index){
+    return   val.metadata.text
+    
+ })
+
+   console.log('match strings' , matchstrings);
+
+   const message = [
+    {role:'system' , content:'you are an intelligent user , answer the question based on the knowledge contained in the contexts provided. if the question cannot be answered based on the contexts , do not answer , just give a reason why you cannot answer the question eg you do not have the info , the question is out of scope , just find a response , but do not answer the question'},
+    {role:'user' , content :`context  : \n\n ${matchstrings.join('\n\n')}\n\n Question : ${question}`}
+  ] 
+
+
+  const response = await ai.chat.completions.create({
+    model:'gpt-4o',
+    messages:message,
+    temperature:0.7,
+    stream:true
+  })
+       
+  let fullresponse = '';
+
+  for await (let chunk of response){
+    const content = chunk.choices?.[0].delta?.content;
+    if(content){
+      fullresponse += content;
+      res.write(`data: ${content}\n\n`)
+    }
+  }
+
+  res.write(`data: [DONE]\n\n`);
+  res.end();
+
+  console.log(message);
+
+  // console.log('RESPONSE' , response.choices[0].message.content);
+  
+  console.log('RESPONSE' , response);
+
+
+
+  console.log('FULL RESPONSE' , fullresponse);
+
+   const newquestion = new Query({
+    sender:user , text:question , response: fullresponse
+})
+
+await newquestion.save();
+user_acc.questions.push(newquestion._id);
+await user_acc.save();
+
+
+
+// return res.status(200).json({error:false  , response , message:'querry processed successfully'});
+
+  }
+  catch(err){
+    console.log('error processing question' , err);
+    return res.status(500).json({error:true , message:'error processing query' ,  error:err})
+  }
+})
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+module.exports = router
