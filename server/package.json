@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "back end for the humverse project",
   "dependencies": {
     "@pinecone-database/pinecone": "^6.1.1",
     "bcrypt": "^6.0.0",
