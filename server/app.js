@@ -9,9 +9,10 @@ const atlasconnection = require('./configs/maongodb_atlas');
 app.use(express.urlencoded({ extended: true }));
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
+const dotenv = require('dotenv').config();
 
 
-
+// const allowedOrigin = process.env.CLIENT_URL?.trim() || 'http://localhost:5173';
 
 app.use(cors({
     origin: process.env.CLIENT_URL || 'http://localhost:5173',  // Vite default dev server
