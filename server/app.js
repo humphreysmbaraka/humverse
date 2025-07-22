@@ -15,7 +15,7 @@ console.log('client url' , process.env.CLIENT_URL);
 // const allowedOrigin = process.env.CLIENT_URL?.trim() || 'http://localhost:5173';
 
 app.use(cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',  // Vite default dev server
+    origin: process.env.CLIENT_URL.trim() || 'http://localhost:5173',  // Vite default dev server
     methods: ['GET', 'POST' , 'PATCH' , 'DELETE'],         // Allowed HTTP methods
     credentials: true      
 }))
@@ -28,7 +28,7 @@ const ioserver = http.createServer(app);
 
 const io = new Server(ioserver, {
     cors: {
-      origin: process.env.CLIENT_URL ||'http://localhost:5173', // your frontendhere 
+      origin: process.env.CLIENT_URL.trim() ||'http://localhost:5173', // your frontendhere 
       methods: ['GET', 'POST' , 'PATCH' , 'DELETE'],
       credentials: true
     }
