@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 const dotenv = require('dotenv').config();
-
+console.log('client url' , process.env.CLIENT_URL);
 
 // const allowedOrigin = process.env.CLIENT_URL?.trim() || 'http://localhost:5173';
 
