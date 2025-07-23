@@ -16,6 +16,7 @@ function New_Requests() {
     const [isfetching , setisfetching] = useState(false);
     const [makingcost , setmakingcost] = useState(null);
     const [deploymentcost , setdeploymentcost] = useState(null);
+    const [domainnamecost , setdomainnamecost] = useState(null);
     const [hostingcost , sethostingcost] = useState(null);
     const [maintainance , setmaintainance] = useState(null);
     const [currency , setcurrency] = useState('KSH');
@@ -114,7 +115,7 @@ const sendacceptance = async function(){
        }
        else{
         setsendingacceptance(true);
-        if(!makingcost || makingcost.trim()==''  || !deploymentcost || deploymentcost.trim()=='' || !hostingcost || hostingcost.trim()==''  ||  !currency || currency.trim()==''  ||   !maintainance || maintainance.trim()=='' ){
+        if(!makingcost || makingcost.trim()==''  || !deploymentcost || deploymentcost.trim()=='' || !hostingcost || hostingcost.trim()==''  ||  !currency || currency.trim()==''  ||   !maintainance || maintainance.trim()=='' || !domainnamecost || domainnamecost.trim() =='' ){
           setacceptanceerror('wrong or missing parameters , check your inputs');
         }
         else{
@@ -124,7 +125,7 @@ const sendacceptance = async function(){
                     'Content-Type':'application/json'
                 },
                 credentials:'include',
-                body: JSON.stringify({makingcost , deploymentcost ,hostingcost , currency , maintainance ,  reqid:selectedrequest._id })
+                body: JSON.stringify({makingcost , deploymentcost ,hostingcost , currency , maintainance ,  reqid:selectedrequest._id  , domaincost:domainnamecost})
             })
 
             if(acceptance.ok){
@@ -537,9 +538,16 @@ css
                     
                         <Text  textAlign={'left'} alignSelf={'flex-start'} color={'white'} >COSTS ON EPLOYMENT</Text>
                         <HStack   width={'95%'} gap={'10px'} p={'4px'}>
-                            <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'}>Domain name fee</Text>
+                            <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'}>Deployment cost</Text>
                             <Input value={deploymentcost} onChange={(e)=>{setdeploymentcost(e.target.value)}}  width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
                         </HStack>
+
+                        <HStack   width={'95%'} gap={'10px'} p={'4px'}>
+                            <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'}>Domain name fee</Text>
+                            <Input value={domainnamecost} onChange={(e)=>{setdomainnamecost(e.target.value)}}  width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
+                        </HStack>
+
+
 
                         <Text  textAlign={'left'} alignSelf={'flex-start'} color={'white'} >COSTS OF HOSTING</Text>
                         <HStack   width={'95%'} gap={'10px'} p={'4px'}>
