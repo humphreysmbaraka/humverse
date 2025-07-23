@@ -936,6 +936,12 @@ router.post('/callback', express.json(), async function(req, res){
   console.log('✅ M-Pesa Callback Received:', req.body);
   console.log('meta' , req.body.Body.stkCallback.CallbackMetadata);
   const info = req.body.Body.stkCallback;
+
+  const transaction = await Transaction.findOne({checkoutrequest_id:info.CheckoutRequestID });
+  if(transaction){
+    console.log('duplicate transaction detected , transaction already exists');
+    return res.sendStatus(200)
+  }
  
   
     // res.sendStatus(200);
@@ -992,6 +998,7 @@ router.post('/callback', express.json(), async function(req, res){
          request.initiated = true;
 
          await request.save();
+         res.sendStatus(200);
        
       }
       else{
@@ -1012,13 +1019,13 @@ router.post('/callback', express.json(), async function(req, res){
 
 
 
-
+       res.sendStatus(200);
       }
      }
      else{
       console.log('could not find such a request' ,info.CheckoutRequestID);
      
-     res.sendStatus(500);
+     res.sendStatus(200);
      }
 
   }
@@ -1040,7 +1047,7 @@ router.post('/callback', express.json(), async function(req, res){
    request.payments.payment_info.merchantrequest_ids = merchantrequest_ids;
    request.payments.payment_info.checkoutrequest_ids = checkoutids;
 
-  res.sendStatus(500);
+  res.sendStatus(200);
 
  }
 });
