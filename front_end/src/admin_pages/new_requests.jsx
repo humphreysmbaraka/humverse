@@ -536,7 +536,7 @@ css
                         </HStack>
 
                     
-                        <Text  textAlign={'left'} alignSelf={'flex-start'} color={'white'} >COSTS ON EPLOYMENT</Text>
+                        <Text  textAlign={'left'} alignSelf={'flex-start'} color={'white'} >COSTS ON DEPLOYMENT</Text>
                         <HStack   width={'95%'} gap={'10px'} p={'4px'}>
                             <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'}>Deployment cost</Text>
                             <Input value={deploymentcost} onChange={(e)=>{setdeploymentcost(e.target.value)}}  width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
