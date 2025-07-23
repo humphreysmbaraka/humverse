@@ -631,6 +631,7 @@ router.patch('/accept_request'  , async function(req , res){
         request.payments.total_payment_required = (Number(makingcost)+Number(deploymentcost) + Number(domaincost) +Number(hostingcost)+Number(maintainance));
         request.payments.deposit_required =  ( (Number(makingcost)+Number(deploymentcost) + Number(domaincost) +Number(hostingcost)+Number(maintainance))/3);
         await request.save();
+        console.log('reques accepted successfully' , request);
         return res.status(200).json({error:false , message:'request accepted successfully' , request});
 
 

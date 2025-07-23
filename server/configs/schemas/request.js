@@ -24,7 +24,7 @@ const Requestschema = new mongoose.Schema({
         total_paid: {type:Number , default:null},
         amount_remaining : {type:Number , default:null},
         payment_info:{
-            transactions : [{tupe:mongoose.Schema.Types.ObjectId ,  ref:'transaction'  , required : false , default : null}],
+            transactions : [{type:mongoose.Schema.Types.ObjectId ,  ref:'transaction'  , required : false , default : null}],
             merchantrequest_ids :[{type:String , required:false}],
             checkoutrequest_ids : [{type:String , required:false}]
             // domain_name_cost:{type:Number , default:null}
