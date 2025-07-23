@@ -629,7 +629,7 @@ router.patch('/accept_request'  , async function(req , res){
         request.payments.payments_required.maintainance_cost = Number(maintainance);
         request.payments.currency = currency;
         request.payments.total_payment_required = (Number(makingcost)+Number(deploymentcost) + Number(domaincost) +Number(hostingcost)+Number(maintainance));
-        request.payments.deposit_required =  ( (Number(makingcost)+Number(deploymentcost) + Number(domaincost) +Number(hostingcost)+Number(maintainance))/3);
+        request.payments.deposit_required =  Math.ceil(( (Number(makingcost)+Number(deploymentcost) + Number(domaincost) +Number(hostingcost)+Number(maintainance))/3));
         request.payments.total_paid = 0;
         request.payments.amount_remaining = request.payments.total_payment_required;
         await request.save();
