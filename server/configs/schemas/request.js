@@ -11,15 +11,23 @@ const Requestschema = new mongoose.Schema({
      names: {type:String , required:true},
      number: {type:String , required:true},
      payments: {type: new mongoose.Schema({
-        status:{type:Number , default:null},
-        deposit: {type:Number , default:null},
-        total_payment_required:{
-            domain_name_cost:{type:Number , default:null}
+        status:{type:String , default:'not fully paid'},
+        deposit_required: {type:Number , default:null},
+        total_payment_required: {type:Number , required:false , default:null},
+        payments_required:{
+            making_cost:{type:Number , default:null , nature:'paid once' },
+            deploying_cost:{type:Number , default:null  , nature:'paid once'  },
+            domain_name_cost:{type:Number , default:null  , nature:'paid every year' },
+            hosting_cost:{type:Number , default:null , nature:'paid monthly' },
+            maintainance_cost:{type:Number , default:null , nature:'paid monthly' }
         },
         total_paid: {type:Number , default:null},
         amount_remaining : {type:Number , default:null},
         payment_info:{
-            domain_name_cost:{type:Number , default:null}
+            transactions : [{tupe:mongoose.Schema.Types.ObjectId ,  ref:'transaction'  , required : false , default : null}],
+            merchantrequest_ids :[{type:String , required:false}],
+            checkoutrequest_ids : [{type:String , required:false}]
+            // domain_name_cost:{type:Number , default:null}
         },
         currency : {type:String , default:null},
     } , {_id:false}
@@ -32,18 +40,18 @@ const Requestschema = new mongoose.Schema({
      rejected: {type:Boolean , default:false},
      cancelled: {type:Boolean , default:false},
      previews: [{type:mongoose.Schema.Types.ObjectId , required:false}],
-     costs: {type: new mongoose.Schema({
-        makingcost: {type:Number , default:null},
-        deploymentcost:{
-            domain_name_cost:{type:Number , default:null}
-        },
-        hostingcost:{type:Number , default:null},
-        maintainance: {type:Number , default:null},
-        total : {type:Number , default:null},
-        currency : {type:String , default:null}
+    //  costs: {type: new mongoose.Schema({
+    //     makingcost: {type:Number , default:null},
+    //     deploymentcost:{
+    //         domain_name_cost:{type:Number , default:null}
+    //     },
+    //     hostingcost:{type:Number , default:null},
+    //     maintainance: {type:Number , default:null},
+    //     total : {type:Number , default:null},
+    //     currency : {type:String , default:null}
     
-    } , {_id:false}
-     ), default:{} },
+    // } , {_id:false}
+    //  ), default:{} },
      date: {type:String , required:false , default:function(){
         const date = new Date();
         const day = String(date.getDate()).padStart(2, '0'); // getDate() instead of getDay()

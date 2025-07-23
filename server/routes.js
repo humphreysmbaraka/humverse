@@ -14,6 +14,7 @@ const Ai = require('./configs/schemas/AI');
 const ai = require('./configs/openAi');
 const index = require('./configs/pineconedb');
 const Query = require('./configs/schemas/queries');
+const Transaction = require('./configs/schemas/transaction');
 // const humverseindex = require('./configs/pineconedb');
 // const  pineconedb  = require('./configs/pineconedb');
 // console.log('TYPE OF INDEX' , index , typeof(index));
@@ -613,7 +614,7 @@ router.get('/get_requests' , async function(req , res){
 router.patch('/accept_request'  , async function(req , res){
     try{
       console.log('PROCESSING ACCEPTANCE........')
-       const {makingcost , deploymentcost , hostingcost , currency , maintainance ,reqid } = req.body;
+       const {makingcost , deploymentcost , hostingcost , currency , maintainance ,reqid , domaincost } = req.body;
        const request = await Request.findOne({_id:reqid});
        if(request){
         request.received = true;
@@ -621,13 +622,14 @@ router.patch('/accept_request'  , async function(req , res){
         request.rejected = false;
         request.initiated = false;
         request.cancelled = false;
-        request.costs.makingcost = makingcost;
-        request.costs.deploymentcost.domain_name = deploymentcost;
-        request.costs.hostingcost = hostingcost;
-        request.costs.maintainance = maintainance;
-        request.costs.currency = currency;
-        request.costs.total = (Number(makingcost)+Number(deploymentcost)+Number(hostingcost)+Number(maintainance));
-
+        request.payments.payments_required.making_cost = Number(makingcost);
+        request.payments.payments_required.deploying_cost = Number(deploymentcost);
+        request.payments.payments_required.domain_name_cost = Number(domaincost);
+        request.payments.payments_required.hosting_cost = Number(hostingcost);
+        request.payments.payments_required.maintainance_cost = Number(maintainance);
+        request.payments.currency = currency;
+        request.payments.total_payment_required = (Number(makingcost)+Number(deploymentcost) + Number(domaincost) +Number(hostingcost)+Number(maintainance));
+        request.payments.deposit_required =  ( (Number(makingcost)+Number(deploymentcost) + Number(domaincost) +Number(hostingcost)+Number(maintainance))/3);
         await request.save();
         return res.status(200).json({error:false , message:'request accepted successfully' , request});
 
@@ -694,6 +696,12 @@ router.post('/pay_for_product' , async function(req , res){
       number = cleanednumber;
 
       try{
+        const request = await Request.findOne({_id:product_id});
+        const user = await User.findOne({_id:user_id});
+        if(!request || !user){
+          console.log('could not find such request/user in database');
+          return res.status(400).json({error:true , message:"either request or user does not exist"});
+        }
            console.log('fetching auth token');
            const authtoken = await fetch(`${process.env.SANDBOX_AUTH_URL}` , {
             headers: {
@@ -740,7 +748,33 @@ router.post('/pay_for_product' , async function(req , res){
             if(response.ok){
               console.log('stk pushed successfully');
               const responseinfo = await response.json();
-              return res.status(200).json({error:false , message:'stk pushed successfully' , info:responseinfo});
+              // const request = await Request.findOne({_id:product_id});
+              // if(request){
+                // const newtransaction = new Transaction({
+                //   user:user_id , product:product_id , merchantrequest_id:responseinfo.MerchantRequestID ,  checkoutrequest_id :responseinfo.CheckoutRequestID
+                // })
+                // await newtransaction.save();
+                // request.payments.payment_info.transaction = newtransaction._id;
+                request.payments.payment_info.merchantrequest_ids.push(responseinfo.MerchantRequestID);
+                request.payments.payment_info.checkoutrequest_ids.push(responseinfo.CheckoutRequestID);
+                // request.payments.total_paid = request.payments.total_paid + Number(amount);
+                // request.payments.amount_remaining = (request.payments.total_payment_required - (Number(amount)+request.payments.total_paid));
+                // if((request.payments.total_payment_required - (Number(amount)+request.payments.total_paid)) <= 0 ){
+                //   request.payments.status = 'fully paid'
+                // }
+                // else{
+                //   request.payments.status = 'not fully paid'
+                // }
+                
+                await request.save();
+                return res.status(200).json({error:false , message:'stk pushed successfully' , info:responseinfo});
+              // }
+              // else{
+              //   console.log('no such request found in the database');
+              //   return res.status(400).json({error:true , message:'no such request found in the database'})
+              // }
+
+              // return res.status(200).json({error:false , message:'stk pushed successfully' , info:responseinfo});
             }
             else{
               console.log('failed to  push stk');
@@ -782,6 +816,12 @@ router.post('/pay_for_product' , async function(req , res){
       // number = cleanednumber;
 
       try{
+        const request = await Request.findOne({_id:product_id});
+        const user = await User.findOne({_id:user_id});
+        if(!request || !user){
+          console.log('could not find such request/user in database');
+          return res.status(400).json({error:true , message:"either request or user does not exist"});
+        }
            console.log('fetching auth token');
            const authtoken = await fetch(`${process.env.SANDBOX_AUTH_URL.trim()}` , {
             headers: {
@@ -828,7 +868,33 @@ router.post('/pay_for_product' , async function(req , res){
             if(response.ok){
               console.log('stk pushed successfully');
               const responseinfo = await response.json();
-              return res.status(200).json({error:false , message:'stk pushed successfully' , info:responseinfo});
+              // const request = await Request.findOne({_id:product_id});
+              // if(request){
+                // const newtransaction = new Transaction({
+                //   user:user_id , product:product_id , merchantrequest_id:responseinfo.MerchantRequestID ,  checkoutrequest_id :responseinfo.CheckoutRequestID
+                // })
+                // await newtransaction.save();
+                // request.payments.payment_info.transaction = newtransaction._id;
+                request.payments.payment_info.merchantrequest_ids.push(responseinfo.MerchantRequestID);
+                request.payments.payment_info.checkoutrequest_ids.push(responseinfo.CheckoutRequestID);
+                // request.payments.total_paid = request.payments.total_paid + Number(amount);
+                // request.payments.amount_remaining = (request.payments.total_payment_required - (Number(amount)+request.payments.total_paid));
+                // if((request.payments.total_payment_required - (Number(amount)+request.payments.total_paid)) <= 0 ){
+                //   request.payments.status = 'fully paid'
+                // }
+                // else{
+                //   request.payments.status = 'not fully paid'
+                // }
+                
+                await request.save();
+                return res.status(200).json({error:false , message:'stk pushed successfully' , info:responseinfo});
+              // }
+              // else{
+              //   console.log('no such request found in the database');
+              //   return res.status(400).json({error:true , message:'no such request found in the database'})
+              // }
+
+
             }
             else{
               console.log('failed to  push stk');
@@ -865,9 +931,92 @@ router.post('/callback', express.json(), async function(req, res){
  try{
   
   console.log('✅ M-Pesa Callback Received:', req.body);
-  console.log('params' , req.body.Body.stkCallback.CallbackMetadata)
-  res.sendStatus(200);
- }
+  console.log('meta' , req.body.Body.stkCallback.CallbackMetadata);
+  const info = req.body.Body.stkCallback;
+  const meta = req.body.Body.stkCallback.CallbackMetadata;
+
+  const  amount = meta.item.find(function(val , index){
+    return val.Name === 'Amount'
+  });
+
+
+  const  mpesareceiptnumber = meta.item.find(function(val , index){
+    return val.Name === 'MpesaReceiptNumber'
+  });
+
+  const  phonenumber = meta.item.find(function(val , index){
+    return val.Name === 'PhoneNumber'
+  });
+
+  const  date = meta.item.find(function(val , index){
+    return val.Name === 'TransactionDate'
+  });
+
+  console.log('meta data' , mpesareceiptnumber , phonenumber , date , amount)
+  
+    // res.sendStatus(200);
+    const request = await Request.findOne({"payments.payment_info.checkoutrequest_ids":info.CheckoutRequestID});
+     if(request){
+      if(info.ResultCode == 0){
+         const newtransaction = new Transaction({
+          user:request.client ,
+          product:request._id ,
+          merchantrequest_id:info.MerchantRequestID ,
+          checkoutrequest_id :info.CheckoutRequestID , 
+          transaction_date:date?.Value ,
+          mpesa_rcepient_number:mpesareceiptnumber?.Value ,
+          phone_number:phonenumber?.Value , 
+          amount: amount?.Value 
+          
+         })
+         await newtransaction.save();
+
+         request.payments.payment_info.transactions.push( newtransaction._id);
+        //  request.payments.payment_info.merchantrequest_id = responseinfo.MerchantRequestID;
+        //  request.payments.payment_info.checkoutrequest_id = responseinfo.CheckoutRequestID;
+         request.payments.total_paid = request.payments.total_paid + Number(amount?.Value);
+         request.payments.amount_remaining = (request.payments.total_payment_required - request.payments.total_paid);
+         if(request.payments.amount_remaining <= 0 ){
+           request.payments.status = 'fully paid'
+         }
+         else{
+           request.payments.status = 'not fully paid'
+         }
+         request.initiated = true;
+
+         await request.save();
+       
+      }
+      else{
+        console.lo('transaction was not completed')
+       const merchantrequest_ids = request.payments.payment_info.merchantrequest_ids.filter(function(val , index){
+        return val != info.MerchantRequestID
+       })
+
+       const checkoutids =  request.payments.payment_info.checkoutrequest_ids.filter(function(val , index){
+        return val != info.CheckoutRequestID
+       })
+
+      
+       request.payments.payment_info.merchantrequest_ids = merchantrequest_ids;
+       request.payments.payment_info.checkoutrequest_ids = checkoutids;
+
+       await request.save();
+
+
+
+
+      }
+     }
+     else{
+      console.log('could not find such a request' ,info.CheckoutRequestID);
+     res.sendStatus(500);
+     }
+
+  }
+ 
+ 
+ 
  catch(err){
   console.log('error in payment callback' , err);
   res.sendStatus(500);
