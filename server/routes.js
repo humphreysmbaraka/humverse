@@ -938,20 +938,20 @@ router.post('/callback', express.json(), async function(req, res){
   const info = req.body.Body.stkCallback;
   const meta = req.body.Body.stkCallback.CallbackMetadata;
 
-  const  amount = meta.item.find(function(val , index){
+  const  amount = meta.Item.find(function(val , index){
     return val.Name === 'Amount'
   });
 
 
-  const  mpesareceiptnumber = meta.item.find(function(val , index){
+  const  mpesareceiptnumber = meta.Item.find(function(val , index){
     return val.Name === 'MpesaReceiptNumber'
   });
 
-  const  phonenumber = meta.item.find(function(val , index){
+  const  phonenumber = meta.Item.find(function(val , index){
     return val.Name === 'PhoneNumber'
   });
 
-  const  date = meta.item.find(function(val , index){
+  const  date = meta.Item.find(function(val , index){
     return val.Name === 'TransactionDate'
   });
 
@@ -991,7 +991,7 @@ router.post('/callback', express.json(), async function(req, res){
        
       }
       else{
-        console.lo('transaction was not completed')
+        console.log('transaction was not completed')
        const merchantrequest_ids = request.payments.payment_info.merchantrequest_ids.filter(function(val , index){
         return val != info.MerchantRequestID
        })
@@ -1013,6 +1013,7 @@ router.post('/callback', express.json(), async function(req, res){
      }
      else{
       console.log('could not find such a request' ,info.CheckoutRequestID);
+     
      res.sendStatus(500);
      }
 
@@ -1022,6 +1023,19 @@ router.post('/callback', express.json(), async function(req, res){
  
  catch(err){
   console.log('error in payment callback' , err);
+  const request = await Request.findOne({"payments.payment_info.checkoutrequest_ids":info.CheckoutRequestID});
+  const merchantrequest_ids = request.payments.payment_info.merchantrequest_ids.filter(function(val , index){
+    return val != info.MerchantRequestID
+   })
+
+   const checkoutids =  request.payments.payment_info.checkoutrequest_ids.filter(function(val , index){
+    return val != info.CheckoutRequestID
+   })
+
+   await request.save();
+   request.payments.payment_info.merchantrequest_ids = merchantrequest_ids;
+   request.payments.payment_info.checkoutrequest_ids = checkoutids;
+
   res.sendStatus(500);
 
  }
