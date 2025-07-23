@@ -105,7 +105,7 @@ function Home() {
                    <Image  mt={'2px'} mb={'2px'}  width={'95%'} height={'200px'} objectFit={'cover'}  src={icons[Math.round(Math.random())]}  />
                    <HStack width={'100%'}  padding={'2px'} >
                       <Button size={'medium'}  colorScheme={!val.accepted?'orange':val.accepted?'green':val.accepted&&val.initiated?'purple':val.rejected?'red':val.cancelled?'orange':val.completed?'green':'orange'}  _hover={{bg:'none'}} borderRadius={'10px'} borderWidth={'1px'} borderColor={'white'} p={'4px'} display={'flex'} alignItems={'center'} justifyContent={'center'} >
-                        {!val.accepted?'not yet received':val.accepted?'RECEIVED':val.accepted&&val.initiated?'INITIATED':val.rejected?'REJECTED':val.cancelled?'CANCELLED':val.completed?'COMPLETED':''}
+                        {!val.accepted&&!val.rejected&&!val.cancelled?'not yet received':val.accepted&&!val.initiated?'RECEIVED':val.accepted&&val.initiated?'INITIATED':val.rejected?'REJECTED':val.cancelled?'CANCELLED':val.completed?'COMPLETED':''}
                       </Button>
                    </HStack>
                </VStack>
