@@ -936,31 +936,35 @@ router.post('/callback', express.json(), async function(req, res){
   console.log('✅ M-Pesa Callback Received:', req.body);
   console.log('meta' , req.body.Body.stkCallback.CallbackMetadata);
   const info = req.body.Body.stkCallback;
-  const meta = req.body.Body.stkCallback.CallbackMetadata;
-
-  const  amount = meta.Item.find(function(val , index){
-    return val.Name === 'Amount'
-  });
-
-
-  const  mpesareceiptnumber = meta.Item.find(function(val , index){
-    return val.Name === 'MpesaReceiptNumber'
-  });
-
-  const  phonenumber = meta.Item.find(function(val , index){
-    return val.Name === 'PhoneNumber'
-  });
-
-  const  date = meta.Item.find(function(val , index){
-    return val.Name === 'TransactionDate'
-  });
-
-  console.log('meta data' , mpesareceiptnumber , phonenumber , date , amount)
+ 
   
     // res.sendStatus(200);
     const request = await Request.findOne({"payments.payment_info.checkoutrequest_ids":info.CheckoutRequestID});
      if(request){
       if(info.ResultCode == 0){
+
+        const meta = req.body.Body.stkCallback.CallbackMetadata;
+
+        const  amount = meta.Item.find(function(val , index){
+          return val.Name === 'Amount'
+        });
+      
+      
+        const  mpesareceiptnumber = meta.Item.find(function(val , index){
+          return val.Name === 'MpesaReceiptNumber'
+        });
+      
+        const  phonenumber = meta.Item.find(function(val , index){
+          return val.Name === 'PhoneNumber'
+        });
+      
+        const  date = meta.Item.find(function(val , index){
+          return val.Name === 'TransactionDate'
+        });
+      
+        console.log('meta data' , mpesareceiptnumber , phonenumber , date , amount)
+
+
          const newtransaction = new Transaction({
           user:request.client ,
           product:request._id ,
@@ -991,7 +995,7 @@ router.post('/callback', express.json(), async function(req, res){
        
       }
       else{
-        console.log('transaction was not completed')
+        console.log('transaction was not completed/successful')
        const merchantrequest_ids = request.payments.payment_info.merchantrequest_ids.filter(function(val , index){
         return val != info.MerchantRequestID
        })
