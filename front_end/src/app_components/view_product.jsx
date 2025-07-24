@@ -89,9 +89,10 @@ function View_Product() {
         if(!sure){
           return;
         }
+
         setcancelerror(false);
         setcancelling(true);
-
+        setwanttocancel(false);
         const cancel = await fetch(`${BASE_URL}/cancel_request` , {
           headers: {
             'Content-Type' : 'application/json'
@@ -133,7 +134,7 @@ function View_Product() {
         }
         setuncancelerror(false);
         setuncancelling(true);
-
+        setwanttouncancel(false);
         const cancel = await fetch(`${BASE_URL}/uncancel_request` , {
           headers: {
             'Content-Type' : 'application/json'
@@ -338,28 +339,28 @@ function View_Product() {
                    <VStack width={'23%'} borderRightColor={'white'} borderRightWidth={'1px'} height={'95%'} >
                     <Text color={'white'}>making cost(paid only once)</Text>
                     <Text alignSelf={'flex-start'}  textAlign={'left'} color={'white'} fontSize={'xxx-large'}  >. 
-                    <Text as={'span'} fontSize={'small'} >price</Text>
+                    <Text as={'span'} fontSize={'small'} >{product.payments.payments_required.making_cost}</Text>
                     </Text>
   
   
                     <Text color={'white'}>deployment cost(paid only once)</Text>
                     <Text alignSelf={'flex-start'}  textAlign={'left'} color={'white'} fontSize={'xxx-large'}  >. 
-                    <Text as={'span'} fontSize={'small'} >price</Text>
+                    <Text as={'span'} fontSize={'small'} >{product.payments.payments_required.deploying_cost}</Text>
                     </Text>
   
                    </VStack>
                    <VStack width={'23%'} borderRightColor={'white'} borderRightWidth={'1px'} height={'95%'}  >
                     <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'}  >recurring charges</Text>
                     <Text alignSelf={'flex-start'} textAlign={'left'}color={'white'} fontSize={'small'} fontWeight={'bold'} >domain name(yearly) :
-                       <Text  color={'blue.800'} fontSize={'medium'} fontWeight={'bold'} as={'span'}>price</Text>
+                       <Text  color={'blue.800'} fontSize={'medium'} fontWeight={'bold'} as={'span'}>{product.payments.payments_required.domain_name_cost}</Text>
                     </Text>
   
                     <Text alignSelf={'flex-start'} textAlign={'left'}color={'white'} fontSize={'small'} fontWeight={'bold'} >hosting(monthly) :
-                       <Text  color={'blue.800'} fontSize={'medium'} fontWeight={'bold'} as={'span'}>price</Text>
+                       <Text  color={'blue.800'} fontSize={'medium'} fontWeight={'bold'} as={'span'}>{product.payments.payments_required.hosting_cost}</Text>
                     </Text>
   
                     <Text alignSelf={'flex-start'} textAlign={'left'}color={'white'} fontSize={'small'} fontWeight={'bold'} >maintainance(monthly) :
-                       <Text  color={'blue.800'} fontSize={'medium'} fontWeight={'bold'} as={'span'}>price</Text>
+                       <Text  color={'blue.800'} fontSize={'medium'} fontWeight={'bold'} as={'span'}>{product.payments.payments_required.maintainance_cost}</Text>
                     </Text>
                    </VStack>
                  
@@ -368,11 +369,11 @@ function View_Product() {
                     
   
                     <Text alignSelf={'flex-start'} textAlign={'left'}color={'white'} fontSize={'small'} fontWeight={'bold'} >full price :
-                       <Text  color={'blue.800'} fontSize={'medium'} fontWeight={'bold'} as={'span'}>price</Text>
+                       <Text  color={'blue.800'} fontSize={'medium'} fontWeight={'bold'} as={'span'}>{product.payments.total_payment_required}</Text>
                     </Text>
   
                     <Text alignSelf={'flex-start'} textAlign={'left'}color={'white'} fontSize={'small'} fontWeight={'bold'} >allowed deposit :
-                       <Text  color={'blue.800'} fontSize={'medium'} fontWeight={'bold'} as={'span'}>price</Text>
+                       <Text  color={'blue.800'} fontSize={'medium'} fontWeight={'bold'} as={'span'}>{product.payments.deposit_required}</Text>
                     </Text>
                    </VStack>
   
@@ -380,15 +381,15 @@ function View_Product() {
                    <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'}  >payment progress</Text>
   
                    <Text alignSelf={'flex-start'} textAlign={'left'}color={'white'} fontSize={'small'} fontWeight={'bold'} >payment status :
-                       <Text  color={'blue.800'} fontSize={'medium'} fontWeight={'bold'} as={'span'}>price</Text>
+                       <Text  color={'blue.800'} fontSize={'medium'} fontWeight={'bold'} as={'span'}>{product.payments.status}</Text>
                     </Text>
   
                     <Text alignSelf={'flex-start'} textAlign={'left'}color={'white'} fontSize={'small'} fontWeight={'bold'} >total paid :
-                       <Text  color={'blue.800'} fontSize={'medium'} fontWeight={'bold'} as={'span'}>price</Text>
+                       <Text  color={'blue.800'} fontSize={'medium'} fontWeight={'bold'} as={'span'}>{product.payments.total_paid}</Text>
                     </Text>
   
                     <Text alignSelf={'flex-start'} textAlign={'left'}color={'white'} fontSize={'small'} fontWeight={'bold'} >amount remaining :
-                       <Text  color={'blue.800'} fontSize={'medium'} fontWeight={'bold'} as={'span'}>price</Text>
+                       <Text  color={'blue.800'} fontSize={'medium'} fontWeight={'bold'} as={'span'}>{product.payments.amount_remaining}</Text>
                     </Text>
                    </VStack>
                   </HStack>
@@ -438,7 +439,7 @@ function View_Product() {
                   
                   } */}
   
-               {(product.accepted && product.initiated && product.payments.status === "not fully paid") &&
+               {(product.accepted && product.initiated && product.payments.status === "not fully paid"&&!product.rejected&&!product.cancelled) &&
                     
                     <Button   onClick={initiate}  colorScheme={'green'} >
                     TOP UP PAYMENT
@@ -516,6 +517,8 @@ function View_Product() {
   
                 
                {showpayform &&  
+               <>
+                  <Button onClick={()=>{setshowpayform(false)}} size={'sm'} borderRadius={'50%'}  colorScheme='red' color={'white'} display={'flex'} alignItems={'center'} justifyContent={'center'} p={'1px'} fontSize={'x-small'} >X</Button>
                   <Tabs variant="soft-rounded" colorScheme="teal" isFitted>
                   <TabList mb="1em">
                     <Tab _selected={{ color: "white", bg: "teal.500" }}>M-Pesa</Tab>
@@ -599,6 +602,7 @@ function View_Product() {
                     </TabPanel>
                   </TabPanels>
                 </Tabs>
+                </>
                
                }
   
