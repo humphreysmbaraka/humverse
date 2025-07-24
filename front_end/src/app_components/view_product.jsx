@@ -465,7 +465,7 @@ function View_Product() {
                   {
                      product.rejected && 
 
-                     product.payments.status === "fully paid"  && 
+                    
 
                     <Button  disabled={true}  colorScheme={'red'} >
                     THIS REQUEST WAS REJECTED
