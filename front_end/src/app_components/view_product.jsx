@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../appcontexts/auth';
 import BASE_URL from '../constants/urls';
 
-makingcost
+
 
 function View_Product() {
     const [fetchingproduct , setfetchingproduct] = useState(false);
