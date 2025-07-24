@@ -15,7 +15,8 @@ import { AuthContext } from '../appcontexts/auth';
 
 function Make_request() {
   const location = useLocation();
-  const {product , mode} = location.state;
+  // const {product , mode} = location.state || null;
+  const product = location.state?.product || null;
   const navigate = useNavigate();
   const fileinputref = useRef(null);
   const timeunitref = useRef('');
