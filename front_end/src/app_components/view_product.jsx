@@ -71,8 +71,10 @@ function View_Product() {
           }
         }
         catch(err){
+          setfetchingproduct(false);
           console.log('error fetching request' ,err );
-        setfetcherror('could not fetch product')
+          setfetcherror('could not fetch product')
+         
         }
       }
 
@@ -723,7 +725,7 @@ function View_Product() {
         ) :
 
         (
-          <Box  width={'100%'} height={'100%'} bg={'gray.800'}  >
+          <Box  width={'100%'} height={'100%'} bg={'gray.800'} display={'flex'} alignItems={'center'} justifyContent={'center'}  >
                <VStack  width={'60%'} borderRadius={'15px'} p={'10px'} borderColor={'white'} borderWidth={'1px'} >
                  {fetchingproduct && 
                  <Spinner   width={'200px'} height={'200px'} color='white'  />
