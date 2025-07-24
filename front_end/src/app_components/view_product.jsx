@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { dimensions } from '../appcontexts/dimensions'
 import { Avatar, Box, Button, Divider, FormControl, FormLabel, HStack, Icon, Image, Input, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, Text, Textarea, VStack } from '@chakra-ui/react';
 import { PiFilePdf, PiIdentificationBadgeDuotone } from "react-icons/pi";
@@ -76,6 +76,7 @@ function View_Product() {
         }
       }
 
+      
 
      useEffect(function(){
         getrequest();

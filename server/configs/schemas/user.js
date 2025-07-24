@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const Userschema = new mongoose.Schema({
     picture : {type:mongoose.Schema.Types.ObjectId},
     username : {type:String , required:true},
-    email : {type:String , required:true},
+    email : {type:String , required:true , unique:true},
     password : {type:String , required:true},
     requests : [{type:mongoose.Schema.Types.ObjectId , ref:'request'}],
     admin : {type:Boolean , required:false , default:false},
