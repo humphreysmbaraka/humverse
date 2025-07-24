@@ -21,7 +21,7 @@ const Requestschema = new mongoose.Schema({
             hosting_cost:{type:Number , default:null , nature:'paid monthly' },
             maintainance_cost:{type:Number , default:null , nature:'paid monthly' }
         },
-        total_paid: {type:Number , default:null},
+        total_paid: {type:Number , default:0},
         amount_remaining : {type:Number , default:null},
         payment_info:{
             transactions : [{type:mongoose.Schema.Types.ObjectId ,  ref:'transaction'  , required : false , default : null}],

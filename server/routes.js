@@ -611,6 +611,27 @@ router.get('/get_requests' , async function(req , res){
 })
 
 
+router.get('/fetch_request' , async function(req , res){
+  try{
+   const {id} = req.body;
+   console.log('fetching request');
+   const request = await Request.findOne({_id:id});
+   if(!request){
+    console.log('no such request found');
+    return res.status(400).json({error:true , message:'no such request found'});
+   }
+   else{
+     console.log('request found');
+     return res.status(200).json({error:false , request:request})
+   }
+  }
+  catch(err){
+    console.log('error during fetching request' , err);
+    return res.status(500).json({error:true , message:'internal server error' , error:err})
+  }
+})
+
+
 router.patch('/accept_request'  , async function(req , res){
     try{
       console.log('PROCESSING ACCEPTANCE........')
@@ -676,7 +697,52 @@ router.patch('/reject_request' , async function(req , res){
 
 
 
+router.post('/cancel_request' , async function(req , res){
+  try{
+  console.log('cancelling request');
+  const {id} = req.body;
+  const request = await Request.findOne({_id:id});
+  if(!request){
+    console.log('no such request found');
+    return res.status(400).json({error:true , message:'no such request found'});
+  }
+  else{
+    request.cancelled = true;
+    await request.save();
+    console.log('request cancelled succesfully');
+    return res.status(200).json({error:false , message:'request cancelled successfully'});
+  }
+   
+  }
+  catch(err){
+    console.log('error cancelling request' , err);
+    return res.status(500).json({error:true , message:'internal server error' , problem:err})
+  }
+})
 
+
+router.post('/uncancel_request' , async function(req , res){
+  try{
+  console.log('uncancelling request');
+  const {id} = req.body;
+  const request = await Request.findOne({_id:id});
+  if(!request){
+    console.log('no such request found');
+    return res.status(400).json({error:true , message:'no such request found'});
+  }
+  else{
+    request.cancelled = false;
+    await request.save();
+    console.log('request uncancelled succesfully');
+    return res.status(200).json({error:false , message:'request uncancelled successfully'});
+  }
+   
+  }
+  catch(err){
+    console.log('error uncancelling request' , err);
+    return res.status(500).json({error:true , message:'internal server error' , problem:err})
+  }
+})
 
 
 
