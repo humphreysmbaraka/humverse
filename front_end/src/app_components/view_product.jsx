@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../appcontexts/auth';
 import BASE_URL from '../constants/urls';
 
-
+makingcost
 
 function View_Product() {
     const [fetchingproduct , setfetchingproduct] = useState(false);
@@ -292,7 +292,7 @@ function View_Product() {
   
   
              <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-              STATUS : <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{!product.received?'NOT YET':product.received?'RECEIVED':product.received&&product.initiated?'INITIATED':product.rejected?'REJECTED':product.cancelled?'CANCELLED':''}</Text>
+              STATUS : <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{!product.accepted&&!product.initiated&&!product.rejected&&!product.cancelled?'NOT YET ACCEPTED':product.accepted&&!product.initiated&&!product.cancelled&&!product.rejected?'RECEIVED':product.received&&product.initiated&&!product.cancelled&&!product.rejected?'INITIATED':product.rejected?'REJECTED':product.cancelled?'CANCELLED':''}</Text>
              </Text>
   
   
@@ -303,19 +303,40 @@ function View_Product() {
                    <Text mt={'30px'}  color={'white'}  fontSize={'large'} fontWeight={'bold'}  >PROJECT'S COSTS</Text>
                    <Divider     color={'white'}  height={'1px'}  width={'100%'}   />
              <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-              COST OF MAKING (paid once) : <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.costs.makingcost}</Text>
+              COST OF MAKING (paid once) : <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.payments.payments_required.making_cost}</Text>
              </Text>
   
              <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-               DEPLOYMENT (paid once): <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.costs.deploymentcost.domain_name_cost}</Text>
+               DEPLOYMENT (paid once): <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.payments.payments_required.deploying_cost}</Text>
+             </Text>
+
+             <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
+               DOMAIN NAME COST (paid yearly): <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.payments.payments_required.domain_name_cost}</Text>
              </Text>
   
              <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-               HOSTING COST (paid monthly): <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.costs.hostingcost}</Text>
+               HOSTING COST (paid monthly): <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.payments.payments_required.domain_name_cost}</Text>
              </Text>
   
              <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-               MAINTAINANCE  (paid monthly) : <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.costs.maintainance}</Text>
+               MAINTAINANCE  (paid monthly) : <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.payments.payments_required.maintainance_cost}</Text>
+             </Text>
+
+
+             <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
+               TOTAL COST : <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.payments.total_payment_required}</Text>
+             </Text>
+
+             <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
+               ACCEPTED DEPOSIT : <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.payments.deposit_required}</Text>
+             </Text>
+
+             <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
+               AMOUNT PAID : <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.payments.total_paid}</Text>
+             </Text>
+
+             <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
+               AMOUNT REMAINING : <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.payments.amount_remaining}</Text>
              </Text>
   
   
