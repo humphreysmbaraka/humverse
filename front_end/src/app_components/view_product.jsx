@@ -43,12 +43,11 @@ function View_Product() {
         try{
           setfetchingproduct(true);
           setfetcherror(null);
-          const product = await fetch(`/fetch_request` , {
+          const product = await fetch(`/fetch_request/${product_id}` , {
             method:'GET',
             headers:{
               'Content-Type':'application/json'
             },
-           body:JSON.stringify({id:product_id})
           });
 
           if(product.ok){

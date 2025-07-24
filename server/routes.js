@@ -611,9 +611,9 @@ router.get('/get_requests' , async function(req , res){
 })
 
 
-router.get('/fetch_request' , async function(req , res){
+router.get('/fetch_request/:id' , async function(req , res){
   try{
-   const {id} = req.body;
+   const id = req.params.id;
    console.log('fetching request');
    const request = await Request.findOne({_id:id});
    if(!request){
