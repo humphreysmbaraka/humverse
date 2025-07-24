@@ -460,6 +460,17 @@ function View_Product() {
                     PRODUCT FULLY PAID FOR
                    </Button>
                   }
+
+
+                  {
+                     product.rejected && 
+
+                     product.payments.status === "fully paid"  && 
+
+                    <Button  disabled={true}  colorScheme={'red'} >
+                    THIS REQUEST WAS REJECTED
+                   </Button>
+                  }
   
                
                </HStack>
