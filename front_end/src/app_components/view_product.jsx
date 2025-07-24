@@ -412,7 +412,7 @@ function View_Product() {
   
   
                   {(product.cancelled) &&
-                     <Button onClick={()=>{setwanttouncancel(true)}}  colorScheme='red' >
+                     <Button onClick={()=>{setwanttouncancel(true)}}  colorScheme='orange' >
                      UNDO CANCEL
                    </Button>
                     } 
@@ -438,18 +438,27 @@ function View_Product() {
                   
                   } */}
   
-               {(product.accepted && product.initiated && product.payments.status === "not fully paid") ?
-                    (
+               {(product.accepted && product.initiated && product.payments.status === "not fully paid") &&
+                    
                     <Button   onClick={initiate}  colorScheme={'green'} >
                     TOP UP PAYMENT
                   </Button>
-                   ):
-                   (
+                  //  ):
+                  //  (
+                  //   <Button  disabled={true}  colorScheme={'gray'} >
+                  //   PRODUCT FULLY PAID FOR
+                  // </Button>
+                  //  )
+                  
+                  }
+
+
+                  {
+                    product.payments.status === "fully paid"  && 
+
                     <Button  disabled={true}  colorScheme={'gray'} >
                     PRODUCT FULLY PAID FOR
-                  </Button>
-                   )
-                  
+                   </Button>
                   }
   
                
