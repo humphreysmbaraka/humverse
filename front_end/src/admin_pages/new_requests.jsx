@@ -39,7 +39,7 @@ function New_Requests() {
     const [sendingpreviews , setsendingpreviews] = useState(false);
     const [sendpreverror , setsendpreverror] = useState(null)
     const {user , loggedin} = useContext(AuthContext);
-    vonst [timecompensation , settimecompensation] = useState(null);
+    const [timecompensation , settimecompensation] = useState(null);
     const [attachmentinfos , setattachmentinfos] = useState([]);
     const [attachmentobjects , setattachmentobjects] = useState([]);
     // const location = useLocation();
