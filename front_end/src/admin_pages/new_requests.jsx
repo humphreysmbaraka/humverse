@@ -41,7 +41,7 @@ function New_Requests() {
     const {user , loggedin} = useContext(AuthContext);
     const [timecompensation , settimecompensation] = useState(null);
     const [attachmentinfos , setattachmentinfos] = useState([]);
-    const [attachmentobjects , setattachmentobjects] = useState([]);
+    const [previewsinfos , setpreviewsinfos] = useState([]);
     // const location = useLocation();
     // const reqs = location.state.requests;
 
@@ -101,56 +101,61 @@ function New_Requests() {
             }
         }
 
-        // const fetchattachmentfiles = async function(){
-        //     try{
-        //         if(selectedrequest.attachments.length > 0){
 
-        //            const objects =  selectedrequest.attachments.map(function(val , index){
-        //                return new Promise(async function(resolve , reject){
-   
-        //                    let info;
-        //                    let msg;
-        //                    const file = await fetch(`${BASE_URL}/stream_request_file/${val}` , {
-        //                        method:'GET',
-        //                        credentials:'include',
-        //                        headers:{
-        //                            'Content-Type':'application/json'
-        //                        }
-        //                    })
-        //                    if(file.ok){
-        //                      const details = await file.json();
-        //                      info = details.info
-        //                      msg = null;
-        //                      resolve(info);
-        //                    }
-        //                    else{
-        //                        const details = await file.json();
-        //                        if(String(file.status).startsWith('4')){
-        //                            msg = details.message;
-        //                            info = null;
-        //                            reject(msg);
-        //                        }
-        //                        else{
-        //                            msg = 'server error';
-        //                            info = null;
-        //                            reject(msg);
-        //                        }
-        //                    }
-   
-        //                })
-        //             })
-        //           }
-        //           else{
-   
-        //           }
-        //           const reqobjects = await Promise.all(objects);
-        //           setattachmentobjects(reqobjects)
-        //           return Promise.all(objects);
-        //     }
-        //     catch(err){
-        //         console.log('cannot fetch attachment objects')
-        //     }
-        // }
+
+
+        const fetchpreviewsinfo = async function(){
+            try{
+               if(selectedrequest.previews.length > 0){
+
+                 const infos = selectedrequest.previews.map(function(val , index){
+                    return new Promise(async function(resolve , reject){
+
+                        let info;
+                        let msg;
+                        const fileinfo = await fetch(`${BASE_URL}/get_preview_info/${val}` , {
+                            method:'GET',
+                            credentials:'include',
+                            headers:{
+                                'Content-Type':'application/json'
+                            }
+                        })
+                        if(fileinfo.ok){
+                          const details = await fileinfo.json();
+                          info = details.info
+                          msg = null;
+                          resolve(info);
+                        }
+                        else{
+                            const details = await fileinfo.json();
+                            if(String(fileinfo.status).startsWith('4')){
+                                msg = details.message;
+                                info = null;
+                                reject(msg);
+                            }
+                            else{
+                                msg = 'server error';
+                                info = null;
+                                reject(msg);
+                            }
+                        }
+
+                    })
+                 })
+               }
+               else{
+
+               }
+
+               const reqinfos = await  Promise.all(infos);
+               setattachmentinfos(reqinfos);
+               return Promise.all(infos);
+
+            }
+            catch(err){
+                console.log('cannot fetch attachment info')
+            }
+        }
 
     } , [selectedrequest])
 
@@ -776,7 +781,7 @@ const rejectrequest = async function(){
 
                    {selectedrequest&&(selectedrequest.accepted&&!selectedrequest.initiated&&!selectedrequest.cancelled&&!selectedrequest.rejected) && 
                      <>
-                     <Box zIndex={100} opacity={'0.6'}  position={'absolute'} display={'flex'} alignItems={'center'} justifyContent={'center'}  > 
+                     <Box zIndex={100} opacity={'0.6'} width={'100%'} height={'100%'} position={'absolute'} display={'flex'} alignItems={'center'} justifyContent={'center'}  > 
                        <Text color={'green.500'} fontSize={'xx-large'} >PENDING INITIATION</Text>
                      </Box>
                      {/* <Text color={'green.500'}  fontSize={'x-large'}  >NEW REQUEST</Text> */}
@@ -984,7 +989,7 @@ const rejectrequest = async function(){
 
 {selectedrequest&&(!selectedrequest.cancelled) && 
                      <>
-                     <Box zIndex={100} opacity={'0.6'}  position={'absolute'} display={'flex'} alignItems={'center'} justifyContent={'center'}  > 
+                     <Box zIndex={100} opacity={'0.6'} width={'100%'} height={'100%'}  position={'absolute'} display={'flex'} alignItems={'center'} justifyContent={'center'}  > 
                        <Text color={'orange.500'} fontSize={'xx-large'} >THIS REQUEST WAS CANCELLED</Text>
                      </Box>
                      {/* <Text color={'green.500'}  fontSize={'x-large'}  >NEW REQUEST</Text> */}
@@ -1090,7 +1095,7 @@ const rejectrequest = async function(){
 
 {selectedrequest&&(selectedrequest.rejected) && 
                      <>
-                     <Box zIndex={100} opacity={'0.6'}  position={'absolute'} display={'flex'} alignItems={'center'} justifyContent={'center'}  > 
+                     <Box zIndex={100} opacity={'0.6'} width={'100%'} height={'100%'} position={'absolute'} display={'flex'} alignItems={'center'} justifyContent={'center'}  > 
                        <Text color={'red.500'} fontSize={'xx-large'} >THIS REQUEST WAS REJECTED</Text>
                      </Box>
                    
@@ -1418,7 +1423,7 @@ const rejectrequest = async function(){
 
                      <VStack  width={'98%'}  p={'4px'}  alignItems={'center'} position={'relative'} >
                         {/* <Text color={'white'} fontWeight={'bold'} >THIS REQUEST IS ALREADY INITIATED</Text> */}
-                         <Box zIndex={100} bg={'transparent'} position={'absolute'} width={'100%'} height={'100%'} display={'flex'} alignItems={'center'} justifyContent={'center'} >
+                         <Box zIndex={100}   bg={'transparent'} position={'absolute'} width={'100%'} height={'100%'} display={'flex'} alignItems={'center'} justifyContent={'center'} >
                                  <Text opacity={0.6} color={'orange'} fontWeight={'bold'} fontSize={'xxx-large'} >CANCELLED</Text>
                          </Box>
 
@@ -1835,42 +1840,18 @@ const rejectrequest = async function(){
 
 
             <Text fontSize={'x-large'} color={'white'} fontWeight={'bold'} >SHARED PREVIEWS</Text>
-           {selectedrequest.previews.length > 0 ?
-           (
-            selectedrequest.previews.map(async function(val , index){
-                let details;
-                let msg;
-                const info = await fetch(`${BASE_URL}/get_preview_info/${val}` , {
-                    method:'GET' , 
-                    headers: {
-                        'Content-Type':'application/json'
-                    },
-                    credentials:'include'
-                })
+           {previewsinfos&&previewsinfos.length > 0 ?
+(
+             previewsinfos.map(function(val , index){
 
-                if(info.ok){
-                    const properties = await info.json();
-                 msg = null;
-                 details = properties;
-                }
-                else{
-                    const properties = await info.json();
-                 if(String(info.status).startsWith('4')){
-                    details = null;
-                    msg = properties.message;
-                 }
-                 else{
-                    details = null;
-                    msg = 'server error';
-                 }
-                }
-
+             
+                    
                 return(
                     
                        <HStack  width={'98%'} p={'5px'} gap={'10px'} borderRadius={'10px'} >
-                         <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_preview/${val}` ,  '_blank')}} key={index} as='button' height={'100px'} width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
+                         <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_preview/${val._id}` ,  '_blank')}} key={index} as='button' height={'100px'} width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
                         <PiFilePdf    size={'80px'} borderRadius={'10px'}  color='red'    />
-                        <Text width={'95%'} color={msg?'red':'white'} isTruncated={true} fontSize={'xs'}  >{details?details.name:msg}</Text>
+                        <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.name}</Text>
                         </VStack>
                        </HStack>
                   
