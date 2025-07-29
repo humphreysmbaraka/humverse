@@ -40,10 +40,119 @@ function New_Requests() {
     const [sendpreverror , setsendpreverror] = useState(null)
     const {user , loggedin} = useContext(AuthContext);
     vonst [timecompensation , settimecompensation] = useState(null);
+    const [attachmentinfos , setattachmentinfos] = useState([]);
+    const [attachmentobjects , setattachmentobjects] = useState([]);
     // const location = useLocation();
     // const reqs = location.state.requests;
 
+  
 
+    useEffect(function(){
+        const fetchattachmentsinfo = async function(){
+            try{
+               if(selectedrequest.attachments.length > 0){
+
+                 const infos = selectedrequest.attachments.map(function(val , index){
+                    return new Promise(async function(resolve , reject){
+
+                        let info;
+                        let msg;
+                        const fileinfo = await fetch(`${BASE_URL}/get_request_file_info/${val}` , {
+                            method:'GET',
+                            credentials:'include',
+                            headers:{
+                                'Content-Type':'application/json'
+                            }
+                        })
+                        if(fileinfo.ok){
+                          const details = await fileinfo.json();
+                          info = details.info
+                          msg = null;
+                          resolve(info);
+                        }
+                        else{
+                            const details = await fileinfo.json();
+                            if(String(fileinfo.status).startsWith('4')){
+                                msg = details.message;
+                                info = null;
+                                reject(msg);
+                            }
+                            else{
+                                msg = 'server error';
+                                info = null;
+                                reject(msg);
+                            }
+                        }
+
+                    })
+                 })
+               }
+               else{
+
+               }
+
+               const reqinfos = await  Promise.all(infos);
+               setattachmentinfos(reqinfos);
+               return Promise.all(infos);
+
+            }
+            catch(err){
+                console.log('cannot fetch attachment info')
+            }
+        }
+
+        // const fetchattachmentfiles = async function(){
+        //     try{
+        //         if(selectedrequest.attachments.length > 0){
+
+        //            const objects =  selectedrequest.attachments.map(function(val , index){
+        //                return new Promise(async function(resolve , reject){
+   
+        //                    let info;
+        //                    let msg;
+        //                    const file = await fetch(`${BASE_URL}/stream_request_file/${val}` , {
+        //                        method:'GET',
+        //                        credentials:'include',
+        //                        headers:{
+        //                            'Content-Type':'application/json'
+        //                        }
+        //                    })
+        //                    if(file.ok){
+        //                      const details = await file.json();
+        //                      info = details.info
+        //                      msg = null;
+        //                      resolve(info);
+        //                    }
+        //                    else{
+        //                        const details = await file.json();
+        //                        if(String(file.status).startsWith('4')){
+        //                            msg = details.message;
+        //                            info = null;
+        //                            reject(msg);
+        //                        }
+        //                        else{
+        //                            msg = 'server error';
+        //                            info = null;
+        //                            reject(msg);
+        //                        }
+        //                    }
+   
+        //                })
+        //             })
+        //           }
+        //           else{
+   
+        //           }
+        //           const reqobjects = await Promise.all(objects);
+        //           setattachmentobjects(reqobjects)
+        //           return Promise.all(objects);
+        //     }
+        //     catch(err){
+        //         console.log('cannot fetch attachment objects')
+        //     }
+        // }
+
+    } , [selectedrequest])
 
     const detatchfile = async function(itemindex){
         try{
@@ -596,43 +705,20 @@ const rejectrequest = async function(){
 
                                 <Text mt={'20px'} textAlign={'left'} alignSelf={'flex-start'} color={'white'} fontSize={'large'}  >ATTACHMENTS</Text>
                                 <HStack width={'98%'} p={'2px'} flexWrap={'wrap'} gap={'10px'} >
-                                {selectedrequest.attachments.length > 0 && 
-                     selectedrequest.attachments.map(async function(val , index){
-                        let info;
-                        let msg;
-                        const fileinfo = await fetch(`${BASE_URL}/get_request_file_info/${val}` , {
-                            method:'GET',
-                            credentials:'include',
-                            headers:{
-                                'Content-Type':'application/json'
-                            }
-                        })
-                        if(fileinfo.ok){
-                          const details = await fileinfo.json();
-                          info = details.info
-                          msg = null;
-                        }
-                        else{
-                            const details = await fileinfo.json();
-                            if(String(fileinfo.status).startsWith('4')){
-                                msg = details.message;
-                                info = null;
-                            }
-                            else{
-                                msg = 'server error';
-                                info = null;
-                            }
-                        }
+                                {(attachmentinfos && attachmentinfos.length > 0) &&
+                                attachmentinfos.map(function(val , index){
+
+                                
                          return(
-                             <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_request_file/${val}` ,  '_blank')}} key={index} as='button' height={'100px'} width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
+                             <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_request_file/${val._id}` ,  '_blank')}} key={index} as='button' height={'100px'} width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
                              <PiFilePdf    size={'80px'} borderRadius={'10px'}  color='red'    />
-                             <Text width={'95%'} color={msg?'red':'white'} isTruncated={true} fontSize={'xs'}  >{info?info.name:msg}</Text>
+                             <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.name}</Text>
                           </VStack>
                          )
                      })
                      
                      }
-                     {selectedrequest.attachments.length == 0 && 
+                     {(!attachmentinfos || attachmentinfos.length == 0) && 
                                                      <Text color={'white'} fontSize={'large'}  >This request has no attachments</Text>
 
                      }
@@ -722,43 +808,20 @@ const rejectrequest = async function(){
 
                                 <Text mt={'20px'} textAlign={'left'} alignSelf={'flex-start'} color={'white'} fontSize={'large'}  >ATTACHMENTS</Text>
                                 <HStack width={'98%'} p={'2px'} flexWrap={'wrap'} gap={'10px'} >
-                                {selectedrequest.attachments.length > 0 && 
-                     selectedrequest.attachments.map(async function(val , index){
-                        let info;
-                        let msg;
-                        const fileinfo = await fetch(`${BASE_URL}/get_request_file_info/${val}` , {
-                            method:'GET',
-                            credentials:'include',
-                            headers:{
-                                'Content-Type':'application/json'
-                            }
-                        })
-                        if(fileinfo.ok){
-                          const details = await fileinfo.json();
-                          info = details.info
-                          msg = null;
-                        }
-                        else{
-                            const details = await fileinfo.json();
-                            if(String(fileinfo.status).startsWith('4')){
-                                msg = details.message;
-                                info = null;
-                            }
-                            else{
-                                msg = 'server error';
-                                info = null;
-                            }
-                        }
+                                {(attachmentinfos && attachmentinfos.length > 0) &&
+                                attachmentinfos.map(function(val , index){
+
+                                
                          return(
-                             <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_request_file/${val}` ,  '_blank')}} key={index} as='button' height={'100px'} width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
+                             <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_request_file/${val._id}` ,  '_blank')}} key={index} as='button' height={'100px'} width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
                              <PiFilePdf    size={'80px'} borderRadius={'10px'}  color='red'    />
-                             <Text width={'95%'} color={msg?'red':'white'} isTruncated={true} fontSize={'xs'}  >{info?info.name:msg}</Text>
+                             <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.name}</Text>
                           </VStack>
                          )
                      })
                      
                      }
-                     {selectedrequest.attachments.length == 0 && 
+                     {(!attachmentinfos || attachmentinfos.length == 0) && 
                                                      <Text color={'white'} fontSize={'large'}  >This request has no attachments</Text>
 
                      }
@@ -849,43 +912,20 @@ const rejectrequest = async function(){
 
                                 <Text mt={'20px'} textAlign={'left'} alignSelf={'flex-start'} color={'white'} fontSize={'large'}  >ATTACHMENTS</Text>
                                 <HStack width={'98%'} p={'2px'} flexWrap={'wrap'} gap={'10px'} >
-                                {selectedrequest.attachments.length > 0 && 
-                     selectedrequest.attachments.map(async function(val , index){
-                        let info;
-                        let msg;
-                        const fileinfo = await fetch(`${BASE_URL}/get_request_file_info/${val}` , {
-                            method:'GET',
-                            credentials:'include',
-                            headers:{
-                                'Content-Type':'application/json'
-                            }
-                        })
-                        if(fileinfo.ok){
-                          const details = await fileinfo.json();
-                          info = details.info
-                          msg = null;
-                        }
-                        else{
-                            const details = await fileinfo.json();
-                            if(String(fileinfo.status).startsWith('4')){
-                                msg = details.message;
-                                info = null;
-                            }
-                            else{
-                                msg = 'server error';
-                                info = null;
-                            }
-                        }
+                                {(attachmentinfos && attachmentinfos.length > 0) &&
+                                attachmentinfos.map(function(val , index){
+
+                                
                          return(
-                             <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_request_file/${val}` ,  '_blank')}} key={index} as='button' height={'100px'} width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
+                             <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_request_file/${val._id}` ,  '_blank')}} key={index} as='button' height={'100px'} width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
                              <PiFilePdf    size={'80px'} borderRadius={'10px'}  color='red'    />
-                             <Text width={'95%'} color={msg?'red':'white'} isTruncated={true} fontSize={'xs'}  >{info?info.name:msg}</Text>
+                             <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.name}</Text>
                           </VStack>
                          )
                      })
                      
                      }
-                     {selectedrequest.attachments.length == 0 && 
+                     {(!attachmentinfos || attachmentinfos.length == 0) && 
                                                      <Text color={'white'} fontSize={'large'}  >This request has no attachments</Text>
 
                      }
@@ -976,43 +1016,20 @@ const rejectrequest = async function(){
 
                                 <Text mt={'20px'} textAlign={'left'} alignSelf={'flex-start'} color={'white'} fontSize={'large'}  >ATTACHMENTS</Text>
                                 <HStack width={'98%'} p={'2px'} flexWrap={'wrap'} gap={'10px'} >
-                                {selectedrequest.attachments.length > 0 && 
-                     selectedrequest.attachments.map(async function(val , index){
-                        let info;
-                        let msg;
-                        const fileinfo = await fetch(`${BASE_URL}/get_request_file_info/${val}` , {
-                            method:'GET',
-                            credentials:'include',
-                            headers:{
-                                'Content-Type':'application/json'
-                            }
-                        })
-                        if(fileinfo.ok){
-                          const details = await fileinfo.json();
-                          info = details.info
-                          msg = null;
-                        }
-                        else{
-                            const details = await fileinfo.json();
-                            if(String(fileinfo.status).startsWith('4')){
-                                msg = details.message;
-                                info = null;
-                            }
-                            else{
-                                msg = 'server error';
-                                info = null;
-                            }
-                        }
+                                {(attachmentinfos && attachmentinfos.length > 0) &&
+                                attachmentinfos.map(function(val , index){
+
+                                
                          return(
-                             <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_request_file/${val}` ,  '_blank')}} key={index} as='button' height={'100px'} width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
+                             <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_request_file/${val._id}` ,  '_blank')}} key={index} as='button' height={'100px'} width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
                              <PiFilePdf    size={'80px'} borderRadius={'10px'}  color='red'    />
-                             <Text width={'95%'} color={msg?'red':'white'} isTruncated={true} fontSize={'xs'}  >{info?info.name:msg}</Text>
+                             <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.name}</Text>
                           </VStack>
                          )
                      })
                      
                      }
-                     {selectedrequest.attachments.length == 0 && 
+                     {(!attachmentinfos || attachmentinfos.length == 0) && 
                                                      <Text color={'white'} fontSize={'large'}  >This request has no attachments</Text>
 
                      }
@@ -1105,43 +1122,20 @@ const rejectrequest = async function(){
 
                                 <Text mt={'20px'} textAlign={'left'} alignSelf={'flex-start'} color={'white'} fontSize={'large'}  >ATTACHMENTS</Text>
                                 <HStack width={'98%'} p={'2px'} flexWrap={'wrap'} gap={'10px'} >
-                                {selectedrequest.attachments.length > 0 && 
-                     selectedrequest.attachments.map(async function(val , index){
-                        let info;
-                        let msg;
-                        const fileinfo = await fetch(`${BASE_URL}/get_request_file_info/${val}` , {
-                            method:'GET',
-                            credentials:'include',
-                            headers:{
-                                'Content-Type':'application/json'
-                            }
-                        })
-                        if(fileinfo.ok){
-                          const details = await fileinfo.json();
-                          info = details.info
-                          msg = null;
-                        }
-                        else{
-                            const details = await fileinfo.json();
-                            if(String(fileinfo.status).startsWith('4')){
-                                msg = details.message;
-                                info = null;
-                            }
-                            else{
-                                msg = 'server error';
-                                info = null;
-                            }
-                        }
+                                {(attachmentinfos && attachmentinfos.length > 0) &&
+                                attachmentinfos.map(function(val , index){
+
+                                
                          return(
-                             <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_request_file/${val}` ,  '_blank')}} key={index} as='button' height={'100px'} width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
+                             <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_request_file/${val._id}` ,  '_blank')}} key={index} as='button' height={'100px'} width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
                              <PiFilePdf    size={'80px'} borderRadius={'10px'}  color='red'    />
-                             <Text width={'95%'} color={msg?'red':'white'} isTruncated={true} fontSize={'xs'}  >{info?info.name:msg}</Text>
+                             <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.name}</Text>
                           </VStack>
                          )
                      })
                      
                      }
-                     {selectedrequest.attachments.length == 0 && 
+                     {(!attachmentinfos || attachmentinfos.length == 0) && 
                                                      <Text color={'white'} fontSize={'large'}  >This request has no attachments</Text>
 
                      }
