@@ -39,6 +39,7 @@ function New_Requests() {
     const [sendingpreviews , setsendingpreviews] = useState(false);
     const [sendpreverror , setsendpreverror] = useState(null)
     const {user , loggedin} = useContext(AuthContext);
+    vonst [timecompensation , settimecompensation] = useState(null);
     // const location = useLocation();
     // const reqs = location.state.requests;
 
@@ -1075,7 +1076,7 @@ const rejectrequest = async function(){
                      <Box zIndex={100} opacity={'0.6'}  position={'absolute'} display={'flex'} alignItems={'center'} justifyContent={'center'}  > 
                        <Text color={'red.500'} fontSize={'xx-large'} >THIS REQUEST WAS REJECTED</Text>
                      </Box>
-                     {/* <Text color={'green.500'}  fontSize={'x-large'}  >NEW REQUEST</Text> */}
+                   
                      <Avatar mt={'10px'} width={'200px'}  height={'200px'} borderRadius={'50%'} borderWidth={'3px'} display={'flex'} alignItems={'center'} justifyContent={'center'} p={0} src={selectedrequest.client.picture?`${BASE_URL}/profile_pic/${selectedrequest.client.picture}`:undefined} name={selectedrequest.client.username} borderColor={'purple'} />
                      <Text mt={'10px'} mb={'5px'} color={'purple'}   fontWeight={'light'} >sent by
                      <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest.client.username}`}</Text>
@@ -1146,9 +1147,8 @@ const rejectrequest = async function(){
                      }
                                 </HStack>
 
-                                <Text  fontSize={'x-large'} color={'white'}  >PAYMENT DETAILS</Text>
+                                {/* <Text  fontSize={'x-large'} color={'white'}  >PAYMENT DETAILS</Text>
 
-                                {/* <Text>costs of service</Text> */}
 
                                 <Text mt={'10px'} mb={'5px'} color={'white'}  fontWeight={'light'} >COST OF MAKING
                      <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.payments.payments_required.making_cost}</Text>
@@ -1188,11 +1188,10 @@ const rejectrequest = async function(){
 
                      <Text mt={'10px'} mb={'5px'} color={'white'}  fontWeight={'light'} >AMOUNT REMAINING
                      <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.payments.amount_remaining}</Text>
-                     </Text>
+                     </Text> */}
 
                      
-                     {/* <Text mt={'15px'} mb={'15px'} color={'black'}  fontSize={'larger'} fontWeight={'bold'} >USERNAME</Text>
-                     <Text mt={'15px'} mb={'15px'} color={'black'}  fontSize={'larger'} fontWeight={'bold'} >USERNAME</Text> */}
+                    
                       </>
                       }
                       {!selectedrequest && 
