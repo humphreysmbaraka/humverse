@@ -88,6 +88,7 @@ const conn =  mongoose.createConnection(process.env.ATLAS_CONNECTION_STRING);
 let requestbucket;
 let profilepicturesbucket;
 let aidocsbucket;
+let previewbucket;
 
 conn.once('open' , function(){
   requestbucket = new GridFSBucket(conn.db , {
@@ -103,6 +104,12 @@ conn.once('open' , function(){
 
   aidocsbucket = new GridFSBucket(conn.db , {
     bucketName:'assistant_docs',
+    chunkSizeBytes:1048576
+  })
+
+
+  previewbucket = new GridFSBucket(conn.db , {
+    bucketName:'previews',
     chunkSizeBytes:1048576
   })
 })
@@ -1536,7 +1543,7 @@ router.post('/upload_to_ai' , hybrid_file_uploader.fields([{name:'docs' , maxCou
     let uploads;
     const AIinstance = await Ai.findOne({});
     if(!AIinstance){
-      console.log('AI instance not sye up')
+      console.log('AI instance not set up')
       return res.status(404).json({error:true , message:'AI instance not set up yet'});
     }
 
@@ -1832,16 +1839,185 @@ await user_acc.save();
 
 
 
+router.get('/stream_request_file/:id' , async function(req , res){
+  try{
+    const id = req.params.id;
+    const downloadstream = requestbucket.openDownloadStream(new ObjectId(id));
+    downloadstream.on('error' , function(err){
+          console.log('error streaming file' , err);
+          return res.status(500).json({error:true , message:'error occured when streaming file' , message:err})
+
+    })
+
+    downloadstream.on('finish' , function(){
+      console.log('successfully streamed file')
+    })
+    res.set({
+      'Content-Type': file.metadata.type || 'application/octet-stream',
+      'Content-Disposition': `inline; filename="${file.filename}"`
+    });
+
+    downloadstream.pipe(res);
+  }
+  catch(err){
+    console.log('error during streaming file' , err);
+    return res.status(500).json({error:true , message:'server error' , problem:err})
+  }
+})
+
+
+router.get('/get_request_file_info/:id' , async function(req , res){
+    try{
+       const id = req.params.id;
+       const files = await requestbucket.find({_id:new ObjectId(id)}).toArray();
+       if(!files || files.length == 0){
+        console.log('no such file exists');
+        return res.status(400).json({error:true , message:'no such file exists'});
+       }
+       else{
+        const file = files[0];
+        const info = file.metadata;
+        return res.status(200).json({error:false , info:info})
+
+       }
+    }
+    catch(err){
+      console.log('error occured getting request file info' , err);
+      return res.status(500).json({error:true , message:'server error occured when streaming file' , problem:err})
+    }
+})
 
 
 
 
+router.post('/send_preview' , file_uploader.array('files' , maxCount(20)) , async function(req , res){
+  try{
+     const {id , user_id } = req.body;
+     const previews = req.files;
+     const request = await Request.findOne({_id:new ObjectId(id)});
+     if(!request){
+      console.log('no such request was found');
+    return res.status(400).json({error:true , message:'no such request was found'});
+     }
+
+     if(!files || files.length ===0){
+      console.log('no files attached to the request');
+      return res.status(400).json({error:true , message:'no files attached to the request'});
+
+     }
+
+     else{
+      console.log('uploading previews...')
+      const uploads = files.map(function(val , index){
+        return new Promise(async function(resolve , reject){
+              const name = val.originalname;
+              const path = val.path;
+              const size = val.size;
+              const type = val.mimetype;
+
+              const readstream = fs.createReadStream(path);
+              const uploadstream = previewbucket.openUploadStream(name , {
+                metadata:{
+                  name , size , type
+                }
+              });
+
+              readstream.pipe(uploadstream);
+
+              uploadstream.on('error' , function(err){
+                console.log('error uploading file' , err);
+                reject(err);
+
+                fs.unlink(path , function(err){
+                  if(err){
+                    console.log('errror unlinking file');
+                  }
+                  else{
+                    console.log('unlinked file successfully');
+                  }
+                })
+              })
+
+              uploadstream.on('finish' , function(){
+                console.log('uploaded preview successfully');
+                resolve(uploadstream.id);
+
+                fs.unlink(path , function(err){
+                  if(err){
+                    console.log('errror unlinking file');
+                  }
+                  else{
+                    console.log('unlinked file successfully');
+                  }
+                })
+              })
+        })
+      })
+
+      const uploadpreviews = await Promise.all(uploads);
+      const prevs = request.previews;
+      const newprevs = [...prevs , ...uploadpreviews];
+      request.previews = newprevs;
+      await request.save();
+      console.log('previews sent successfully')
+      return res.status(200).json({error:false , message:'previews sent successfully'});
+
+     }
+  }
+  catch(err){
+    console.lod('error sending previews' , err);
+    return res.status(500).json({error:true , error:err});
+  }
+} )
 
 
 
+router.get('/stream_preview/:id' , async function(req , res){
+        const id = req.params.id;
+        const files = await previewbucket.find({_id:new ObjectId(id)}).toArray();
+        if(files.length == 0 || !files){
+          console.log('no such file exists');
+          return res.status(400).json({error:true , message:'no such file exists'});
+        }
+
+        const file = files[0];
+        res.set({
+          'Content-Type': file.metadata.type || 'application/octet-stream',
+          'Content-Disposition': `inline; filename="${file.filename}"`
+        });
+      
+        const downstream = previewbucket.openDownloadStream(id);
+     
+        downstream.on('error', (err) => {
+         console.error('Error while streaming:', err);
+       
+           res.status(500).end('Error while streaming file');
+       
+       });
+     
+       downstream.on('end', () => {
+         console.log('✅ Successfully streamed file:', file.filename);
+       });
+        downstream.pipe(res);
+})
 
 
-
+router.get('/get_preview_info/:id' , async function(req , res){
+  try{
+     const id = req.params.id;
+     const files = await previewbucket.find({_id:new ObjectId(id)}).toArray();
+     if(files.length == 0 || !files){
+      console.log('no such file found');
+      return res.status(400).json({error:true , message:'file does not exist'});
+     }
+     const file = files[0];
+     return res.status(200).json({error:false , file:file});
+  }
+  catch(err){
+    console.log('error getting preview info' , err);
+    return res.status(500).json({error:true , message:'error getting preview info'});
+  }
+})
 
 
 

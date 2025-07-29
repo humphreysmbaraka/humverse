@@ -415,8 +415,8 @@ function View_Product() {
                    </VStack>
                   </HStack>
                </HStack>
-               <Text fontSize={'medium'} color={'white'} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'}  >status :{(!product.accepted && !product.initiated && !product.cancelled && !product.rejected)?'not yet accepted':(product.accepted && !product.initiated && !product.cancelled && !product.rejected)?'accepted':(product.rejected)?'rejected':(product.cancelled)?'cancelled':(product.accepted && product.initiated && !product.cancelled && ! product.rejected)?'initiated':''}</Text>
-               <Text fontSize={'medium'} color={'orange'} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'}  >{initiationerror}</Text>
+               <Text fontSize={'medium'} color={'black'} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'}  >status :{(!product.accepted && !product.initiated && !product.cancelled && !product.rejected)?'not yet accepted':(product.accepted && !product.initiated && !product.cancelled && !product.rejected)?'accepted':(product.rejected)?'rejected':(product.cancelled)?'cancelled':(product.accepted && product.initiated && !product.cancelled && ! product.rejected)?'initiated':''}</Text>
+               {/* <Text fontSize={'medium'} color={'orange'} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'}  >{initiationerror}</Text> */}
   
                <HStack width={'98%'} p={'3px'}   >
                 {(product.accepted && !product.initiated && !product.rejected && !product.cancelled) &&
