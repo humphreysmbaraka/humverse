@@ -157,6 +157,10 @@ function New_Requests() {
             }
         }
 
+        fetchattachmentsinfo();
+        fetchpreviewsinfo();
+
+
     } , [selectedrequest])
 
     const detatchfile = async function(itemindex){
@@ -729,53 +733,7 @@ const rejectrequest = async function(){
                      }
                                 </HStack>
 
-                                {/* <Text  fontSize={'x-large'} color={'white'}  >PAYMENT DETAILS</Text> */}
-
-                                {/* <Text>costs of service</Text> */}
-
-                                {/* <Text mt={'10px'} mb={'5px'} color={'white'}  fontWeight={'light'} >COST OF MAKING
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.payments.payments_required.making_cost}</Text>
-                     </Text>
-
-                     <Text mt={'10px'} mb={'5px'} color={'white'}  fontWeight={'light'} >COST OF DEPLOYING
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.payments.payments_required.deploying_cost}</Text>
-                     </Text>
-
-                     <Text mt={'10px'} mb={'5px'} color={'white'}  fontWeight={'light'} >COST OF DOMAIN NAME
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.payments.payments_required.domain_name_cost}</Text>
-                     </Text>
-
-                     <Text mt={'10px'} mb={'5px'} color={'white'}  fontWeight={'light'} >HOSTING FEE
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.payments.payments_required.hosting_cost}</Text>
-                     </Text>
-
-                     <Text mt={'10px'} mb={'5px'} color={'white'}  fontWeight={'light'} >MAINTAINANCE FEE
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.payments.payments_required.maintainance_cost}</Text>
-                     </Text>
-
-                    
-
-
-                     <Text mt={'10px'} mb={'5px'} color={'white'}  fontWeight={'light'} >TOTAL COST
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.payments.total_payment_required}</Text>
-                     </Text>
-
-                     <Text mt={'10px'} mb={'5px'} color={'white'}  fontWeight={'light'} >DEPOSIT REQUIRED
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.payments.deposit_required}</Text>
-                     </Text>
-
-                     <Text mt={'10px'} mb={'5px'} color={'white'}  fontWeight={'light'} >TOTAL PAID
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.payments.total_paid}</Text>
-                     </Text>
-
-
-                     <Text mt={'10px'} mb={'5px'} color={'white'}  fontWeight={'light'} >AMOUNT REMAINING
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.payments.amount_remaining}</Text>
-                     </Text> */}
-
-                     
-                     {/* <Text mt={'15px'} mb={'15px'} color={'black'}  fontSize={'larger'} fontWeight={'bold'} >USERNAME</Text>
-                     <Text mt={'15px'} mb={'15px'} color={'black'}  fontSize={'larger'} fontWeight={'bold'} >USERNAME</Text> */}
+                               
                       </>
                       }
 
