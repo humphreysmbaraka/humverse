@@ -740,7 +740,7 @@ const rejectrequest = async function(){
                    {selectedrequest&&(selectedrequest.accepted&&!selectedrequest.initiated&&!selectedrequest.cancelled&&!selectedrequest.rejected) && 
                      <>
                      <Box zIndex={100} backgroundColor={'transparent'} opacity={1} width={'100%'} height={'100%'} position={'absolute'} display={'flex'} alignItems={'center'} justifyContent={'center'}  > 
-                       <Text color={'green.500'} fontSize={'xx-large'} >PENDING INITIATION</Text>
+                       <Text color={'green.800'} fontSize={'xxx-large'} >PENDING INITIATION</Text>
                      </Box>
                      {/* <Text color={'green.500'}  fontSize={'x-large'}  >NEW REQUEST</Text> */}
                      <Avatar mt={'10px'} width={'200px'}  height={'200px'} borderRadius={'50%'} display={'flex'} alignItems={'center'} justifyContent={'center'} p={0} src={selectedrequest.client.picture?`${BASE_URL}/profile_pic/${selectedrequest.client.picture}`:undefined} name={selectedrequest.client.username} />
@@ -947,28 +947,28 @@ const rejectrequest = async function(){
 
 {selectedrequest&&(selectedrequest.cancelled) && 
                      <>
-                     <Box zIndex={100} opacity={'0.6'} width={'100%'} height={'100%'}  position={'absolute'} display={'flex'} alignItems={'center'} justifyContent={'center'}  > 
-                       <Text color={'orange.500'} fontSize={'xx-large'} >THIS REQUEST WAS CANCELLED</Text>
+                     <Box zIndex={100} opacity={1} width={'100%'} height={'100%'}  position={'absolute'} display={'flex'} alignItems={'center'} justifyContent={'center'}  > 
+                       <Text color={'orange.800'} fontSize={'xxx-large'} >THIS REQUEST WAS CANCELLED</Text>
                      </Box>
                      {/* <Text color={'green.500'}  fontSize={'x-large'}  >NEW REQUEST</Text> */}
-                     <Avatar mt={'10px'} width={'200px'}  height={'200px'} borderRadius={'50%'} borderWidth={'3px'} display={'flex'} alignItems={'center'} justifyContent={'center'} p={0} src={selectedrequest.client.picture?`${BASE_URL}/profile_pic/${selectedrequest.client.picture}`:undefined} name={selectedrequest.client.username} borderColor={'purple'} />
-                     <Text mt={'10px'} mb={'5px'} color={'purple'}   fontWeight={'light'} >sent by
+                     <Avatar mt={'10px'} width={'200px'}  height={'200px'} borderRadius={'50%'} borderWidth={'3px'} display={'flex'} alignItems={'center'} justifyContent={'center'} p={0} src={selectedrequest.client.picture?`${BASE_URL}/profile_pic/${selectedrequest.client.picture}`:undefined} name={selectedrequest.client.username} borderColor={'orange'} />
+                     <Text mt={'10px'} mb={'5px'} color={'orange'}   fontWeight={'light'} >sent by
                      <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest.client.username}`}</Text>
                      </Text>
  
-                     <Text mt={'10px'} mb={'5px'} color={'purple'} fontWeight={'light'} >email
+                     <Text mt={'10px'} mb={'5px'} color={'orange'} fontWeight={'light'} >email
                      <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest.client.email} / ${selectedrequest.email}` }</Text>
                      </Text>
  
-                     <Text mt={'10px'} mb={'5px'} color={'purple'}   fontWeight={'light'} >phone number
+                     <Text mt={'10px'} mb={'5px'} color={'orange'}   fontWeight={'light'} >phone number
                      <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest.number}`}</Text>
                      </Text>
  
-                     <Text mt={'10px'} mb={'5px'} color={'purple'}   fontWeight={'light'} >USERNAME
+                     <Text mt={'10px'} mb={'5px'} color={'orange'}   fontWeight={'light'} >USERNAME
                      <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.client.username}</Text>
                      </Text>
  
-                     <Text mt={'10px'} mb={'5px'} color={'purple'}  fontWeight={'light'} >USERNAME
+                     <Text mt={'10px'} mb={'5px'} color={'orange'}  fontWeight={'light'} >USERNAME
                      <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.client.username}</Text>
                      </Text>
 
@@ -1053,28 +1053,28 @@ const rejectrequest = async function(){
 
 {selectedrequest&&(selectedrequest.rejected) && 
                      <>
-                     <Box zIndex={100} opacity={'0.6'} width={'100%'} height={'100%'} position={'absolute'} display={'flex'} alignItems={'center'} justifyContent={'center'}  > 
-                       <Text color={'red.500'} fontSize={'xx-large'} >THIS REQUEST WAS REJECTED</Text>
+                     <Box zIndex={100} opacity={1} width={'100%'} height={'100%'} position={'absolute'} display={'flex'} alignItems={'center'} justifyContent={'center'}  > 
+                       <Text color={'red.800'} fontSize={'xxx-large'} >THIS REQUEST WAS REJECTED</Text>
                      </Box>
                    
                      <Avatar mt={'10px'} width={'200px'}  height={'200px'} borderRadius={'50%'} borderWidth={'3px'} display={'flex'} alignItems={'center'} justifyContent={'center'} p={0} src={selectedrequest.client.picture?`${BASE_URL}/profile_pic/${selectedrequest.client.picture}`:undefined} name={selectedrequest.client.username} borderColor={'purple'} />
-                     <Text mt={'10px'} mb={'5px'} color={'purple'}   fontWeight={'light'} >sent by
+                     <Text mt={'10px'} mb={'5px'} color={'red'}   fontWeight={'light'} >sent by
                      <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest.client.username}`}</Text>
                      </Text>
  
-                     <Text mt={'10px'} mb={'5px'} color={'purple'} fontWeight={'light'} >email
+                     <Text mt={'10px'} mb={'5px'} color={'red'} fontWeight={'light'} >email
                      <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest.client.email} / ${selectedrequest.email}` }</Text>
                      </Text>
  
-                     <Text mt={'10px'} mb={'5px'} color={'purple'}   fontWeight={'light'} >phone number
+                     <Text mt={'10px'} mb={'5px'} color={'red'}   fontWeight={'light'} >phone number
                      <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest.number}`}</Text>
                      </Text>
  
-                     <Text mt={'10px'} mb={'5px'} color={'purple'}   fontWeight={'light'} >USERNAME
+                     <Text mt={'10px'} mb={'5px'} color={'red'}   fontWeight={'light'} >USERNAME
                      <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.client.username}</Text>
                      </Text>
  
-                     <Text mt={'10px'} mb={'5px'} color={'purple'}  fontWeight={'light'} >USERNAME
+                     <Text mt={'10px'} mb={'5px'} color={'red'}  fontWeight={'light'} >USERNAME
                      <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.client.username}</Text>
                      </Text>
 
