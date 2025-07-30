@@ -739,7 +739,7 @@ const rejectrequest = async function(){
 
                    {selectedrequest&&(selectedrequest.accepted&&!selectedrequest.initiated&&!selectedrequest.cancelled&&!selectedrequest.rejected) && 
                      <>
-                     <Box zIndex={100} opacity={'0.6'} width={'100%'} height={'100%'} position={'absolute'} display={'flex'} alignItems={'center'} justifyContent={'center'}  > 
+                     <Box zIndex={100} backgroundColor={'transparent'} opacity={1} width={'100%'} height={'100%'} position={'absolute'} display={'flex'} alignItems={'center'} justifyContent={'center'}  > 
                        <Text color={'green.500'} fontSize={'xx-large'} >PENDING INITIATION</Text>
                      </Box>
                      {/* <Text color={'green.500'}  fontSize={'x-large'}  >NEW REQUEST</Text> */}
