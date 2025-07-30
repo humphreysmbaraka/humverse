@@ -945,7 +945,7 @@ const rejectrequest = async function(){
                       }
 
 
-{selectedrequest&&(!selectedrequest.cancelled) && 
+{selectedrequest&&(selectedrequest.cancelled) && 
                      <>
                      <Box zIndex={100} opacity={'0.6'} width={'100%'} height={'100%'}  position={'absolute'} display={'flex'} alignItems={'center'} justifyContent={'center'}  > 
                        <Text color={'orange.500'} fontSize={'xx-large'} >THIS REQUEST WAS CANCELLED</Text>
@@ -1479,7 +1479,7 @@ const rejectrequest = async function(){
 
 
                       {/* FOR REJECTED REQUEST */}
-                      {(selectedrequest&&selectedrequest.cancelled)  &&  
+                      {(selectedrequest&&selectedrequest.rejected)  &&  
                      <>
 
                    
