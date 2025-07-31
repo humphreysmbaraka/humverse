@@ -1748,7 +1748,7 @@ const rejectrequest = async function(){
                      {editspecs  &&  
                      
                      <HStack justifyContent={'center'} width={'98%'} p={'2px'} gap={'20px'} mt={'20px'} >
-                     <Button  onClick={()=>{sendacceptance}} width={'27%'}  p={'5px'} borderRadius={'10px'} colorScheme='green' >EDIT  SPECS   {sendingacceptance && <Spinner color='white' width={'25px'} height={'25px'} />}</Button>
+                     <Button  onClick={sendacceptance} width={'27%'}  p={'5px'} borderRadius={'10px'} colorScheme='green' >EDIT  SPECS   {sendingacceptance && <Spinner color='white' width={'25px'} height={'25px'} />}</Button>
                      <Button onClick={()=>{seteditspecs(false)}} width={'27%'}  p={'5px'} borderRadius={'10px'} colorScheme='red' >EXIT EDIT</Button>
 
                   </HStack>
