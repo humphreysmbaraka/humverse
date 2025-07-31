@@ -168,10 +168,10 @@ const hhybid_multer_storage =   {
   }
 }
 
-const .array = multer({storage:temporary_diskstorage});
+const file_uploader = multer({storage:temporary_diskstorage});
 const ai_doc_uploader = multer({storage:ai_docs_storage});
 const memstorage = multer({storage:memstore});
-const hybrid_.array = multer({storage:hhybid_multer_storage});
+const hybrid_file_uploader = multer({storage:hhybid_multer_storage});
 
 const app = express();
 app.use(express.json());
@@ -180,7 +180,7 @@ const router = express.Router();
 
 
 
-router.post('/sign_up' , .array.single('picture') ,   async function(req , res){
+router.post('/sign_up' , file_uploader.single('picture') ,   async function(req , res){
   try{
     console.log('signing you up' , req.body , req.file);
   const {username , email , password} = req.body;
@@ -348,7 +348,7 @@ router.get('/profile_pic/:pic_id' , async function(req , res){
 
 
 
-router.post('/send_request' , .array.array('attachments' , 20) ,  async function(req , res){
+router.post('/send_request' , file_uploader.array('attachments' , 20) ,  async function(req , res){
   try{
   console.log('request received' , req.body , req.files);
   const {type , description , timeunit , timequantity , names , number , email , user} = req.body;
@@ -1158,7 +1158,7 @@ router.post('/callback', express.json(), async function(req, res){
 
 
 
-router.patch('/edit_request' , .array.array('attachments' , 20) ,  async function(req , res){
+router.patch('/edit_request' , file_uploader.array('attachments' , 20) ,  async function(req , res){
   try{
     
   console.log('EDITTING REQUEST RECEIVED' , req.body ,   'FILES' , req.files);
@@ -1533,7 +1533,7 @@ router.delete('/delete_ai_doc/:id' , async function(req , res){
 
 
 
-router.post('/upload_to_ai' , hybrid_.array.fields([{name:'docs' , maxCount:20}, {name:'docs_disk' , maxCount:20}]) ,  async function (req , res){
+router.post('/upload_to_ai' , hybrid_file_uploader.fields([{name:'docs' , maxCount:20}, {name:'docs_disk' , maxCount:20}]) ,  async function (req , res){
   try{
     const humverseindex = await index();
     console.log('FILES.....' , req.files);
@@ -1865,7 +1865,7 @@ router.get('/stream_request_file/:id' , async function(req , res){
   }
 })
 
-array
+
 router.get('/get_request_file_info/:id' , async function(req , res){
     try{
        const id = req.params.id;
@@ -1890,7 +1890,7 @@ router.get('/get_request_file_info/:id' , async function(req , res){
 
 
 
-router.post('/send_preview'  , async function(req , res){
+router.post('/send_preview' , async function(req , res){
   try{
      const {id , user_id } = req.body;
      const previews = req.files;
@@ -1972,7 +1972,7 @@ router.post('/send_preview'  , async function(req , res){
 
 
 
-router.get('/stream_preview/:id' ,  async function(req , res){
+router.get('/stream_preview/:id' , async function(req , res){
         const id = req.params.id;
         const files = await previewbucket.find({_id:new ObjectId(id)}).toArray();
         if(files.length == 0 || !files){
