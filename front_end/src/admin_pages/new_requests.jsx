@@ -537,7 +537,17 @@ const rejectrequest = async function(){
                    allreqs.map(function(val , index){
                       if(val.received){
                         return(
-                            <HStack onClick={()=>{setselectedrequest(val)}} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'whire'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
+                            <HStack onClick={()=>{setselectedrequest(function(prev){
+                                if(prev && prev._id !== val._id){
+                                 prev.selected = false;
+                                 val.selected = true;
+                                 return val;
+                                }
+                                else{
+                                 val.selected = true;
+                                 return val;
+                                }
+                             })}} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'whire'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
                             <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
                             <Text>{val.client.username}</Text>
                             <Text>{val.createdAt.slice(0 , 10)}</Text>
@@ -563,7 +573,17 @@ const rejectrequest = async function(){
                   allreqs.map(function(val , index){
                     if(val.accepted){
                         return(
-                            <HStack onClick={()=>{setselectedrequest(val)}} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'whire'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
+                            <HStack onClick={()=>{setselectedrequest(function(prev){
+                                if(prev && prev._id !== val._id){
+                                 prev.selected = false;
+                                 val.selected = true;
+                                 return val;
+                                }
+                                else{
+                                 val.selected = true;
+                                 return val;
+                                }
+                             })}} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'whire'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
                                 <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
                                 <Text>{val.client.username}</Text>
                                 <Text>{val.createdAt.slice(0 , 10)}</Text>
@@ -590,7 +610,17 @@ const rejectrequest = async function(){
                   allreqs.map(function(val , index){
                     if(val.rejected){
                         return(
-                            <HStack  onClick={()=>{setselectedrequest(val)}} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'whire'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
+                            <HStack  onClick={()=>{setselectedrequest(function(prev){
+                                if(prev && prev._id !== val._id){
+                                 prev.selected = false;
+                                 val.selected = true;
+                                 return val;
+                                }
+                                else{
+                                 val.selected = true;
+                                 return val;
+                                }
+                             })}} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'whire'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
                                 <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
                                 <Text>{val.client.username}</Text>
                                 <Text>{val.createdAt.slice(0 , 10)}</Text>
@@ -617,7 +647,17 @@ const rejectrequest = async function(){
                   allreqs.map(function(val , index){
                     if(val.initiated){
                         return(
-                            <HStack onClick={()=>{setselectedrequest(val)}} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'whire'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
+                            <HStack onClick={()=>{setselectedrequest(function(prev){
+                                if(prev && prev._id !== val._id){
+                                 prev.selected = false;
+                                 val.selected = true;
+                                 return val;
+                                }
+                                else{
+                                 val.selected = true;
+                                 return val;
+                                }
+                             })}} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'whire'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
                                 <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
                                 <Text>{val.client.username}</Text>
                                 <Text>{val.createdAt.slice(0 , 10)}</Text>
@@ -644,7 +684,17 @@ const rejectrequest = async function(){
                     
                     if(val.cancelled){
                         return(
-                            <HStack onClick={()=>{setselectedrequest(val)}} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'whire'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
+                            <HStack onClick={()=>{setselectedrequest(function(prev){
+                                if(prev && prev._id !== val._id){
+                                 prev.selected = false;
+                                 val.selected = true;
+                                 return val;
+                                }
+                                else{
+                                 val.selected = true;
+                                 return val;
+                                }
+                             })}} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'whire'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
                                 <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
                                 <Text>{val.client.username}</Text>
                                 <Text>{val.createdAt.slice(0 , 10)}</Text>
@@ -754,7 +804,7 @@ const rejectrequest = async function(){
                          return(
                              <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_request_file/${val._id}` ,  '_blank')}} key={index} as='button' height={'100px'} width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
                              <PiFilePdf    size={'80px'} borderRadius={'10px'}  color='red'    />
-                             <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.name}</Text>
+                             <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.metadata.name}</Text>
                           </VStack>
                          )
                      })
@@ -811,7 +861,7 @@ const rejectrequest = async function(){
                          return(
                              <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_request_file/${val._id}` ,  '_blank')}} key={index} as='button' height={'100px'} width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
                              <PiFilePdf    size={'80px'} borderRadius={'10px'}  color='red'    />
-                             <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.name}</Text>
+                             <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.metadata.name}</Text>
                           </VStack>
                          )
                      })
@@ -915,7 +965,7 @@ const rejectrequest = async function(){
                          return(
                              <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_request_file/${val._id}` ,  '_blank')}} key={index} as='button' height={'100px'} width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
                              <PiFilePdf    size={'80px'} borderRadius={'10px'}  color='red'    />
-                             <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.name}</Text>
+                             <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.metadata.name}</Text>
                           </VStack>
                          )
                      })
@@ -1019,7 +1069,7 @@ const rejectrequest = async function(){
                          return(
                              <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_request_file/${val._id}` ,  '_blank')}} key={index} as='button' height={'100px'} width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
                              <PiFilePdf    size={'80px'} borderRadius={'10px'}  color='red'    />
-                             <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.name}</Text>
+                             <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.metadata.name}</Text>
                           </VStack>
                          )
                      })
@@ -1125,7 +1175,7 @@ const rejectrequest = async function(){
                          return(
                              <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_request_file/${val._id}` ,  '_blank')}} key={index} as='button' height={'100px'} width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
                              <PiFilePdf    size={'80px'} borderRadius={'10px'}  color='red'    />
-                             <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.name}</Text>
+                             <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.metadata.name}</Text>
                           </VStack>
                          )
                      })

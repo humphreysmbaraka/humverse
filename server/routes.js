@@ -1876,7 +1876,7 @@ router.get('/get_request_file_info/:id' , async function(req , res){
        }
        else{
         const file = files[0];
-        const info = file.metadata;
+        const info = file;
         return res.status(200).json({error:false , info:info})
 
        }
