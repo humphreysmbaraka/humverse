@@ -92,16 +92,18 @@ function New_Requests() {
 
                     })
                  })
+
+                 const reqinfos = await  Promise.all(infos);
+                 console.log('attachment infos' , reqinfos);
+                 setattachmentinfos(reqinfos);
+              //    return Promise.all(infos);
+  
                }
                else{
                  console.log('no attachments in the request');
                }
 
-               const reqinfos = await  Promise.all(infos);
-               console.log('attachment infos' , reqinfos);
-               setattachmentinfos(reqinfos);
-            //    return Promise.all(infos);
-
+              
             }
             catch(err){
                 console.log('cannot fetch attachment info' , err);
@@ -150,16 +152,18 @@ function New_Requests() {
 
                     })
                  })
+
+                 const reqinfos = await  Promise.all(infos);
+                 console.log('preview  infos' , reqinfos)
+                 setattachmentinfos(reqinfos);
+              //    return Promise.all(infos);
+  
                }
                else{
                    console.log('no previews in request');
                }
 
-               const reqinfos = await  Promise.all(infos);
-               console.log('preview  infos' , reqinfos)
-               setattachmentinfos(reqinfos);
-            //    return Promise.all(infos);
-
+              
             }
             catch(err){
                 console.log('cannot fetch previews info' , err);
