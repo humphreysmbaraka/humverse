@@ -73,6 +73,7 @@ function New_Requests() {
                         if(fileinfo.ok){
                           const details = await fileinfo.json();
                           info = details.info
+                          console.log('attachment file info' , info);
                           msg = null;
                           resolve(info);
                         }
@@ -80,6 +81,7 @@ function New_Requests() {
                             const details = await fileinfo.json();
                             if(String(fileinfo.status).startsWith('4')){
                                 msg = details.message;
+                                console.log('error message' , msg);
                                 info = null;
                                 reject(msg);
                             }
