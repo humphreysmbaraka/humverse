@@ -94,7 +94,7 @@ function New_Requests() {
                  })
                }
                else{
-
+                 console.log('no attachments in the request');
                }
 
                const reqinfos = await  Promise.all(infos);
@@ -104,7 +104,7 @@ function New_Requests() {
 
             }
             catch(err){
-                console.log('cannot fetch attachment info')
+                console.log('cannot fetch attachment info' , err);
             }
         }
 
@@ -152,7 +152,7 @@ function New_Requests() {
                  })
                }
                else{
-
+                   console.log('no previews in request');
                }
 
                const reqinfos = await  Promise.all(infos);
@@ -162,7 +162,7 @@ function New_Requests() {
 
             }
             catch(err){
-                console.log('cannot fetch attachment info')
+                console.log('cannot fetch previews info' , err);
             }
         }
 
