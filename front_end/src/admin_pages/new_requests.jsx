@@ -1104,48 +1104,6 @@ const rejectrequest = async function(){
                      }
                                 </HStack>
 
-                                {/* <Text  fontSize={'x-large'} color={'white'}  >PAYMENT DETAILS</Text>
-
-
-                                <Text mt={'10px'} mb={'5px'} color={'white'}  fontWeight={'light'} >COST OF MAKING
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.payments.payments_required.making_cost}</Text>
-                     </Text>
-
-                     <Text mt={'10px'} mb={'5px'} color={'white'}  fontWeight={'light'} >COST OF DEPLOYING
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.payments.payments_required.deploying_cost}</Text>
-                     </Text>
-
-                     <Text mt={'10px'} mb={'5px'} color={'white'}  fontWeight={'light'} >COST OF DOMAIN NAME
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.payments.payments_required.domain_name_cost}</Text>
-                     </Text>
-
-                     <Text mt={'10px'} mb={'5px'} color={'white'}  fontWeight={'light'} >HOSTING FEE
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.payments.payments_required.hosting_cost}</Text>
-                     </Text>
-
-                     <Text mt={'10px'} mb={'5px'} color={'white'}  fontWeight={'light'} >MAINTAINANCE FEE
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.payments.payments_required.maintainance_cost}</Text>
-                     </Text>
-
-                    
-
-
-                     <Text mt={'10px'} mb={'5px'} color={'white'}  fontWeight={'light'} >TOTAL COST
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.payments.total_payment_required}</Text>
-                     </Text>
-
-                     <Text mt={'10px'} mb={'5px'} color={'white'}  fontWeight={'light'} >DEPOSIT REQUIRED
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.payments.deposit_required}</Text>
-                     </Text>
-
-                     <Text mt={'10px'} mb={'5px'} color={'white'}  fontWeight={'light'} >TOTAL PAID
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.payments.total_paid}</Text>
-                     </Text>
-
-
-                     <Text mt={'10px'} mb={'5px'} color={'white'}  fontWeight={'light'} >AMOUNT REMAINING
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.payments.amount_remaining}</Text>
-                     </Text> */}
 
                      
                     
@@ -1158,7 +1116,9 @@ const rejectrequest = async function(){
 
                     <TabPanel display={'flex'}  flexDirection={'column'} alignItems={'center'} width={'98%'} p={'2px'} >
 
-                    {(selectedrequest&&!selectedrequest.accepted && !selectedrequest.initiated && !selectedrequest.cancelled && !selectedrequest.rejected)  &&  
+
+                              {/* FOR PENDING INITIATION */}
+                    {(selectedrequest&&selectedrequest.accepted&&!selectedrequest.initiated&&!selectedrequest.cancelled&&!selectedrequest.rejected)&&  
                      <>
 
                    
@@ -1583,43 +1543,7 @@ const rejectrequest = async function(){
                       }
 
 
-                      {/* FOR A NEW REQUEST , NOT YET ACCEPTED */}
-                      
                      
-                      {(selectedrequest&&!selectedrequest.accepted && !selectedrequest.initiated && !selectedrequest.cancelled && !selectedrequest.rejected)  &&  
-                     <>
-
-                   
-
-
-                     <VStack  width={'98%'} minHeight={'600PX'} p={'4px'}  alignItems={'center'} justifyContent={'center'} position={'relative'} >
-                        {/* <Text color={'white'} fontWeight={'bold'} >THIS REQUEST IS ALREADY INITIATED</Text> */}
-                         <Box zIndex={100} bg={'gray.800'} position={'absolute'} width={'100%'} height={'100%'} display={'flex'} alignItems={'center'} justifyContent={'center'} >
-                                 <Text  color={'green'} fontWeight={'bold'} fontSize={'xxx-large'} >THIS REQUEST IS NEW</Text>
-                         </Box>
-
-
-                       
-
-                
-                       
-
-
-
-
-                       
-
-                     </VStack>
-
-
-                     
-
-                   
-
-                     
-                    
-                      </>
-                      }
 
 
                       {!selectedrequest && 
@@ -1632,10 +1556,10 @@ const rejectrequest = async function(){
                     <TabPanel display={'flex'}  flexDirection={'column'} alignItems={'center'} width={'98%'} p={'2px'} >
 
                
-                    {(selectedrequest&&!selectedrequest.received && !selectedrequest.initiated && ! selectedrequest.cancelled && !selectedrequest.rejected)  &&  
+                    {(selectedrequest&&!selectedrequest.accepted && !selectedrequest.initiated && ! selectedrequest.cancelled && !selectedrequest.rejected)  &&  
                      <>
 
-                     <Box  width={'90%'} minHeight={'70%'}  display={'flex'} alignItems={'center'} justifyContent={'center'} >
+                     <Box  width={'100%'}  height={'100%'}  display={'flex'} alignItems={'center'} justifyContent={'center'} >
                         <Text color={'green'} fontSize={'xx-large'} >THIS REQUEST IS NEW</Text>
                      </Box>
 
@@ -1645,6 +1569,23 @@ const rejectrequest = async function(){
                       </>
                       }
 
+
+                      {/* ACCEPTED BUT NOT INITIATED */}
+
+
+
+                      {(selectedrequest&&selectedrequest.accepted && !selectedrequest.initiated && ! selectedrequest.cancelled && !selectedrequest.rejected)  &&  
+                     <>
+
+                     <Box  width={'90%'} minHeight={'70%'}  display={'flex'} alignItems={'center'} justifyContent={'center'} >
+                        <Text color={'green'} fontSize={'xx-large'} >PENDING INITIATION</Text>
+                     </Box>
+
+                   
+
+                    
+                      </>
+                      }
 
 
 
