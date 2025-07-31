@@ -42,16 +42,22 @@ function New_Requests() {
     const [timecompensation , settimecompensation] = useState(null);
     const [attachmentinfos , setattachmentinfos] = useState([]);
     const [previewsinfos , setpreviewsinfos] = useState([]);
+    const [editrequesterror , seteditrequesterror] = useState(null);
     // const location = useLocation();
     // const reqs = location.state.requests;
 
   
 
+
+
+
+
     useEffect(function(){
         const fetchattachmentsinfo = async function(){
+            console.log('fetching attachments');
             try{
                if(selectedrequest.attachments.length > 0){
-
+                 console.log('attachments' , selectedrequest.attachments);
                  const infos = selectedrequest.attachments.map(function(val , index){
                     return new Promise(async function(resolve , reject){
 
@@ -92,8 +98,9 @@ function New_Requests() {
                }
 
                const reqinfos = await  Promise.all(infos);
+               console.log('attachment infos' , reqinfos);
                setattachmentinfos(reqinfos);
-               return Promise.all(infos);
+            //    return Promise.all(infos);
 
             }
             catch(err){
@@ -106,8 +113,9 @@ function New_Requests() {
 
         const fetchpreviewsinfo = async function(){
             try{
+                console.log('fetching previews');
                if(selectedrequest.previews.length > 0){
-
+                 console.log('previews , ' , selectedrequest.previews)
                  const infos = selectedrequest.previews.map(function(val , index){
                     return new Promise(async function(resolve , reject){
 
@@ -148,8 +156,9 @@ function New_Requests() {
                }
 
                const reqinfos = await  Promise.all(infos);
+               console.log('preview  infos' , reqinfos)
                setattachmentinfos(reqinfos);
-               return Promise.all(infos);
+            //    return Promise.all(infos);
 
             }
             catch(err){
@@ -340,6 +349,7 @@ const sendacceptance = async function(){
             return;
         }
         setacceptanceerror(null);
+        seteditrequesterror(null);
        if(sendingacceptance){
         //  console.log('sending..' , sendingacceptance);
          
@@ -347,7 +357,7 @@ const sendacceptance = async function(){
        else{
         setsendingacceptance(true);
         if(!makingcost || makingcost.trim()==''  || !deploymentcost || deploymentcost.trim()=='' || !hostingcost || hostingcost.trim()==''  ||  !currency || currency.trim()==''  ||   !maintainance || maintainance.trim()=='' || !domainnamecost || domainnamecost.trim() =='' ){
-          setacceptanceerror('wrong or missing parameters , check your inputs');
+          editspecs?seteditrequesterror('wrong or missing parameters'):setacceptanceerror('wrong or missing parameters , check your inputs');
         }
         else{
             const acceptance = await fetch(`${BASE_URL}/accept_request` , {
@@ -363,6 +373,8 @@ const sendacceptance = async function(){
                 setsendingacceptance(false);
                 seteditspecs(false);
                 setacceptanceerror(false);
+                seteditrequesterror(null)
+                // seteditrequesterror(null);
                 console.log('acceptance sent successfully');
                 const acceptdata = await acceptance.json();
                 setdeploymentcost(null);
@@ -370,6 +382,7 @@ const sendacceptance = async function(){
                 setmakingcost(null);
                 setmaintainance(null);
                 setrejectionreason(null);
+                setcurrency(null);
             }
             else{
                 setsendingacceptance(false);
@@ -377,21 +390,25 @@ const sendacceptance = async function(){
                 if(String(acceptance.status).startsWith('4')){
                     const acceptdata = await acceptance.json();
                     setacceptanceerror(acceptdata.message);
+                    seteditrequesterror(acceptdata.message)
                     setdeploymentcost(null);
                     sethostingcost(null);
                     setmakingcost(null);
                     setmaintainance(null);
                     setrejectionreason(null);
+                    setcurrency(null)
                 }
                 else{
                     seteditspecs(false);
                       setsendingacceptance(false);
                       setacceptanceerror('server error');
+                      seteditrequesterror('server error')
                       setdeploymentcost(null);
                       sethostingcost(null);
                       setmakingcost(null);
                       setmaintainance(null);
                       setrejectionreason(null);
+                      setcurrency(null);
                 }
             }
         }
@@ -403,7 +420,7 @@ const sendacceptance = async function(){
     catch(err){
         seteditspecs(false);
         console.log('error sending request acceptance' , err);
-        setacceptanceerror('error sending acceptance');
+        editspecs?seteditrequesterror('could not do an edit'):setacceptanceerror('error sending acceptance');
     }
 }
 
@@ -1253,6 +1270,20 @@ const rejectrequest = async function(){
                             <Input value={selectedrequest.payments.status} readOnly={true} width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}        />
                         </HStack>
 
+                        <Text textAlign={'left'} alignSelf={'flex-start'} color={'white'}  >TOTAL PAID</Text>
+                        <HStack width={'95%'} gap={'10px'} p={'4px'} >
+                            <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'} >amount</Text>
+                            <Input value={selectedrequest.payments.total_paid} readOnly={true} width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}        />
+                        </HStack>
+
+
+                        <Text textAlign={'left'} alignSelf={'flex-start'} color={'white'}  >AMOUNT REMAINING</Text>
+                        <HStack width={'95%'} gap={'10px'} p={'4px'} >
+                            <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'} >amount</Text>
+                            <Input value={selectedrequest.payments.amount_remaining} readOnly={true} width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}        />
+                        </HStack>
+
+
 
                 
                         <HStack width={'95%'} gap={'10px'} p={'4px'} >
@@ -1297,7 +1328,7 @@ const rejectrequest = async function(){
                         </HStack>
 
 
-                        <Text textAlign={'left'} alignSelf={'flex-start'} color={'white'}  >TOTAL COST</Text>
+                        {/* <Text textAlign={'left'} alignSelf={'flex-start'} color={'white'}  >TOTAL COST</Text>
                         <HStack width={'95%'} gap={'10px'} p={'4px'} >
                             <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'} >amount</Text>
                             <Input value={selectedrequest.payments.total_payment_required} readOnly={true} width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}        />
@@ -1308,27 +1339,15 @@ const rejectrequest = async function(){
                         <HStack width={'95%'} gap={'10px'} p={'4px'} >
                             <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'} >amount</Text>
                             <Input value={selectedrequest.payments.deposit_required} readOnly={true} width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}        />
-                        </HStack>
+                        </HStack> */}
 
 
-                        <Text textAlign={'left'} alignSelf={'flex-start'} color={'white'}  >TOTAL PAID</Text>
-                        <HStack width={'95%'} gap={'10px'} p={'4px'} >
-                            <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'} >amount</Text>
-                            <Input value={selectedrequest.payments.total_paid} readOnly={true} width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}        />
-                        </HStack>
-
-
-                        <Text textAlign={'left'} alignSelf={'flex-start'} color={'white'}  >AMOUNT REMAINING</Text>
-                        <HStack width={'95%'} gap={'10px'} p={'4px'} >
-                            <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'} >amount</Text>
-                            <Input value={selectedrequest.payments.amount_remaining} readOnly={true} width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}        />
-                        </HStack>
-
+                       
 
                      </VStack>
 
 
-                     
+                      
 
                    
 
@@ -1563,7 +1582,7 @@ const rejectrequest = async function(){
 
                     <TabPanel display={'flex'}  flexDirection={'column'} alignItems={'center'} width={'98%'} p={'2px'} >
 
-               
+                   {/* NEW REQUEST */}
                     {(selectedrequest&&!selectedrequest.accepted && !selectedrequest.initiated && ! selectedrequest.cancelled && !selectedrequest.rejected)  &&  
                      <>
 
@@ -1609,7 +1628,7 @@ const rejectrequest = async function(){
                         
                         <HStack width={'95%'} gap={'10px'} p={'4px'} >
                             <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'} >currency</Text>
-                            <Select value={selectedrequest.currency} readOnly={editspecs?false:true} onChange={!editspecs?()=>{}:(e)=>{setcurrency(e.target.value)}}  width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}        >
+                            <Select value={editspecs?currency:selectedrequest.currency} readOnly={editspecs?false:true} onChange={!editspecs?()=>{}:(e)=>{setcurrency(e.target.value)}}  width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}        >
                                 <option value='KSH' >KSH</option>
                                 <option value='USD' >USD</option>
                             </Select>
@@ -1619,19 +1638,19 @@ const rejectrequest = async function(){
                         <Text textAlign={'left'} alignSelf={'flex-start'} color={'white'}  >COST OF MAKING</Text>
                         <HStack width={'95%'} gap={'10px'} p={'4px'} >
                             <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'} >amount</Text>
-                            <Input value={selectedrequest.payments.payments_required.making_cost} readOnly={editspecs?false:true} onChange={!editspecs?()=>{}:(e)=>{setmakingcost(e.target.value)}}  width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}        />
+                            <Input value={editspecs?makingcost:selectedrequest.payments.payments_required.making_cost} readOnly={editspecs?false:true} onChange={!editspecs?()=>{}:(e)=>{setmakingcost(e.target.value)}}  width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}        />
                         </HStack>
 
                     
                         <Text  textAlign={'left'} alignSelf={'flex-start'} color={'white'} >COSTS ON DEPLOYMENT</Text>
                         <HStack   width={'95%'} gap={'10px'} p={'4px'}>
                             <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'}>Deployment cost</Text>
-                            <Input value={selectedrequest.payments.payments_required.deploying_cost} readOnly={editspecs?false:true} onChange={!editspecs?()=>{}:(e)=>{setdeploymentcost(e.target.value)}}  width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
+                            <Input value={editspecs?deploymentcost:selectedrequest.payments.payments_required.deploying_cost} readOnly={editspecs?false:true} onChange={!editspecs?()=>{}:(e)=>{setdeploymentcost(e.target.value)}}  width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
                         </HStack>
 
                         <HStack   width={'95%'} gap={'10px'} p={'4px'}>
                             <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'}>Domain name fee</Text>
-                            <Input value={selectedrequest.payments.payments_required.deploying_cost} readOnly={editspecs?false:true} onChange={!editspecs?()=>{}:(e)=>{setdomainnamecost(e.target.value)}}  width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
+                            <Input value={editspecs?domainnamecost:selectedrequest.payments.payments_required.deploying_cost} readOnly={editspecs?false:true} onChange={!editspecs?()=>{}:(e)=>{setdomainnamecost(e.target.value)}}  width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
                         </HStack>
 
 
@@ -1639,22 +1658,19 @@ const rejectrequest = async function(){
                         <Text  textAlign={'left'} alignSelf={'flex-start'} color={'white'} >COSTS OF HOSTING</Text>
                         <HStack   width={'95%'} gap={'10px'} p={'4px'}>
                             <Text width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'}  >amount</Text>
-                            <Input value={selectedrequest
-                                
-                                
-                                .payments.payments_required.hosting_cost}  readOnly={editspecs?false:true} onChange={!editspecs?()=>{}:(e)=>{sethostingcost(e.target.value)}}  width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
+                            <Input value={editspecs?hostingcost:selectedrequest.payments.payments_required.hosting_cost}  readOnly={editspecs?false:true} onChange={!editspecs?()=>{}:(e)=>{sethostingcost(e.target.value)}}  width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
                         </HStack>
 
                         <Text textAlign={'left'} alignSelf={'flex-start'} color={'white'}  >MAINTAINANCE</Text>
                         <HStack width={'95%'} gap={'10px'} p={'4px'} >
                             <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'} >amount</Text>
-                            <Input value={selectedrequest.payments.payments_required.maintainance_cost} readOnly={editspecs?false:true} onChange={!editspecs?()=>{}:(e)=>{setmaintainance(e.target.value)}}  width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}        />
+                            <Input value={editspecs?maintainance:selectedrequest.payments.payments_required.maintainance_cost} readOnly={editspecs?false:true} onChange={!editspecs?()=>{}:(e)=>{setmaintainance(e.target.value)}}  width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}        />
                         </HStack>
                      
 
                      {
-                    acceptanceerror &&  
-                    <Text color={'red'}  fontWeight={'light'} fontSize={'large'} >{acceptanceerror}</Text>
+                    editrequesterror &&  
+                    <Text color={'red'}  fontWeight={'light'} fontSize={'large'} >{editrequesterror}</Text>
                  }
 
 
@@ -1663,11 +1679,14 @@ const rejectrequest = async function(){
                         
                      </VStack>
                      <Button onClick={()=>{seteditspecs(true)}} colorScheme='blue' color={'white'} borderRadius={'10px'} padding={'10px'} width={'45%'}  >EDIT SPECS</Button>
+                     {editspecs  &&  
+                     
                      <HStack justifyContent={'center'} width={'98%'} p={'2px'} gap={'20px'} mt={'20px'} >
-                        <Button  onClick={()=>{sendacceptance}} width={'27%'}  p={'5px'} borderRadius={'10px'} colorScheme='green' >EDIT  SPECS   {sendingacceptance && <Spinner color='white' width={'25px'} height={'25px'} />}</Button>
-                        <Button onClick={()=>{seteditspecs(false)}} width={'27%'}  p={'5px'} borderRadius={'10px'} colorScheme='red' >EXIT EDIT</Button>
+                     <Button  onClick={()=>{sendacceptance}} width={'27%'}  p={'5px'} borderRadius={'10px'} colorScheme='green' >EDIT  SPECS   {sendingacceptance && <Spinner color='white' width={'25px'} height={'25px'} />}</Button>
+                     <Button onClick={()=>{seteditspecs(false)}} width={'27%'}  p={'5px'} borderRadius={'10px'} colorScheme='red' >EXIT EDIT</Button>
 
-                     </HStack>
+                  </HStack>
+                     }
 
 
                     <Text  mt={'15px'} mb={'15px'} alignSelf={'flex-start'} textAlign={'left'} fontSize={'x-large'} color={'white'} fontWeight={'bold'} >ATTACHMENTS</Text>
