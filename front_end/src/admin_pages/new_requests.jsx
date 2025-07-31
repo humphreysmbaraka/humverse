@@ -1117,8 +1117,8 @@ const rejectrequest = async function(){
                     <TabPanel display={'flex'}  flexDirection={'column'} alignItems={'center'} width={'98%'} p={'2px'} >
 
 
-                              {/* FOR PENDING INITIATION */}
-                    {(selectedrequest&&selectedrequest.accepted&&!selectedrequest.initiated&&!selectedrequest.cancelled&&!selectedrequest.rejected)&&  
+                              {/* NEW REQUEST */}
+                    {(selectedrequest&&!selectedrequest.accepted&&!selectedrequest.initiated&&!selectedrequest.cancelled&&!selectedrequest.rejected)&&  
                      <>
 
                    
@@ -1222,6 +1222,14 @@ const rejectrequest = async function(){
                      
                     
                       </>
+                      }
+
+
+                             {/* PENDING INITIATION */}
+                          {(selectedrequest&&selectedrequest.accepted&&!selectedrequest.initiated&&!selectedrequest.cancelled&&!selectedrequest.rejected)&&  
+                              <Box width={'100%'}  height={'100%'}   display={'flex'} alignItems={'center'} justifyContent={'center'} >
+              <Text fontSize={'xx-large'}  color={'green'} fontWeight={'bold'}  >PENDING INITIATION</Text>
+                              </Box>
                       }
 
 
@@ -1765,7 +1773,7 @@ const rejectrequest = async function(){
                     
                       </>
                       }
-
+          {/* CANCELLED REQUEST */}
                       {selectedrequest&&selectedrequest.cancelled &&
                       
                       <>
@@ -1814,7 +1822,7 @@ const rejectrequest = async function(){
                       
                       }
 
-
+         {/* REJECTED REQUEST */}
 {selectedrequest&&selectedrequest.rejected &&
                       
                       <>
