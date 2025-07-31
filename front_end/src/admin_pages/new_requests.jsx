@@ -503,7 +503,17 @@ const rejectrequest = async function(){
                  {allreqs?.length > 0 && 
                   allreqs.map(function(val , index){
                     return(
-                        <HStack mt={'10px'} onClick={()=>{setselectedrequest(val)}}  width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} overflow={'auto'} css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}}  >
+                        <HStack mt={'10px'} onClick={()=>{setselectedrequest(function(prev){
+                           if(prev && prev._id !== val._id){
+                            prev.selected = false;
+                            val.selected = true;
+                            return val;
+                           }
+                           else{
+                            val.selected = true;
+                            return val;
+                           }
+                        })}}  width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} overflow={'auto'} css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}}  backgroundColor={val.selected?'gray.800':'transparent'} >
                             <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
                             <Text color={'white'}   >{val.client.username}</Text>
                             <Text color={'white'}   >{val.createdAt.slice(0 , 10)}</Text>
