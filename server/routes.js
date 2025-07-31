@@ -1972,7 +1972,7 @@ router.post('/send_preview'  , async function(req , res){
 
 
 
-router.get('/stream_preview/:id' , file_uploader.array('previews' , 20) ,  async function(req , res){
+router.get('/stream_preview/:id' ,  async function(req , res){
         const id = req.params.id;
         const files = await previewbucket.find({_id:new ObjectId(id)}).toArray();
         if(files.length == 0 || !files){
