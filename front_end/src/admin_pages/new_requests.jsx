@@ -353,6 +353,8 @@ function New_Requests() {
    setdeploymentcost(null);
    sethostingcost(null);
    setmaintainance(null);
+   setdomainnamecost(null);
+
   } , [selectedrequest]);
 
 
@@ -682,11 +684,13 @@ const rejectrequest = async function(){
           <Tabs  width={'98%'} height={'90%'} p={'4px'} alignSelf={'center'} >
             <TabList alignSelf={'center'} width={'100%'} color={'white'} p={'2px'} overflow={'auto'} css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}} borderBottom={'none'} >
                 <Tab color={'white'} fontSize={'medium'} fontWeight={'light'}  >ALL</Tab>
-                <Tab  color={'white'} fontSize={'medium'} fontWeight={'light'} >RECEIVED</Tab>
+                <Tab color={'white'} fontSize={'medium'} fontWeight={'light'}  >NEW</Tab>
+                {/* <Tab  color={'white'} fontSize={'medium'} fontWeight={'light'} >RECEIVED</Tab> */}
                 <Tab  color={'white'} fontSize={'medium'} fontWeight={'light'} >ACCEPTED</Tab>
-                <Tab  color={'white'} fontSize={'medium'} fontWeight={'light'} >REJECTED</Tab>
+                
                 <Tab  color={'white'} fontSize={'medium'} fontWeight={'light'} >INITIATED</Tab>
                 <Tab  color={'white'} fontSize={'medium'} fontWeight={'light'} >CANCELED</Tab>
+                <Tab  color={'white'} fontSize={'medium'} fontWeight={'light'} >REJECTED</Tab>
                
             </TabList>
             <TabPanels   width={'100%'} height={'99%'} p={'2px'}  mt={'10px'}  >
@@ -710,7 +714,7 @@ const rejectrequest = async function(){
                             <Text color={'white'}   >{val.client.username}</Text>
                             <Text color={'white'}   >{val.createdAt.slice(0 , 10)}</Text>
                             <Text color={'white'}   >{val.createdAt.slice(11 , 16)}</Text>
-                            <Text color={val.accepted&&!val.initiated&&!val.cancelled&&!val.rejected?'green':val.accepted&&val.initiated&&!val.cancelled&&!val.rejected?'purple':val.rejected?'red':val.cancelled?'orange':''}   >{val.accepted&&!val.initiated&&!val.cancelled&&!val.rejected?'ACCEPTED':val.accepted&&val.initiated&&!val.cancelled&&!val.rejected?'INITIATED':val.rejected?'REJECTED':val.cancelled?'CANCELLED':''}</Text>
+                            <Text color={val.accepted&&!val.initiated&&!val.cancelled&&!val.rejected?'green':val.accepted&&val.initiated&&!val.cancelled&&!val.rejected?'purple':val.rejected?'red':val.cancelled?'orange':'green'}   >{val.accepted&&!val.initiated&&!val.cancelled&&!val.rejected?'ACCEPTED':val.accepted&&val.initiated&&!val.cancelled&&!val.rejected?'INITIATED':val.rejected?'REJECTED':val.cancelled?'CANCELLED':'NEW'}</Text>
                             {/* <Text color={val.received?'green':'orange'} >{val.received?'Received':'not yet received'}</Text>
                             <Text color={val.initiated?'green.500':'orange'} >{val.initiated?'Initiated':'not yet initiated'}</Text>
                             <Text color={val.rejected?'red':'green'}  >{val.rejected?'rejected':'not rejected'}</Text>
@@ -727,7 +731,7 @@ const rejectrequest = async function(){
              <VStack bg={'black'}  width={'98%'} height={'90%'} borderRadius={'10px'}  gap={'20px'} alignItems={'center'} overflow={'auto'}  css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}}   >
                  {allreqs?.length > 0 && 
                    allreqs.map(function(val , index){
-                      if(val.received){
+                      if(!val.accepted&&!val.initiated&&!val.cancelled&&!val.rejected){
                         return(
                             <HStack onClick={()=>{setselectedrequest(function(prev){
                                 if(prev && prev._id !== val._id){
@@ -744,9 +748,9 @@ const rejectrequest = async function(){
                             <Text>{val.client.username}</Text>
                             <Text>{val.createdAt.slice(0 , 10)}</Text>
                             <Text>{val.createdAt.slice(11 , 16)}</Text>
-                            <Text>{val.accepted?'Accepted':'not yet accepted'}</Text>
+                            {/* <Text>{val.accepted?'Accepted':'not yet accepted'}</Text> */}
                             {/* <Text>{val.received?'Received':'not yet received'}</Text> */}
-                            <Text color={'white'} >{val.initiated?'Initiated':'not yet initiated'}</Text>
+                            {/* <Text color={'white'} >{val.initiated?'Initiated':'not yet initiated'}</Text> */}
                         </HStack>
                         )
                       }
@@ -763,46 +767,9 @@ const rejectrequest = async function(){
              <VStack bg={'black'}  width={'98%'} height={'90%'} borderRadius={'10px'}  gap={'20px'} alignItems={'center'} overflow={'auto'}  css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}}   >
                  {allreqs?.length > 0 && 
                   allreqs.map(function(val , index){
-                    if(val.accepted){
+                    if(val.accepted&&!val.initiated&&!val.cancelled&&!val.rejected){
                         return(
                             <HStack onClick={()=>{setselectedrequest(function(prev){
-                                if(prev && prev._id !== val._id){
-                                 prev.selected = false;
-                                 val.selected = true;
-                                 return val;
-                                }
-                                else{
-                                 val.selected = true;
-                                 return val;
-                                }
-                             })}} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'whire'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
-                                <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
-                                <Text>{val.client.username}</Text>
-                                <Text>{val.createdAt.slice(0 , 10)}</Text>
-                                <Text>{val.createdAt.slice(11 , 16)}</Text>
-                                {/* <Text>{val.accepted?'Accepted':'not yet accepted'}</Text> */}
-                                {/* <Text>{val.received?'Received':'not yet received'}</Text> */}
-                                <Text color={'white'} >{val.initiated?'Initiated':'not yet initiated'}</Text>
-                            </HStack>
-                        )
-                    }
-                    else{
-
-                    }
-                   
-                  })
-                 }
-            </VStack>
-             </TabPanel>
-
-
-             <TabPanel   width={'100%'} height={'99%'} p={'2px'}  >
-             <VStack bg={'black'}  width={'98%'} height={'90%'} borderRadius={'10px'}  gap={'20px'} alignItems={'center'} overflow={'auto'}  css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}}   >
-                 {allreqs?.length > 0 && 
-                  allreqs.map(function(val , index){
-                    if(val.rejected){
-                        return(
-                            <HStack  onClick={()=>{setselectedrequest(function(prev){
                                 if(prev && prev._id !== val._id){
                                  prev.selected = false;
                                  val.selected = true;
@@ -833,11 +800,14 @@ const rejectrequest = async function(){
              </TabPanel>
 
 
+             
+
+
              <TabPanel   width={'100%'} height={'99%'} p={'2px'}  >
              <VStack bg={'black'}  width={'98%'} height={'90%'} borderRadius={'10px'}  gap={'20px'} alignItems={'center'} overflow={'auto'}  css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}}   >
                  {allreqs?.length > 0 && 
                   allreqs.map(function(val , index){
-                    if(val.initiated){
+                    if(val.accepted&&val.initiated&&!val.cancelled&&!val.rejected){
                         return(
                             <HStack onClick={()=>{setselectedrequest(function(prev){
                                 if(prev && prev._id !== val._id){
@@ -856,7 +826,7 @@ const rejectrequest = async function(){
                                 <Text>{val.createdAt.slice(11 , 16)}</Text>
                                 {/* <Text>{val.accepted?'Accepted':'not yet accepted'}</Text> */}
                                 {/* <Text>{val.received?'Received':'not yet received'}</Text> */}
-                                <Text color={'white'} >{val.initiated?'Initiated':'not yet initiated'}</Text>
+                                {/* <Text color={'white'} >{val.initiated?'Initiated':'not yet initiated'}</Text> */}
                             </HStack>
                         )
                     }
@@ -891,9 +861,47 @@ const rejectrequest = async function(){
                                 <Text>{val.client.username}</Text>
                                 <Text>{val.createdAt.slice(0 , 10)}</Text>
                                 <Text>{val.createdAt.slice(11 , 16)}</Text>
-                                <Text>{val.accepted?'Accepted':'not yet accepted'}</Text>
-                                <Text>{val.received?'Received':'not yet received'}</Text>
-                                <Text color={'white'} >{val.initiated?'Initiated':'not yet initiated'}</Text>
+                                {/* <Text>{val.accepted?'Accepted':'not yet accepted'}</Text> */}
+                                {/* <Text>{val.received?'Received':'not yet received'}</Text> */}
+                                {/* <Text color={'white'} >{val.initiated?'Initiated':'not yet initiated'}</Text> */}
+                            </HStack>
+                        )
+                    }
+                    else{
+
+                    }
+                   
+                  })
+                 }
+            </VStack>
+             </TabPanel>
+
+
+
+             <TabPanel   width={'100%'} height={'99%'} p={'2px'}  >
+             <VStack bg={'black'}  width={'98%'} height={'90%'} borderRadius={'10px'}  gap={'20px'} alignItems={'center'} overflow={'auto'}  css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}}   >
+                 {allreqs?.length > 0 && 
+                  allreqs.map(function(val , index){
+                    if(val.rejected){
+                        return(
+                            <HStack  onClick={()=>{setselectedrequest(function(prev){
+                                if(prev && prev._id !== val._id){
+                                 prev.selected = false;
+                                 val.selected = true;
+                                 return val;
+                                }
+                                else{
+                                 val.selected = true;
+                                 return val;
+                                }
+                             })}} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'whire'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
+                                <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
+                                <Text>{val.client.username}</Text>
+                                <Text>{val.createdAt.slice(0 , 10)}</Text>
+                                <Text>{val.createdAt.slice(11 , 16)}</Text>
+                                {/* <Text>{val.accepted?'Accepted':'not yet accepted'}</Text> */}
+                                {/* <Text>{val.received?'Received':'not yet received'}</Text> */}
+                                {/* <Text color={'white'} >{val.initiated?'Initiated':'not yet initiated'}</Text> */}
                             </HStack>
                         )
                     }

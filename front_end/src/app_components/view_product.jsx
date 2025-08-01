@@ -77,10 +77,64 @@ function View_Product() {
         }
       }
 
+       // the poling is set when the component mounts
+      useEffect(function(){
+        let tracker;
+        const poling = async function(){
+          
+           
+            if(product){
+               tracker = setInterval(async function(){
+                try{
+                  const details = await fetch(`${BASE_URL}/fetch_request/${product._id}` , {
+                    credentials:'include',
+                    headers:{
+                      'Content-Type':'application/json'
+                    },
+                    method:'GET'
+                  })
+                  if(details.ok){
+                    console.log('successfully checked product');
+                    const info = await details.json();
+                    if(info.request.payments.status === 'not fully paid'){
+                       setproduct(info.request);
+                    }
+                    else{
+                      setproduct(info.request);
+                      clearInterval(tracker);
+                    }
+                  }
+                  else{
+                    console.log('could not get request details');
+                    // then continue poling
+                  }
+                }
+                catch(err){
+                  console.log('could not pole product payment status' , err);
       
+                }
+                 
+              }, 3000);
+            }
+            else{
+              return;
+            }
+            
+          
+          
+        }
+
+        poling();
+
+
+        return () => {
+          if (tracker) clearInterval(tracker);
+        };
+      } , [product?._id]);
 
      useEffect(function(){
         getrequest();
+        
      } , []);
 
     const cancel = async function(){
@@ -105,6 +159,7 @@ function View_Product() {
         if(cancel.ok){
           setcancelling(false);
           const info = await cancel.json();
+          setproduct(info.request);
         }
         else{
           setcancelling(false);
@@ -147,6 +202,7 @@ function View_Product() {
         if(cancel.ok){
           setuncancelling(false);
           const info = await cancel.json();
+          setproduct(info.request);
         }
         else{
           setuncancelling(false);
