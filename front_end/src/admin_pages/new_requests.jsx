@@ -43,7 +43,7 @@ function New_Requests() {
     const [attachmentinfos , setattachmentinfos] = useState([]);
     const [previewsinfos , setpreviewsinfos] = useState([]);
     const [editrequesterror , seteditrequesterror] = useState(null);
-     cons [sendingedit , setsendingedit] = useState(false);
+    const [sendingedit , setsendingedit] = useState(false);
 
      const [redeeming , setredeeming] = useState(false);
      const [redeemerror , setredeemerror] = useState(null);
