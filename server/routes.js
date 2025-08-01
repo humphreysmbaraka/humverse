@@ -679,6 +679,47 @@ router.patch('/accept_request'  , async function(req , res){
 })
 
 
+router.patch('/edit_accepted_request'  , async function(req , res){
+  try{
+    console.log('PROCESSING CHANGES........')
+     const {makingcost , deploymentcost , hostingcost , currency , maintainance ,reqid , domaincost } = req.body;
+     const request = await Request.findOne({_id:reqid});
+     if(request){
+      request.received = true;
+      request.accepted = true;
+      request.rejected = false;
+      
+      request.initiated = request.initiated;
+      request.cancelled = false;
+      request.payments.payments_required.making_cost = Number(makingcost);
+      request.payments.payments_required.deploying_cost = Number(deploymentcost);
+      request.payments.payments_required.domain_name_cost = Number(domaincost);
+      request.payments.payments_required.hosting_cost = Number(hostingcost);
+      request.payments.payments_required.maintainance_cost = Number(maintainance);
+      request.payments.currency = currency;
+      request.payments.total_payment_required = (Number(makingcost)+Number(deploymentcost) + Number(domaincost) +Number(hostingcost)+Number(maintainance));
+      request.payments.deposit_required =  Math.ceil(( (Number(makingcost)+Number(deploymentcost) + Number(domaincost) +Number(hostingcost)+Number(maintainance))/3));
+      request.payments.total_paid =request.payments.total_paid ;
+      request.payments.amount_remaining = (Number(request.payments.total_payment_required)-(Number(request.payments.total_paid)));
+      await request.save();
+      console.log('request editted successfully' , request);
+      return res.status(200).json({error:false , message:'request editted successfully' , request});
+
+
+     }
+     else{
+      console.log('no such request found');
+      return res.status(400).json({error:true , message:'no such request found'})
+     }
+   
+  }
+  catch(err){
+    console.log('error editting request' , err);
+    return res.status(500).json({error:true , message:'server error' , error:err});
+  }
+})
+
+
 router.patch('/reject_request' , async function(req , res){
   try{
     const {reqid} = req.body;
@@ -686,10 +727,10 @@ router.patch('/reject_request' , async function(req , res){
     const request = await Request.findOne({_id:reqid});
     if(request){
        request.rejected=true;
-       request.accepted=false;
+      //  request.accepted=false;
 
        await request.save();
-       return res.status(200).json({error:false , message:'request rejected successfully'});
+       return res.status(200).json({error:false , message:'request rejected successfully' , request});
     }
     else{
       console.log('no such request found');
@@ -698,6 +739,32 @@ router.patch('/reject_request' , async function(req , res){
   }
   catch(err){
     console.log('error when rejecting request' , err);
+    return res.status(500).json({error:true , message:'server error' , error:err});
+  }
+})
+
+
+
+
+router.patch('/redeem_request' , async function(req , res){
+  try{
+    const {reqid} = req.body;
+    console.log('redeeming' , reqid);
+    const request = await Request.findOne({_id:reqid});
+    if(request){
+       request.rejected=false;
+      //  request.accepted=false;
+
+       await request.save();
+       return res.status(200).json({error:false , message:'request redeemed successfully' , request:request});
+    }
+    else{
+      console.log('no such request found');
+      return res.status(400).json({error:true , message:'no such request found'})
+    }
+  }
+  catch(err){
+    console.log('error when redeeming request' , err);
     return res.status(500).json({error:true , message:'server error' , error:err});
   }
 })
@@ -1960,7 +2027,7 @@ router.post('/send_preview' , async function(req , res){
       request.previews = newprevs;
       await request.save();
       console.log('previews sent successfully')
-      return res.status(200).json({error:false , message:'previews sent successfully'});
+      return res.status(200).json({error:false , message:'previews sent successfully' , request:request});
 
      }
   }

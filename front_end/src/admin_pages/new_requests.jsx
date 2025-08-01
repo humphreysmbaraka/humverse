@@ -43,6 +43,10 @@ function New_Requests() {
     const [attachmentinfos , setattachmentinfos] = useState([]);
     const [previewsinfos , setpreviewsinfos] = useState([]);
     const [editrequesterror , seteditrequesterror] = useState(null);
+     cons [sendingedit , setsendingedit] = useState(false);
+
+     const [redeeming , setredeeming] = useState(false);
+     const [redeemerror , setredeemerror] = useState(null);
     // const location = useLocation();
     // const reqs = location.state.requests;
 
@@ -197,6 +201,51 @@ function New_Requests() {
       }
     
     
+
+      const redeem = async function(){
+        try{
+            const sure = confirm('ARE YOU SURE YOU WANT TO REDEEM THIS REQUEST');
+            if(!sure){
+                return;
+            }
+           if(redeeming){
+
+           }
+           else{
+            setredeeming(true);
+            setredeemerror(null);
+            const redemption = await fetch(`${BASE_URL}/redeem_request` , {
+                 method:'PATCH',
+                 headers:{
+                    'Content-Type':'application/json'
+                 } ,
+                 credentials:'include',
+                 body: JSON.stringify({reqid:selectedrequest._id})
+            })
+
+            if(redemption.ok){
+                setredeeming(false);
+                setredeemerror(null);
+                const info = await redemption.json();
+                const newselect = info.request;
+                setselectedrequest(newselect);
+            }
+            else{
+                const info = await redemption.json();
+                setredeeming(false);
+                if(String(redemption.status).startsWith('4')){
+                    setredeemerror(info.message);  
+                }
+                else{
+                    setredeemerror('server error'); 
+                }
+            }
+           }
+        }
+        catch(err){
+            console.log('could not redeem request');
+        }
+      }
     
     
     
@@ -247,6 +296,7 @@ function New_Requests() {
                 setsendingpreviews(false);
                 setsendpreverror(null);
                 const info = await send.json();
+                setselectedrequest(info.request);
             }
             else{
                 const info = await send.json();
@@ -350,12 +400,12 @@ function New_Requests() {
 const sendacceptance = async function(){
     try{
        
-        const sure = confirm(`are you sure you want to ${editspecs?'edit specs':'send acceptance'}`);
+        const sure = confirm(`are you sure you want to send acceptance`);
         if(!sure){
             return;
         }
         setacceptanceerror(null);
-        seteditrequesterror(null);
+        // seteditrequesterror(null);
        if(sendingacceptance){
         //  console.log('sending..' , sendingacceptance);
          
@@ -377,9 +427,9 @@ const sendacceptance = async function(){
 
             if(acceptance.ok){
                 setsendingacceptance(false);
-                seteditspecs(false);
+                // seteditspecs(false);
                 setacceptanceerror(false);
-                seteditrequesterror(null)
+                // seteditrequesterror(null)
                 // seteditrequesterror(null);
                 console.log('acceptance sent successfully');
                 const acceptdata = await acceptance.json();
@@ -389,13 +439,103 @@ const sendacceptance = async function(){
                 setmaintainance(null);
                 setrejectionreason(null);
                 setcurrency(null);
+                setselectedrequest(acceptdata.request);
             }
             else{
                 setsendingacceptance(false);
-                seteditspecs(false);
+                // seteditspecs(false);
                 if(String(acceptance.status).startsWith('4')){
                     const acceptdata = await acceptance.json();
                     setacceptanceerror(acceptdata.message);
+                    // seteditrequesterror(acceptdata.message)
+                    setdeploymentcost(null);
+                    sethostingcost(null);
+                    setmakingcost(null);
+                    setmaintainance(null);
+                    setrejectionreason(null);
+                    setcurrency(null)
+                }
+                else{
+                    // seteditspecs(false);
+                      setsendingacceptance(false);
+                      setacceptanceerror('server error');
+                    //   seteditrequesterror('server error')
+                      setdeploymentcost(null);
+                      sethostingcost(null);
+                      setmakingcost(null);
+                      setmaintainance(null);
+                      setrejectionreason(null);
+                      setcurrency(null);
+                }
+            }
+        }
+
+        
+
+       }
+    }
+    catch(err){
+        setsendingacceptance(false);
+        console.log('error sending request acceptance' , err);
+        setacceptanceerror('error sending acceptance');
+    }
+}
+
+
+
+
+const editrequest = async function(){
+    try{
+       
+        const sure = confirm(`are you sure you want to edit the parameters`);
+        if(!sure){
+            return;
+        }
+        // setacceptanceerror(null);
+        seteditrequesterror(null);
+       if(sendingedit){
+        //  console.log('sending..' , sendingacceptance);
+         
+       }
+       else{
+        // setsendingacceptance(true);
+        setsendingedit(true)
+        if(!makingcost || makingcost.trim()==''  || !deploymentcost || deploymentcost.trim()=='' || !hostingcost || hostingcost.trim()==''  ||  !currency || currency.trim()==''  ||   !maintainance || maintainance.trim()=='' || !domainnamecost || domainnamecost.trim() =='' ){
+        seteditrequesterror('wrong or missing parameters');
+        }
+        else{
+            const acceptance = await fetch(`${BASE_URL}/edit_accepted_request` , {
+                method:'PATCH',
+                headers: {
+                    'Content-Type':'application/json'
+                },
+                credentials:'include',
+                body: JSON.stringify({makingcost , deploymentcost ,hostingcost , currency , maintainance ,  reqid:selectedrequest._id  , domaincost:domainnamecost})
+            })
+
+            if(acceptance.ok){
+                // setsendingacceptance(false);
+                setsendingedit(false)
+                seteditspecs(false);
+                // setacceptanceerror(false);
+                seteditrequesterror(null)
+                console.log('request editted successfully');
+                const acceptdata = await acceptance.json();
+                setdeploymentcost(null);
+                sethostingcost(null);
+                setmakingcost(null);
+                setmaintainance(null);
+                setrejectionreason(null);
+                setcurrency(null);
+                setselectedrequest(acceptdata.request);
+            }
+            else{
+                // setsendingacceptance(false);
+                seteditspecs(false);
+                setsendingedit(false)
+                if(String(acceptance.status).startsWith('4')){
+                    const acceptdata = await acceptance.json();
+                    // setacceptanceerror(acceptdata.message);
                     seteditrequesterror(acceptdata.message)
                     setdeploymentcost(null);
                     sethostingcost(null);
@@ -406,8 +546,8 @@ const sendacceptance = async function(){
                 }
                 else{
                     seteditspecs(false);
-                      setsendingacceptance(false);
-                      setacceptanceerror('server error');
+                    // setsendingacceptance(false);
+                    //   setacceptanceerror('server error');
                       seteditrequesterror('server error')
                       setdeploymentcost(null);
                       sethostingcost(null);
@@ -424,9 +564,10 @@ const sendacceptance = async function(){
        }
     }
     catch(err){
-        seteditspecs(false);
+        // seteditspecs(false);
+        setsendingedit(false)
         console.log('error sending request acceptance' , err);
-        editspecs?seteditrequesterror('could not do an edit'):setacceptanceerror('error sending acceptance');
+        seteditrequesterror('could not do an edit');
     }
 }
 
@@ -452,6 +593,7 @@ const rejectrequest = async function(){
                 setrejecting(false);
            const rejdata = await reject.json();
            console.log('request rejected successfully')
+           setselectedrequest(rejdata.request);
             }
             else{
                 setrejecting(false);
@@ -1745,10 +1887,16 @@ const rejectrequest = async function(){
                         
                      </VStack>
                      <Button onClick={()=>{seteditspecs(true)}} colorScheme='blue' color={'white'} borderRadius={'10px'} padding={'10px'} width={'45%'}  >EDIT SPECS</Button>
-                     {editspecs  &&  
-                     
+
+                     {editrequesterror &&  
+                    
+                    <Text color={'red'}  fontSize={'xx-small'} fontWeight={'bold'}  >{editrequesterror}</Text>
+                }
+
+
+                     {editspecs  &&       
                      <HStack justifyContent={'center'} width={'98%'} p={'2px'} gap={'20px'} mt={'20px'} >
-                     <Button  onClick={sendacceptance} width={'27%'}  p={'5px'} borderRadius={'10px'} colorScheme='green' >EDIT  SPECS   {sendingacceptance && <Spinner color='white' width={'25px'} height={'25px'} />}</Button>
+                     <Button  onClick={editrequest} width={'27%'}  p={'5px'} borderRadius={'10px'} colorScheme='green' >EDIT  SPECS   {sendingedit && <Spinner color='white' width={'25px'} height={'25px'} />}</Button>
                      <Button onClick={()=>{seteditspecs(false)}} width={'27%'}  p={'5px'} borderRadius={'10px'} colorScheme='red' >EXIT EDIT</Button>
 
                   </HStack>
@@ -1911,15 +2059,19 @@ const rejectrequest = async function(){
 {selectedrequest&&selectedrequest.rejected &&
                       
                       <>
-                      <Text>THIS REQUEST IS REJECTED</Text>
+                      <Text fontSize={'x-large'} fontWeight={'bold'} color={'white'} >THIS REQUEST IS REJECTED</Text>
                       {/* <Text>process cancellation</Text> */}
 
                      
                        
+                     {redeemerror  &&  
                      
+                     <Text fontSize={'xx-small'} fontWeight={'light'} color={'re'} >THIS REQUEST IS REJECTED</Text>
 
-                        <HStack   width={'95%'} gap={'10px'} p={'4px'}>
-                          <Button p={'2px'} colorScheme='blue'  borderRadius={'10px'}  >REDEEM REQUEST</Button>
+                     }
+
+                        <HStack   width={'95%'}  height={'80%'} display={'flex'} alignItems={'center'} justifyContent={'center'}  gap={'10px'} p={'4px'}>
+                          <Button  onClick={redeem}  p={'2px'} colorScheme='blue'  borderRadius={'10px'}  {redeeming && <Spinner  width={'25px'} height={'25px'} color='white' />} >REDEEM REQUEST</Button>
                         </HStack>
                          
 
