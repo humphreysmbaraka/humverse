@@ -2071,7 +2071,7 @@ const rejectrequest = async function(){
                      }
 
                         <HStack   width={'95%'}  height={'80%'} display={'flex'} alignItems={'center'} justifyContent={'center'}  gap={'10px'} p={'4px'}>
-                          <Button  onClick={redeem}  p={'2px'} colorScheme='blue'  borderRadius={'10px'}  {redeeming && <Spinner  width={'25px'} height={'25px'} color='white' />} >REDEEM REQUEST</Button>
+                          <Button  onClick={redeem}  p={'2px'} colorScheme='blue'  borderRadius={'10px'} >REDEEM REQUEST  {redeeming && <Spinner  width={'25px'} height={'25px'} color='white' />}   </Button>
                         </HStack>
                          
 
