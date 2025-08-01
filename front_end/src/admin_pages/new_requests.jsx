@@ -229,6 +229,16 @@ function New_Requests() {
                 const info = await redemption.json();
                 const newselect = info.request;
                 setselectedrequest(newselect);
+                setallreqs(function(prev){
+                    return prev.map(function(val , index){
+                        if (val._id == newselect._id){
+                          return newselect;
+                        }
+                        else{
+                            return val
+                        }
+                    })
+                })
             }
             else{
                 const info = await redemption.json();
@@ -297,6 +307,16 @@ function New_Requests() {
                 setsendpreverror(null);
                 const info = await send.json();
                 setselectedrequest(info.request);
+                setallreqs(function(prev){
+                    return prev.map(function(val , index){
+                        if(val._id == (info.request)._id){
+                            return info.request
+                        }
+                        else{
+                            return val
+                        }
+                    })
+                })
             }
             else{
                 const info = await send.json();
@@ -440,6 +460,16 @@ const sendacceptance = async function(){
                 setrejectionreason(null);
                 setcurrency(null);
                 setselectedrequest(acceptdata.request);
+                setallreqs(function(prev){
+                    return prev.map(function(val , index){
+                        if(val._id == (acceptdata.request)._id){
+                            return acceptdata.request;
+                        }
+                        else{
+                            return val;
+                        }
+                    })
+                })
             }
             else{
                 setsendingacceptance(false);
@@ -528,6 +558,16 @@ const editrequest = async function(){
                 setrejectionreason(null);
                 setcurrency(null);
                 setselectedrequest(acceptdata.request);
+                setallreqs(function(prev){
+                    return prev.map(function(val , index){
+                        if(val._id == (acceptdata.request)._id){
+                            return acceptdata.request;
+                        }
+                        else{
+                            return val;
+                        }
+                    })
+                })
             }
             else{
                 // setsendingacceptance(false);
@@ -594,6 +634,16 @@ const rejectrequest = async function(){
            const rejdata = await reject.json();
            console.log('request rejected successfully')
            setselectedrequest(rejdata.request);
+           setallreqs(function(prev){
+            return prev.map(function(val , index){
+                if(val._id == (rejdata.request)._id){
+                    return rejdata.request;
+                }
+                else{
+                    return val;
+                }
+            })
+        })
             }
             else{
                 setrejecting(false);
