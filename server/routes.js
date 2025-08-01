@@ -784,7 +784,7 @@ router.post('/cancel_request' , async function(req , res){
     request.cancelled = true;
     await request.save();
     console.log('request cancelled succesfully');
-    return res.status(200).json({error:false , message:'request cancelled successfully'});
+    return res.status(200).json({error:false , message:'request cancelled successfully' , request});
   }
    
   }
@@ -808,7 +808,7 @@ router.post('/uncancel_request' , async function(req , res){
     request.cancelled = false;
     await request.save();
     console.log('request uncancelled succesfully');
-    return res.status(200).json({error:false , message:'request uncancelled successfully'});
+    return res.status(200).json({error:false , message:'request uncancelled successfully' ,request});
   }
    
   }
