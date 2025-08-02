@@ -556,9 +556,10 @@ router.post('/logout' , async function(req , res){
 
         res.cookie(process.env.COOKIE_NAME, '', {
           httpOnly: true,
-          expires: new Date(0)
-          // sameSite: 'Lax',
-          // secure: process.env.NODE_ENV === 'production'
+          secure: true,
+          sameSite: 'None',
+          maxAge:0
+         
         });
         console.log('successfully logged out');
         return res.status(200).json({error:false , message:'logged out successfully'});

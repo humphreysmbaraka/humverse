@@ -54,8 +54,16 @@ const logout = async function(){
 
 
     useEffect(function(){
-
-       checkauthstatus();
+       const check = async function(){
+              try{
+                   await  checkauthstatus();
+              }
+              catch(err){
+                     console.log('error triggering auth status check' , err);
+              }
+       }
+       check();
+      
     } , [location.pathname]);
 
     const sidebarVariants = {
