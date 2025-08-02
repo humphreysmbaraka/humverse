@@ -39,7 +39,7 @@ const logout = async function(){
 
          if (logout.ok){
               console.log('logged out');
-              checkauthstatus();
+              // checkauthstatus();
 
          }
          else{

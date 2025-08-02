@@ -56,9 +56,9 @@ function Auth_Provider({children}) {
     }
   } 
   
-  useEffect(function(){
-      checkauthstatus();
-  } , []);
+  // useEffect(function(){
+  //     checkauthstatus();
+  // } , []);
 
   return (
     <AuthContext.Provider value={{loggedin , admin , user , loading , checkauthstatus}}  >
