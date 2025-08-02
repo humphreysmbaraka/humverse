@@ -24,7 +24,7 @@ function Layout() {
     const {winwidth , winheight} = useContext(dimensions);
 
 
-console.log('logged in' , loggedin , 'admin' , admin)
+// console.log('logged in' , loggedin , 'admin' , admin)
 
 
 const logout = async function(){
@@ -33,12 +33,12 @@ const logout = async function(){
               credentials:'include',
               method:'POST' ,
               headers : {
-                     'Comtent-Type':'application/json'
+                     'Content-Type':'application/json'
               }
          })
 
          if (logout.ok){
-              console.log('loggeg out');
+              console.log('logged out');
          }
          else{
               console.log('error logging out');

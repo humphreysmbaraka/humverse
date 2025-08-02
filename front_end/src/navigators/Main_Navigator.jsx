@@ -27,7 +27,7 @@ const {loggedin , admin , loading} = useContext(AuthContext);
    if(loading){
       return (
         <Box  width={'100%'} height={'100vh'} bg={'gray.800'}  display={'flex'} alignItems={'center'} justifyContent={'center'} >
-           <Text color={'white'}  fontSize={'xxx-large'} fontWeight={'bold'}  >LOADING</Text>
+           {/* <Text color={'white'}  fontSize={'xxx-large'} fontWeight={'bold'}  >LOADING</Text> */}
            <Spinner  color='white' width={'150px'} height={'150px'}  />
         </Box>
       )

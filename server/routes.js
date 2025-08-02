@@ -549,19 +549,25 @@ router.get('/platform_data' , async function(req , res){
 
 router.post('/logout' , async function(req , res){
   try{
+    console.log('logging out...')
       const token = req.cookies[process.env.COOKIE_NAME];
       if(token){
+        console.log('found token');
+
         res.cookie(process.env.COOKIE_NAME, '', {
           httpOnly: true,
           expires: new Date(0)
           // sameSite: 'Lax',
           // secure: process.env.NODE_ENV === 'production'
         });
-
+        console.log('successfully logged out');
         return res.status(200).json({error:false , message:'logged out successfully'});
+        
       }
       else{
+        console.log('could not find token');
         return res.status(400).json({error:true , message:'could not find token'});
+
       }
   }
   catch(err){
