@@ -7,6 +7,11 @@ function Auth_Provider({children}) {
   const [admin , setadmin] = useState(false);
   const [user , setuser] = useState(null)
   const [loading , setloading] = useState(true);
+
+  useEffect(function(){
+      console.log('auth status changed'  , 'loggedin' , loggedin , 'admin' , admin);
+      
+  } , [loggedin , admin])
     
   const checkauthstatus = async function(){
     try{
@@ -26,21 +31,25 @@ function Auth_Provider({children}) {
           setloggedin(true);
           setuser(profile);
           setadmin(false);
+          console.log('auth status checked successfully');
         }
         else{
           setloggedin(true);
           setuser(profile);
           setadmin(true);
+          console.log('auth status checked successfully');
         }
        
       }
       else{
         setloggedin(false);
           setadmin(false);
+          console.log('not authorised');
       }
     }
     catch(err){
        setloggedin(false);
+       console.log('not authorised' , err);
     }
     finally{
       setloading(false);
