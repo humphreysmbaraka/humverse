@@ -773,13 +773,16 @@ router.patch('/redeem_request' , async function(req , res){
 
 router.post('/cancel_request' , async function(req , res){
   try{
+
   console.log('cancelling request');
+  
   const {id} = req.body;
   const request = await Request.findOne({_id:id});
   if(!request){
     console.log('no such request found');
     return res.status(400).json({error:true , message:'no such request found'});
   }
+  
   else{
     request.cancelled = true;
     await request.save();

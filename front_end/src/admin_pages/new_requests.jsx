@@ -44,6 +44,9 @@ function New_Requests() {
     const [previewsinfos , setpreviewsinfos] = useState([]);
     const [editrequesterror , seteditrequesterror] = useState(null);
     const [sendingedit , setsendingedit] = useState(false);
+    const [compensate , setcompensate] = useState(false);
+    const [paynumber , setpaynumber] = useState(null);
+    const [amount , setamount] = useState(null);
 
      const [redeeming , setredeeming] = useState(false);
      const [redeemerror , setredeemerror] = useState(null);
@@ -2068,8 +2071,8 @@ const rejectrequest = async function(){
                       {selectedrequest&&selectedrequest.cancelled &&
                       
                       <>
-                      <Text>THIS REQUEST IS CANCELLED</Text>
-                      <Text>process cancellation</Text>
+                      <Text  color={'orange.700'} fontSize={'medium'} fontWeight={'bold'} >THIS REQUEST IS CANCELLED</Text>
+                      <Text   color={'orange.700'} fontSize={'medium'} fontWeight={'light'}  >process cancellation</Text>
 
                       <HStack   width={'95%'} gap={'10px'} p={'4px'}>
                             <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'}>TOTAL PAY REQUIRED</Text>
@@ -2105,7 +2108,95 @@ const rejectrequest = async function(){
                           <Button p={'2px'} colorScheme='blue'  borderRadius={'10px'}  >PROCEED</Button>
                         </HStack>
                          
-
+                        {compensate &&   
+                        
+                        <>
+                  <Button onClick={()=>{setcompensate(false)}} size={'sm'} borderRadius={'50%'}  colorScheme='red' color={'white'} display={'flex'} alignItems={'center'} justifyContent={'center'} p={'1px'} fontSize={'x-small'} >X</Button>
+                  <Tabs variant="soft-rounded" colorScheme="teal" isFitted>
+                  <TabList mb="1em">
+                    <Tab _selected={{ color: "white", bg: "teal.500" }}>M-Pesa</Tab>
+                    <Tab _selected={{ color: "white", bg: "teal.500" }}>Visa</Tab>
+                  </TabList>
+          
+                  <TabPanels>
+                    {/* M-Pesa Payment Tab */}
+                    <TabPanel>
+                      <VStack spacing={4} align="stretch">
+                        <FormControl>
+                          <FormLabel>Phone Number</FormLabel>
+                          <Input
+                            value={paynumber}
+                            onChange={(e)=>{setpaynumber(e.target.value)}}
+                            placeholder="e.g. 2547XXXXXXXX"
+                            bg={'white'}
+                            color="black"
+                            _placeholder={{ color: "gray.400" }}
+                          />
+                        </FormControl>
+  
+                        <FormControl>
+                          <FormLabel>Amount</FormLabel>
+                          <Input
+                             value={amount}
+                             onChange={(e)=>{setamount(e.target.value)}}
+                            placeholder="amount should be at least a third of the product's full cost"
+                            bg={'white'}
+                            color="black"
+                            _placeholder={{ color: "gray.400" }}
+                           
+                          />
+                        </FormControl>
+                        {payerror &&  
+                        
+                        <Text color={'red.500'} fontWeight={'bold'} >{payerror}</Text>
+                        }
+                        <Button colorScheme="teal" width="full"  onClick={pay} gap={'10px'} >
+                          Pay with M-Pesa
+                         {ispaying&&   <Spinner  width={'20px'}  height={'20px'} color='white' />}
+                        </Button>
+                      </VStack>
+                    </TabPanel>
+          
+                    {/* Visa Payment Tab */}
+                    <TabPanel>
+                      <VStack spacing={4} align="stretch">
+                        <FormControl>
+                          <FormLabel>Card Number</FormLabel>
+                          <Input
+                            placeholder="1234 5678 9012 3456"
+                            bg={'white'}
+                            color="white"
+                            _placeholder={{ color: "gray.400" }}
+                          />
+                        </FormControl>
+                        <FormControl>
+                          <FormLabel>Expiry Date</FormLabel>
+                          <Input
+                            placeholder="MM/YY"
+                            bg={'white'}
+                            color="white"
+                            _placeholder={{ color: "gray.400" }}
+                          />
+                        </FormControl>
+                        <FormControl>
+                          <FormLabel>CVV</FormLabel>
+                          <Input
+                            placeholder="123"
+                            bg={'white'}
+                            color="white"
+                            _placeholder={{ color: "gray.400" }}
+                            maxW="100px"
+                          />
+                        </FormControl>
+                        <Button colorScheme="teal" width="full">
+                          Pay with Visa
+                        </Button>
+                      </VStack>
+                    </TabPanel>
+                  </TabPanels>
+                </Tabs>
+                </>
+                        }
 
 
 

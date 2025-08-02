@@ -39,6 +39,10 @@ const Requestschema = new mongoose.Schema({
      initiated: {type:Boolean , default:false},
      rejected: {type:Boolean , default:false},
      cancelled: {type:Boolean , default:false},
+     cancelinfo: {type: new mongoose.Schema({
+        compensated:{type:Boolean , default:false}
+      } , {_id:false}
+        ), default:{} },
      previews: [{type:mongoose.Schema.Types.ObjectId , required:false}],
     //  costs: {type: new mongoose.Schema({
     //     makingcost: {type:Number , default:null},
