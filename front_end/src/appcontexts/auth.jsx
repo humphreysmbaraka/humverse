@@ -45,7 +45,11 @@ function Auth_Provider({children}) {
     finally{
       setloading(false);
     }
-  }  
+  } 
+  
+  useEffect(function(){
+      checkauthstatus();
+  } , []);
 
   return (
     <AuthContext.Provider value={{loggedin , admin , user , loading , checkauthstatus}}  >

@@ -33,6 +33,8 @@ const {loggedin , admin , loading} = useContext(AuthContext);
       )
    }
 
+  
+
     if(!loggedin){
         return(
          <AnimatePresence  mode='sync' >
