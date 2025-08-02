@@ -39,6 +39,8 @@ const logout = async function(){
 
          if (logout.ok){
               console.log('logged out');
+              checkauthstatus();
+
          }
          else{
               console.log('error logging out');
