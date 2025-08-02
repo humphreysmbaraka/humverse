@@ -16,13 +16,22 @@ import Clients from '../admin_pages/clients.jsx'
 import New_Requests from '../admin_pages/new_requests.jsx'
 import Works_in_progress from '../admin_pages/works_in_progress.jsx'
 import Ai_setup from '../admin_pages/ai_setup.jsx'
+import { Box, Spinner, Text } from '@chakra-ui/react'
 
 
 function Main_Navigator() {
 
 const location = useLocation();  
-const {loggedin , admin} = useContext(AuthContext);
+const {loggedin , admin , loading} = useContext(AuthContext);
 
+   if(loading){
+      return (
+        <Box  width={'100%'} height={'100%'} bg={'gray.800'}  display={'flex'} alignItems={'center'} justifyContent={'center'} >
+           <Text color={'white'}  fontSize={'xxx-large'} fontWeight={'bold'}  >LOADING</Text>
+           <Spinner  color='white' width={'150px'} height={'150px'}  />
+        </Box>
+      )
+   }
 
     if(!loggedin){
         return(

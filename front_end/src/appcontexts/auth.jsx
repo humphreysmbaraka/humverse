@@ -6,8 +6,7 @@ function Auth_Provider({children}) {
   const [loggedin , setloggedin] = useState(false);
   const [admin , setadmin] = useState(false);
   const [user , setuser] = useState(null)
-
-
+  const [loading , setloading] = useState(true);
     
   const checkauthstatus = async function(){
     try{
@@ -43,10 +42,13 @@ function Auth_Provider({children}) {
     catch(err){
        setloggedin(false);
     }
+    finally{
+      setloading(false);
+    }
   }  
 
   return (
-    <AuthContext.Provider value={{loggedin , admin , user ,  checkauthstatus}}  >
+    <AuthContext.Provider value={{loggedin , admin , user , loading , checkauthstatus}}  >
    {children}
     </AuthContext.Provider>
   )
