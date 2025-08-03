@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react'
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import React, { useContext, useEffect, useState } from 'react'
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import Pricing from '../app_components/Pricing.jsx'
 import Contacts from '../app_components/Contacts_page.jsx'
 import Home from '../app_components/Home.jsx'
@@ -20,9 +20,13 @@ import { Box, Spinner, Text } from '@chakra-ui/react'
 
 
 function Main_Navigator() {
-
+const navigate = useNavigate();
 const location = useLocation();  
 const {loggedin , admin , loading} = useContext(AuthContext);
+
+//   useEffect(function(){
+//        navigate('../main'); 
+//   } , [loggedin])
 
    if(loading){
       return (

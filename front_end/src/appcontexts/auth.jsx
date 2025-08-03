@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react'
 import BASE_URL from '../constants/urls';
+import { useNavigate } from 'react-router-dom';
 const AuthContext = createContext();
 
 function Auth_Provider({children}) {
@@ -7,6 +8,7 @@ function Auth_Provider({children}) {
   const [admin , setadmin] = useState(false);
   const [user , setuser] = useState(null)
   const [loading , setloading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(function(){
       console.log('auth status changed'  , 'loggedin' , loggedin , 'admin' , admin);

@@ -26,9 +26,16 @@ function Layout() {
 
 // console.log('logged in' , loggedin , 'admin' , admin)
 
+useEffect(function(){
+       navigate('/main'); 
+  } , [loggedin])
 
 const logout = async function(){
        try{
+                 const sure = confirm('are you sure  you want to log out');
+                 if(!sure){
+                     return;
+                 }
          const logout = await fetch(`${BASE_URL}/logout` , {
               credentials:'include',
               method:'POST' ,
