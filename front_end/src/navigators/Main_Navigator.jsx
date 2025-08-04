@@ -43,7 +43,7 @@ const {loggedin , admin , loading} = useContext(AuthContext);
         return(
          <AnimatePresence  mode='sync' >
            <Routes  location={location} key={location.pathname}>
-          
+           {/* <Route path="*" element={<Navigate to="/main" replace />} /> */}
           {/* <Route path="/" element={<Navigate to="/main" replace />} /> */}
           <Route path='/'  element={<Landing/>}  ></Route>
 <Route  path='/main' element={<Layout/>} >
@@ -51,7 +51,7 @@ const {loggedin , admin , loading} = useContext(AuthContext);
 {/* <Route path='land'  element={<Landing/>}  ></Route> */}
 <Route path='services'   element={<Pricing/>}  ></Route>
 <Route path='contacts'  element={<Contacts/>}  ></Route>
-<Route path='*' element={<Navigate to='/main' replace />} />
+<Route path='*' element={<Navigate to='' replace />} />
 </Route>
 </Routes>
          </AnimatePresence>
@@ -62,6 +62,7 @@ const {loggedin , admin , loading} = useContext(AuthContext);
         return (
             <AnimatePresence>
             <Routes  location={location} key={location.pathname} >
+            {/* <Route path="*" element={<Navigate to="/main" replace />} /> */}
                  <Route path="/main"  element={<Layout/>} >
                             {/* <Route  path='/main' element={<Layout/>} > */}
             <Route index  element={<Home/>}  ></Route>
@@ -79,7 +80,7 @@ const {loggedin , admin , loading} = useContext(AuthContext);
             <Route  path='view_projects'  element={<Works_in_progress/>}   />
             <Route    path='view_clients'  element={<Clients/>}  />
             <Route    path='ai_setup'  element={<Ai_setup/>}  />
-            <Route path='*' element={<Navigate to='/main' replace />} />
+            <Route path='*' element={<Navigate to='' replace />} />
                             </Route>          
           </Routes>
           </AnimatePresence>
@@ -90,6 +91,7 @@ const {loggedin , admin , loading} = useContext(AuthContext);
         return (
             <AnimatePresence>
         <Routes  location={location} key={location.pathname} >
+        {/* <Route path="*" element={<Navigate to="/main" replace />} /> */}
                              <Route path="/main" element={<Layout/>} >
                         {/* <Route   path='/main' element={<Layout/>} > */}
          <Route index element={<Home/>}  ></Route>
@@ -104,7 +106,7 @@ const {loggedin , admin , loading} = useContext(AuthContext);
             <Route   path='view_requests'  element={<New_Requests/>}      />
             <Route  path='view_projects'  element={<Works_in_progress/>}   />
             <Route    path='ai_setup'  element={<Ai_setup/>}  />
-            <Route path='*' element={<Navigate to='/main' replace />} />   
+            <Route path='*' element={<Navigate to='' replace />} />   
                         </Route>
       </Routes>
       </AnimatePresence>
