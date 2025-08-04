@@ -26,9 +26,10 @@ function Layout() {
 
 // console.log('logged in' , loggedin , 'admin' , admin)
 
-useEffect(function(){
-       navigate('/main'); 
-  } , [loggedin])
+// useEffect(function(){
+//        navigate('/main'); 
+//        console.log('loggedinstats' , loggedin);
+//   } , [loggedin])
 
 const logout = async function(){
        try{
@@ -47,7 +48,7 @@ const logout = async function(){
          if (logout.ok){
               console.log('logged out');
               // checkauthstatus();
-
+               
          }
          else{
               console.log('error logging out');

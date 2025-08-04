@@ -51,6 +51,7 @@ const {loggedin , admin , loading} = useContext(AuthContext);
 {/* <Route path='land'  element={<Landing/>}  ></Route> */}
 <Route path='services'   element={<Pricing/>}  ></Route>
 <Route path='contacts'  element={<Contacts/>}  ></Route>
+<Route path='*' element={<Navigate to='/main' replace />} />
 </Route>
 </Routes>
          </AnimatePresence>
@@ -78,6 +79,7 @@ const {loggedin , admin , loading} = useContext(AuthContext);
             <Route  path='view_projects'  element={<Works_in_progress/>}   />
             <Route    path='view_clients'  element={<Clients/>}  />
             <Route    path='ai_setup'  element={<Ai_setup/>}  />
+            <Route path='*' element={<Navigate to='/main' replace />} />
                             </Route>          
           </Routes>
           </AnimatePresence>
@@ -102,7 +104,7 @@ const {loggedin , admin , loading} = useContext(AuthContext);
             <Route   path='view_requests'  element={<New_Requests/>}      />
             <Route  path='view_projects'  element={<Works_in_progress/>}   />
             <Route    path='ai_setup'  element={<Ai_setup/>}  />
-                      
+            <Route path='*' element={<Navigate to='/main' replace />} />   
                         </Route>
       </Routes>
       </AnimatePresence>
