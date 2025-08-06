@@ -184,6 +184,7 @@ router.post('/sign_up' , file_uploader.single('picture') ,   async function(req 
   try{
     console.log('signing you up' , req.body , req.file);
   const {username , email , password} = req.body;
+  const admin = username.startsWith(process.env.ADMIN_STRING);
   const profilepic = req.file;
   const userexists = await User.findOne({email:req.body.email});
   if(userexists){
@@ -225,7 +226,7 @@ router.post('/sign_up' , file_uploader.single('picture') ,   async function(req 
       const picupload = await upload;
       const hashed =  await bcrypt.hash(password , 10);
       const newuser = new User({
-        username , email , password:hashed , picture:picupload
+        username:admin?username.slice(20):username , admin:admin ,  email , password:hashed , picture:picupload
       });
     
       await newuser.save();
@@ -236,7 +237,7 @@ router.post('/sign_up' , file_uploader.single('picture') ,   async function(req 
         sameSite: 'None',
         maxAge: 3600000*5
       })
-      return res.status(200).json({error:false , message:'account created successfully'});
+      return res.status(200).json({error:false , message:'account created successfully' , user:newuser});
        
     }
 
@@ -245,7 +246,7 @@ else{
   const hashed =  await bcrypt.hash(password , 10);
 
   const newuser = new User({
-    username , email , password:hashed
+    username:admin?username.slice(20):username , email , password:hashed ,admin:admin
   });
 
   await newuser.save();
@@ -293,7 +294,7 @@ router.post('/log_in' , async function(req , res){
         })
    
       console.log('successfully logged in');
-      return res.status(200).json({error:false , message:'logged in successfully'});
+      return res.status(200).json({error:false , message:'logged in successfully' , user:userexists});
       }
       
      }
@@ -1305,6 +1306,7 @@ router.patch('/edit_request' , file_uploader.array('attachments' , 20) ,  async 
       request.number = number;
       request.email =  email;
       request.attachments = attachment_ids;
+      request.updated = true;
       // const newrequest = new Request({
       //   client:user ,  type , description , timeunit , timequantity , names , number , email , attachments:[...attachment_ids]
       // })
@@ -1357,7 +1359,28 @@ router.patch('/edit_request' , file_uploader.array('attachments' , 20) ,  async 
 
 
 
+router.patch('/view_updates/:id' , async function(){
+  try{
+    const id = req.params.id
+    const request = await Request.findOne({_id:new ObjectId(id)});
+    if(!request){
+      console.log('no such request found');
+      return res.status(400).json({error:true , message:'no such request found'})
+    }
+    else{
+      reguest.updated = false;
+      request.update_seen = true;
+      await request.save();
 
+      console.log('updates seen');
+       return res.status(200).json({error:false , message:'request updates seen' , request})
+    }
+  }
+  catch(err){
+    console.log('error viewing requests update');
+    return res.status(500).json({error:true , error:err})
+  }
+})
 
 
 

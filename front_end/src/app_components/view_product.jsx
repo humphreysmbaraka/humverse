@@ -6,6 +6,7 @@ import { CiEdit } from "react-icons/ci";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../appcontexts/auth';
 import BASE_URL from '../constants/urls';
+import { socketcontext } from '../appcontexts/socket';
 
 
 
@@ -17,6 +18,7 @@ function View_Product() {
     const {winwidth , winheight} = useContext(dimensions);
     const location = useLocation();
     const {loggedin , admin , user} = useContext(AuthContext);
+    const {socket ,  requestrejected , requestredeemed , requestaccepted , previewsreceived} = useContext(socketcontext);
     const product_id = location.state.request._id;
     const [product , setproduct] = useState(null);
     const [initiating , setinitiating] = useState(false);
@@ -76,6 +78,77 @@ function View_Product() {
          
         }
       }
+
+      useEffect(function(){
+        if(requestrejected){
+          const timer = setTimeout(function(){
+            getrequest();
+            
+          } , 1000)
+        }
+        else{
+
+        }
+
+        return () => clearTimeout(timer);
+      } , [requestrejected]);
+
+
+
+      
+      useEffect(function(){
+        if(requestredeemed){
+          const timer = setTimeout(function(){
+            getrequest();
+            
+          } , 1000)
+        }
+        else{
+
+        }
+
+        return () => clearTimeout(timer);
+      } , [requestredeemed]);
+
+
+
+      useEffect(function(){
+        if(requestaccepted){
+          const timer = setTimeout(function(){
+            getrequest();
+            
+          } , 1000)
+        }
+        else{
+
+        }
+
+        return () => clearTimeout(timer);
+      } , [requestaccepted]);
+
+
+
+
+      useEffect(function(){
+        if(previewsreceived){
+          const timer = setTimeout(function(){
+            getrequest();
+            
+          } , 1000)
+        }
+        else{
+
+        }
+
+        return () => clearTimeout(timer);
+      } , [previewsreceived]);
+
+
+
+
+
+
+
 
        // the poling is set when the component mounts
       useEffect(function(){
@@ -160,6 +233,9 @@ function View_Product() {
           setcancelling(false);
           const info = await cancel.json();
           setproduct(info.request);
+          socket.current.emit('cancel_request' , {data:info.request} , function(){
+            console.log('request was cancelled successfully');
+          })
         }
         else{
           setcancelling(false);
@@ -203,6 +279,10 @@ function View_Product() {
           setuncancelling(false);
           const info = await cancel.json();
           setproduct(info.request);
+
+          socket.current.emit('uncancel_request' , {data:info.request} , function(){
+            console.log('uncancel event sent successfully');
+          })
         }
         else{
           setuncancelling(false);

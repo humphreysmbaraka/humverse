@@ -104,8 +104,8 @@ function Make_request() {
               setsubmittingerror(false);
               console.log('request sent successfully');
               const data = await upload.json();
-              socket.current.emit('sent_request' , data , function(){
-                console.log('request has been received');
+              socket.current.emit('editt_request' , data , function(){
+                console.log('edit request has been received');
                 // confirm('request sent successfully');
                 // console.log('socket' , socket.current);
                
@@ -139,8 +139,8 @@ function Make_request() {
               setsubmitting(false);
               setsubmittingerror(false);
               const data = await upload.json();
-              socket.current.emit('sent_request' , data , function(){
-                console.log('request has been received');
+              socket.current.emit('edit_request' , data , function(){
+                console.log('edit request has been received');
                 // confirm('request sent successfully');
                 // console.log('socket' , socket.current);
                
@@ -291,10 +291,10 @@ const reducetime = async function(){
               setsubmittingerror(false);
               console.log('request sent successfully');
               const data = await upload.json();
+              
               socket.current.emit('sent_request' , data , function(){
                 console.log('request has been received');
-                // confirm('request sent successfully');
-                // console.log('socket' , socket.current);
+               
                
               })
               navigate('/main');

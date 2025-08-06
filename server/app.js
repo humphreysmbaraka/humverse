@@ -48,27 +48,89 @@ atlasconnection()
 io.on('connection' , function(socket){
   console.log('socket connected to server' , socket.id);
 
+  socket.on('register' , async function(data , callback){
+      try{
+    const {data} = data;
+    socket.join(`${data}`);
+    callback();
+      }
+      catch(err){
+        console.log('error handling socket register event' , err)
+      }
+  })
 
+
+  socket.on('register_admin' , async function(data , callback){
+    try{
+  const {data} = data;
+  socket.join(`admins`);
+  callback();
+    }
+    catch(err){
+      console.log('error handling socket admin register event' , err)
+    }
+})
+  
   socket.on('sent_request' , function(data , callback){
     console.log('incoming request...' , data);
+    socket.to('admins').emit('request_received');
+    callback();
+  })
+
+
+  socket.on('edit_request' , function(data , callback){
+    console.log('editted request...' , data);
+    socket.to('admins').emit('request_editted');
+    callback();
+  })
+
+  socket.on('cancel_request' , function(data , callback){
+    console.log('cancelled request...' , data);
+    socket.to('admins').emit('request_cancelled');
+    callback();
+  })
+
+
+
+  socket.on('request_rejected' , function(data , callback){
+    console.log('request rejected...' , data);
+    socket.to('admins').emit('request_rejected');
+    callback();
+  })
+
+
+  socket.on('redeem' , function(data , callback){
+    console.log('request redeemed...' , data);
+    socket.to('admins').emit('request_redeemed');
+    callback();
+  })
+
+
+
+  socket.on('uncancel_request' , function(data , callback){
+    console.log('request uncancelled...' , data);
+    socket.to('admins').emit('request_uncancelled');
     callback();
   })
 
 
 
 
+  
+  socket.on('request_accepted' , function(data , callback){
+    console.log('request accepted...' , data);
+    socket.to('admins').emit('acceptance');
+    callback();
+  })
 
 
 
-
-
-
-
-
-
-
-
-
+ 
+  socket.on('sent_previews' , function(data , callback){
+    console.log('previews incoming...' , data);
+    socket.to('admins').emit('previews');
+    callback();
+  })
 
 
 

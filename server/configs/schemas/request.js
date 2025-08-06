@@ -10,6 +10,8 @@ const Requestschema = new mongoose.Schema({
      timequantity: {type:Number , required:true},
      names: {type:String , required:true},
      number: {type:String , required:true},
+     updated:{Type:Boolean , default:false},
+     update_seen:{Type:Boolean , default:false},
      payments: {type: new mongoose.Schema({
         status:{type:String , default:'not fully paid'},
         deposit_required: {type:Number , default:null},

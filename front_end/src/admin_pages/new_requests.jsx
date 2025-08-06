@@ -10,6 +10,7 @@ import { FaFileAlt } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
 import { error } from 'console';
 import { AuthContext } from '../appcontexts/auth';
+import { socketcontext } from '../appcontexts/socket';
 
 
 
@@ -47,15 +48,199 @@ function New_Requests() {
     const [compensate , setcompensate] = useState(false);
     const [paynumber , setpaynumber] = useState(null);
     const [amount , setamount] = useState(null);
+    const {socket , requestreceived , requestupdated , requestcancelled , requestuncancelled} = useContext(socketcontext);
 
      const [redeeming , setredeeming] = useState(false);
      const [redeemerror , setredeemerror] = useState(null);
     // const location = useLocation();
     // const reqs = location.state.requests;
 
+
+
+    const fetchreqs = async function(){
+        try{
+           const requests = await fetch(`${BASE_URL}/get_requests`);
+           if(requests.ok){
+            setisfetching(false);
+            setfetcherror(null);
+            console.log('requests response' , requests);
+            const reqdata = await requests.json();
+            setallreqs(function(prev){
+                if(selectedrequest){
+                   const newlist = reqdata.requests.map(function(val ,index){
+                     if(selectedrequest._id === val._id){
+                        const selection = {...selectedrequest , selected:true};
+                        setselectedrequest(selection);
+                        return selection
+                     }
+                     else{
+                        return val;
+                     }
+                    })
+
+                    return newlist;
+                }
+                else{
+                    return reqdata.requests
+                }
+            });
+           }
+           else{
+            setisfetching(false);
+            setfetcherror('server error occured');
+           }
+        }
+        catch(err){
+            console.log('error fetching requests' ,err);
+        }
+       }
+
+        // useEffect(function(){
+        //  if(selectedrequest){
+        //     allreqs.map(function(val , index){
+        //         if(val._id === selectedrequest._id){
+        //             return (
+        //                 {...selectedrequest , selected:true}
+        //             )
+        //         }
+        //     })
+        //  }
+        // } , [allreqs])
+
+    useEffect(function(){
+        if(requestreceived){
+          const timer = setTimeout(function(){
+            fetchreqs();
+            
+          } , 1000)
+        }
+        else{
+
+        }
+
+        return () => clearTimeout(timer);
+    }  ,[requestreceived])
+
+    useEffect(function(){
+        if(requestupdated){
+          const timer = setTimeout(function(){
+            fetchreqs();
+            
+          } , 1000)
+        }
+        else{
+
+        }
+
+        return () => clearTimeout(timer);
+    }  ,[requestupdated])
+
+
+    
+    useEffect(function(){
+        if(requestcancelled){
+          const timer = setTimeout(function(){
+            fetchreqs();
+            
+          } , 1000)
+        }
+        else{
+
+        }
+
+        return () => clearTimeout(timer);
+    }  ,[requestcancelled])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const view_updates = async function(obj){
+        try{
+           const   view = await fetch(`${BASE_URL}/view_ipdates/${obj._id}` , {
+            method:'PATCH',
+            credentials:'include',
+            headers:{
+                'Content-Type':'application/json'
+            }
+
+           })
+
+           if(view.ok){
+            const load = await view.json();
+            setselectedrequest(load.request);
+             const seen = load.request;
+
+             setselectedrequest(function(prev){
+                if(prev && prev._id == obj._id){
+                    prev = {...prev , selected:false};
+                    const current = {...seen , selected:true};
+                    return current;
+                }
+                else if(!prev){
+                    // prev = {...prev , selected:false};
+                    const current = {...obj , selected:true};
+                    return current;
+                }
+               
+             })
+
+              setallreqs(function(prev){
+                    return prev.map(function(val , index){
+                        if (val._id == obj._id){
+                          return seen;
+                        }
+                        else{
+                            return val
+                        }
+                    })
+                })
+            //  return seen;
+
+           }
+        }
+        catch(err){
+            console.log('could not view updates' , err);
+        }
+    }
   
 
+    useEffect(function(){
+        const view_updates = async function(){
+            try{
+               const   view = await fetch(`${BASE_URL}/view_updates/${selectedrequest._id}` , {
+                method:'PATCH',
+                credentials:'include',
+                headers:{
+                    'Content-Type':'application/json'
+                }
 
+               })
+
+               if(view.ok){
+                const load = await view.json();
+                setselectedrequest(load.request);
+               }
+            }
+            catch(err){
+                console.log('could not view updates' , err);
+            }
+        }
+    } , [selectedrequest])
 
 
 
@@ -242,6 +427,9 @@ function New_Requests() {
                         }
                     })
                 })
+                socket.current.emit('redeem' , {data:newselect} , function(){
+                    console.log('redeem event emitted successfully')
+                })
             }
             else{
                 const info = await redemption.json();
@@ -320,6 +508,10 @@ function New_Requests() {
                         }
                     })
                 })
+
+                socket.current.emit('sent_previews' , {data:info,request}, function(){
+                    console.log('acceptance request sent successfully');
+                })
             }
             else{
                 const info = await send.json();
@@ -364,7 +556,7 @@ function New_Requests() {
     useEffect(function(){
         setisfetching(true);
         setfetcherror(null);
-       const fetchreqs = async function(){
+       const fetchallreqs = async function(){
         try{
            const requests = await fetch(`${BASE_URL}/get_requests`);
            if(requests.ok){
@@ -384,7 +576,7 @@ function New_Requests() {
         }
        }
 
-        fetchreqs();
+        fetchallreqs();
     } ,[])
 
 
@@ -474,6 +666,10 @@ const sendacceptance = async function(){
                             return val;
                         }
                     })
+                })
+
+                socket.current.emit('request_accepted' , {data:acceptdata.request} , function(){
+                    console.log('acceptance event emitted successfully');
                 })
             }
             else{
@@ -649,6 +845,9 @@ const rejectrequest = async function(){
                 }
             })
         })
+        socket.current.emit('request_rejected' , {data:rejdata.request} , function(){
+            console.log('request rejected successfully')
+        })
             }
             else{
                 setrejecting(false);
@@ -694,6 +893,8 @@ const rejectrequest = async function(){
                 <Tab  color={'white'} fontSize={'medium'} fontWeight={'light'} >INITIATED</Tab>
                 <Tab  color={'white'} fontSize={'medium'} fontWeight={'light'} >CANCELED</Tab>
                 <Tab  color={'white'} fontSize={'medium'} fontWeight={'light'} >REJECTED</Tab>
+                <Tab  color={'white'} fontSize={'medium'} fontWeight={'light'} >UPDATED</Tab>
+
                
             </TabList>
             <TabPanels   width={'100%'} height={'99%'} p={'2px'}  mt={'10px'}  >
@@ -702,11 +903,13 @@ const rejectrequest = async function(){
                  {allreqs?.length > 0 && 
                   allreqs.map(function(val , index){
                     return(
-                        <HStack mt={'10px'} onClick={()=>{setselectedrequest(function(prev){
+                        <HStack mt={'10px'} onClick={()=>{setselectedrequest(async function(prev){
                            if(prev && prev._id !== val._id){
                             prev.selected = false;
                             val.selected = true;
                             return val;
+
+                            
                            }
                            else{
                             val.selected = true;
@@ -912,6 +1115,36 @@ const rejectrequest = async function(){
 
                     }
                    
+                  })
+                 }
+            </VStack>
+             </TabPanel>
+
+
+             <TabPanel   width={'100%'} height={'99%'} p={'2px'}  overflow={'auto'}  >
+             <VStack bg={'black'}  width={'98%'} maxHeight={'90%'} borderRadius={'10px'}  gap={'10px'} alignItems={'center'} overflow={'auto'}  css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}}   >
+                 {allreqs?.length > 0 && 
+                  allreqs.map(function(val , index){
+                    if(val.updated && !val.update_seen){
+                         
+                        return(
+                            <HStack mt={'10px'} onClick={()=>{view_updates(val)}}  width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} overflow={'auto'} css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}}  backgroundColor={val.selected?'gray.800':'transparent'} >
+                                <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
+                                <Text color={'white'}   >{val.client.username}</Text>
+                                <Text color={'white'}   >{val.createdAt.slice(0 , 10)}</Text>
+                                <Text color={'white'}   >{val.createdAt.slice(11 , 16)}</Text>
+                                <Text color={val.accepted&&!val.initiated&&!val.cancelled&&!val.rejected?'green':val.accepted&&val.initiated&&!val.cancelled&&!val.rejected?'purple':val.rejected?'red':val.cancelled?'orange':'green'}   >{val.accepted&&!val.initiated&&!val.cancelled&&!val.rejected?'ACCEPTED':val.accepted&&val.initiated&&!val.cancelled&&!val.rejected?'INITIATED':val.rejected?'REJECTED':val.cancelled?'CANCELLED':'NEW'}</Text>
+                                {/* <Text color={val.received?'green':'orange'} >{val.received?'Received':'not yet received'}</Text>
+                                <Text color={val.initiated?'green.500':'orange'} >{val.initiated?'Initiated':'not yet initiated'}</Text>
+                                <Text color={val.rejected?'red':'green'}  >{val.rejected?'rejected':'not rejected'}</Text>
+                                <Text color={val.cancelled?'red':'green'}>{val.cancelled?'cancelled':'not cancelled'}</Text> */}
+                            </HStack>
+                        )
+                    }
+                    else{
+
+                    }
+                 
                   })
                  }
             </VStack>

@@ -1,11 +1,13 @@
 import { Box, HStack, Tab, TabList, TabPanel, TabPanels, Tabs, Text, Input, Avatar, VStack, Button, Spinner} from '@chakra-ui/react'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Motionbox } from '../motion_components';
 import { AnimatePresence } from 'framer-motion';
 import { IoDocumentAttach } from "react-icons/io5";
 // import {dotenv} from 'dotenv'
 import BASE_URL from '../constants/urls';
 import { useNavigate } from 'react-router-dom';
+import { socketcontext } from '../appcontexts/socket';
+import { AuthContext } from '../appcontexts/auth';
 
 
 function Signup_prompt({width  , height}) {
@@ -22,6 +24,8 @@ const [submissionerror , setsubmissionerror] = useState(null)
 const [previewurl , setpreviewurl] = useState(null)
 // const [picture , setpicture] = useState(null);
 const picinput = useRef(null);
+const {socket ,socketconnected} = useContext(socketcontext);
+const {checkauthstatus} = useContext(AuthContext);
 
 
 useEffect(function(){
@@ -56,7 +60,22 @@ useEffect(function(){
 
         if(upload.ok){
           setsubmitting(false);
+          checkauthstatus();
+           
            const feedback = await upload.json();
+           const user = feedback.user;
+           if(user.admin){
+            socket.current.emit('register_amin' , {data:feedback.user._id} , function(){
+              console.log('socket has been registered');
+             })
+
+           }
+           else{
+            socket.current.emit('register' , {data:feedback.user._id} , function(){
+              console.log('socket has been registered');
+             })
+           }
+       
            setsubmissionerror(false)
            navigate('/main')
 
@@ -103,6 +122,19 @@ useEffect(function(){
              setsubmitting(false);
              setsubmissionerror(null)
              navigate('/main')
+             checkauthstatus();
+             const user = feedback.user;
+             if(user.admin){
+              socket.current.emit('register_admin' , {data:feedback.user._id} , function(){
+                console.log('socket has been registered');
+               })
+             }
+             else{
+              socket.current.emit('register' , {data:feedback.user._id} , function(){
+                console.log('socket has been registered');
+               })
+             }
+           
   
           }
           else{
@@ -128,6 +160,19 @@ useEffect(function(){
             setsubmitting(false);
              const feedback = await upload.json();
              setsubmissionerror(false)
+             checkauthstatus();
+             const user = feedback.user;
+             if(user.admin){
+              socket.current.emit('register_amin' , {data:feedback.user._id} , function(){
+                console.log('socket has been registered');
+               })
+             }
+             else{
+              socket.current.emit('register' , {data:feedback.user._id} , function(){
+                console.log('socket has been registered');
+               })
+             }
+            
   
           }
           else{
