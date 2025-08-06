@@ -257,7 +257,7 @@ else{
     sameSite: 'None',
     maxAge: 3600000*5
   })
-  return res.status(200).json({error:false , message:'account created successfully'});
+  return res.status(200).json({error:false , message:'account created successfully' , user:newuser});
 }
     
   }
