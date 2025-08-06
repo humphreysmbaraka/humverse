@@ -62,7 +62,7 @@ io.on('connection' , function(socket){
 
   socket.on('register_admin' , async function(data , callback){
     try{
-  const {data} = data;
+  // const {data} = data;
   socket.join(`admins`);
   callback();
     }
