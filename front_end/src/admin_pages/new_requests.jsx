@@ -1214,13 +1214,13 @@ const rejectrequest = async function(){
                      {selectedrequest&&(!selectedrequest.accepted&&!selectedrequest.initiated&&!selectedrequest.cancelled&&!selectedrequest.rejected) && 
                      <>
                      <Text color={'green.500'}  fontSize={'x-large'}  >NEW REQUEST</Text>
-                     <Avatar mt={'10px'} width={'200px'}  height={'200px'} borderRadius={'50%'} display={'flex'} alignItems={'center'} justifyContent={'center'} p={0} src={selectedrequest?.client?.picture?`${BASE_URL}/profile_pic/${selectedrequest.client.picture}`:undefined} name={selectedrequest.client.username} />
+                     <Avatar mt={'10px'} width={'200px'}  height={'200px'} borderRadius={'50%'} display={'flex'} alignItems={'center'} justifyContent={'center'} p={0} src={selectedrequest?.client?.picture?`${BASE_URL}/profile_pic/${selectedrequest?.client?.picture}`:undefined} name={selectedrequest?.client?.username} />
                      <Text mt={'10px'} mb={'5px'} color={'white'}   fontWeight={'light'} >sent by
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest.client.username}`}</Text>
+                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest?.client?.username}`}</Text>
                      </Text>
  
                      <Text mt={'10px'} mb={'5px'} color={'white'} fontWeight={'light'} >email
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest.client.email} / ${selectedrequest.email}` }</Text>
+                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest?.client?.email} / ${selectedrequest.email}` }</Text>
                      </Text>
  
                      <Text mt={'10px'} mb={'5px'} color={'white'}   fontWeight={'light'} >phone number
@@ -1228,11 +1228,11 @@ const rejectrequest = async function(){
                      </Text>
  
                      <Text mt={'10px'} mb={'5px'} color={'white'}   fontWeight={'light'} >USERNAME
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.client.username}</Text>
+                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest?.client?.username}</Text>
                      </Text>
  
                      <Text mt={'10px'} mb={'5px'} color={'white'}  fontWeight={'light'} >USERNAME
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.client.username}</Text>
+                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest?.client?.username}</Text>
                      </Text>
 
 
@@ -1271,13 +1271,13 @@ const rejectrequest = async function(){
                        <Text color={'green.800'} fontSize={'xxx-large'} >PENDING INITIATION</Text>
                      </Box>
                      {/* <Text color={'green.500'}  fontSize={'x-large'}  >NEW REQUEST</Text> */}
-                     <Avatar mt={'10px'} width={'200px'}  height={'200px'} borderRadius={'50%'} display={'flex'} alignItems={'center'} justifyContent={'center'} p={0} src={selectedrequest.client.picture?`${BASE_URL}/profile_pic/${selectedrequest.client.picture}`:undefined} name={selectedrequest.client.username} />
+                     <Avatar mt={'10px'} width={'200px'}  height={'200px'} borderRadius={'50%'} display={'flex'} alignItems={'center'} justifyContent={'center'} p={0} src={selectedrequest?.client?.picture?`${BASE_URL}/profile_pic/${selectedrequest?.client?.picture}`:undefined} name={selectedrequest?.client?.username} />
                      <Text mt={'10px'} mb={'5px'} color={'white'}   fontWeight={'light'} >sent by
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest.client.username}`}</Text>
+                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest?.client?.username}`}</Text>
                      </Text>
  
                      <Text mt={'10px'} mb={'5px'} color={'white'} fontWeight={'light'} >email
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest.client.email} / ${selectedrequest.email}` }</Text>
+                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest?.client?.email} / ${selectedrequest.email}` }</Text>
                      </Text>
  
                      <Text mt={'10px'} mb={'5px'} color={'white'}   fontWeight={'light'} >phone number
@@ -1285,11 +1285,11 @@ const rejectrequest = async function(){
                      </Text>
  
                      <Text mt={'10px'} mb={'5px'} color={'white'}   fontWeight={'light'} >USERNAME
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.client.username}</Text>
+                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest?.client?.username}</Text>
                      </Text>
  
                      <Text mt={'10px'} mb={'5px'} color={'white'}  fontWeight={'light'} >USERNAME
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.client.username}</Text>
+                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest?.client?.username}</Text>
                      </Text>
 
 
@@ -1375,13 +1375,13 @@ const rejectrequest = async function(){
                        <Text color={'green.500'} fontSize={'xx-large'} >PENDING INITIATION</Text>
                      </Box> */}
                      {/* <Text color={'green.500'}  fontSize={'x-large'}  >NEW REQUEST</Text> */}
-                     <Avatar mt={'10px'} width={'200px'}  height={'200px'} borderRadius={'50%'} borderWidth={'3px'} display={'flex'} alignItems={'center'} justifyContent={'center'} p={0} src={selectedrequest.client.picture?`${BASE_URL}/profile_pic/${selectedrequest.client.picture}`:undefined} name={selectedrequest.client.username} borderColor={'purple'} />
+                     <Avatar mt={'10px'} width={'200px'}  height={'200px'} borderRadius={'50%'} borderWidth={'3px'} display={'flex'} alignItems={'center'} justifyContent={'center'} p={0} src={selectedrequest?.client?.picture?`${BASE_URL}/profile_pic/${selectedrequest?.client?.picture}`:undefined} name={selectedrequest?.client?.username} borderColor={'purple'} />
                      <Text mt={'10px'} mb={'5px'} color={'purple'}   fontWeight={'light'} >sent by
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest.client.username}`}</Text>
+                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest?.client?.username}`}</Text>
                      </Text>
  
                      <Text mt={'10px'} mb={'5px'} color={'purple'} fontWeight={'light'} >email
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest.client.email} / ${selectedrequest.email}` }</Text>
+                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest?.client?.email} / ${selectedrequest.email}` }</Text>
                      </Text>
  
                      <Text mt={'10px'} mb={'5px'} color={'purple'}   fontWeight={'light'} >phone number
@@ -1389,11 +1389,11 @@ const rejectrequest = async function(){
                      </Text>
  
                      <Text mt={'10px'} mb={'5px'} color={'purple'}   fontWeight={'light'} >USERNAME
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.client.username}</Text>
+                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest?.client?.username}</Text>
                      </Text>
  
                      <Text mt={'10px'} mb={'5px'} color={'purple'}  fontWeight={'light'} >USERNAME
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.client.username}</Text>
+                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest?.client?.username}</Text>
                      </Text>
 
 
@@ -1479,13 +1479,13 @@ const rejectrequest = async function(){
                        <Text color={'orange.800'} fontSize={'xxx-large'} >THIS REQUEST WAS CANCELLED</Text>
                      </Box>
                      {/* <Text color={'green.500'}  fontSize={'x-large'}  >NEW REQUEST</Text> */}
-                     <Avatar mt={'10px'} width={'200px'}  height={'200px'} borderRadius={'50%'} borderWidth={'3px'} display={'flex'} alignItems={'center'} justifyContent={'center'} p={0} src={selectedrequest.client.picture?`${BASE_URL}/profile_pic/${selectedrequest.client.picture}`:undefined} name={selectedrequest.client.username} borderColor={'orange'} />
+                     <Avatar mt={'10px'} width={'200px'}  height={'200px'} borderRadius={'50%'} borderWidth={'3px'} display={'flex'} alignItems={'center'} justifyContent={'center'} p={0} src={selectedrequest?.client?.picture?`${BASE_URL}/profile_pic/${selectedrequest?.client?.picture}`:undefined} name={selectedrequest?.client?.username} borderColor={'orange'} />
                      <Text mt={'10px'} mb={'5px'} color={'orange'}   fontWeight={'light'} >sent by
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest.client.username}`}</Text>
+                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest?.client?.username}`}</Text>
                      </Text>
  
                      <Text mt={'10px'} mb={'5px'} color={'orange'} fontWeight={'light'} >email
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest.client.email} / ${selectedrequest.email}` }</Text>
+                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest?.client?.email} / ${selectedrequest.email}` }</Text>
                      </Text>
  
                      <Text mt={'10px'} mb={'5px'} color={'orange'}   fontWeight={'light'} >phone number
@@ -1493,11 +1493,11 @@ const rejectrequest = async function(){
                      </Text>
  
                      <Text mt={'10px'} mb={'5px'} color={'orange'}   fontWeight={'light'} >USERNAME
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.client.username}</Text>
+                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest?.client?.username}</Text>
                      </Text>
  
                      <Text mt={'10px'} mb={'5px'} color={'orange'}  fontWeight={'light'} >USERNAME
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.client.username}</Text>
+                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest?.client?.username}</Text>
                      </Text>
 
 
@@ -1585,13 +1585,13 @@ const rejectrequest = async function(){
                        <Text color={'red.800'} fontSize={'xxx-large'} >THIS REQUEST WAS REJECTED</Text>
                      </Box>
                    
-                     <Avatar mt={'10px'} width={'200px'}  height={'200px'} borderRadius={'50%'} borderWidth={'3px'} display={'flex'} alignItems={'center'} justifyContent={'center'} p={0} src={selectedrequest.client.picture?`${BASE_URL}/profile_pic/${selectedrequest.client.picture}`:undefined} name={selectedrequest.client.username} borderColor={'purple'} />
+                     <Avatar mt={'10px'} width={'200px'}  height={'200px'} borderRadius={'50%'} borderWidth={'3px'} display={'flex'} alignItems={'center'} justifyContent={'center'} p={0} src={selectedrequest?.client?.picture?`${BASE_URL}/profile_pic/${selectedrequest?.client?.picture}`:undefined} name={selectedrequest?.client?.username} borderColor={'purple'} />
                      <Text mt={'10px'} mb={'5px'} color={'red'}   fontWeight={'light'} >sent by
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest.client.username}`}</Text>
+                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest?.client?.username}`}</Text>
                      </Text>
  
                      <Text mt={'10px'} mb={'5px'} color={'red'} fontWeight={'light'} >email
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest.client.email} / ${selectedrequest.email}` }</Text>
+                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest?.client?.email} / ${selectedrequest.email}` }</Text>
                      </Text>
  
                      <Text mt={'10px'} mb={'5px'} color={'red'}   fontWeight={'light'} >phone number
@@ -1599,11 +1599,11 @@ const rejectrequest = async function(){
                      </Text>
  
                      <Text mt={'10px'} mb={'5px'} color={'red'}   fontWeight={'light'} >USERNAME
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.client.username}</Text>
+                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest?.client?.username}</Text>
                      </Text>
  
                      <Text mt={'10px'} mb={'5px'} color={'red'}  fontWeight={'light'} >USERNAME
-                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest.client.username}</Text>
+                     <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{selectedrequest?.client?.username}</Text>
                      </Text>
 
 
