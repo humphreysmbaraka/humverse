@@ -100,6 +100,23 @@ function New_Requests() {
         }
        }
 
+
+       useEffect(function(){
+        if(selectedrequest){
+            allreqs.map(function(val , index){
+                if(selectedrequest._id === val._id){
+                    setselectedrequest(val);
+                }
+                else{
+                 return;
+                }
+            })
+        }
+        else{
+            return;
+        }
+         
+    } , [allreqs])
         // useEffect(function(){
         //  if(selectedrequest){
         //     allreqs.map(function(val , index){
