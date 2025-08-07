@@ -80,8 +80,9 @@ function View_Product() {
       }
 
       useEffect(function(){
+        let timer;
         if(requestrejected){
-          const timer = setTimeout(function(){
+          timer = setTimeout(function(){
             getrequest();
             
           } , 1000)
@@ -97,8 +98,9 @@ function View_Product() {
 
       
       useEffect(function(){
+        let timer;
         if(requestredeemed){
-          const timer = setTimeout(function(){
+           timer = setTimeout(function(){
             getrequest();
             
           } , 1000)
@@ -113,8 +115,9 @@ function View_Product() {
 
 
       useEffect(function(){
+        let timer
         if(requestaccepted){
-          const timer = setTimeout(function(){
+           timer = setTimeout(function(){
             getrequest();
             
           } , 1000)
@@ -130,8 +133,9 @@ function View_Product() {
 
 
       useEffect(function(){
+        let timer;
         if(previewsreceived){
-          const timer = setTimeout(function(){
+          timer = setTimeout(function(){
             getrequest();
             
           } , 1000)

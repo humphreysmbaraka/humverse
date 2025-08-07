@@ -108,8 +108,9 @@ function New_Requests() {
         // } , [allreqs])
 
     useEffect(function(){
+        let timer;
         if(requestreceived){
-          const timer = setTimeout(function(){
+           timer = setTimeout(function(){
             fetchreqs();
             
           } , 1000)
@@ -122,8 +123,9 @@ function New_Requests() {
     }  ,[requestreceived])
 
     useEffect(function(){
+        let timer;
         if(requestupdated){
-          const timer = setTimeout(function(){
+          timer = setTimeout(function(){
             fetchreqs();
             
           } , 1000)
@@ -138,8 +140,9 @@ function New_Requests() {
 
     
     useEffect(function(){
+        let timer;
         if(requestcancelled){
-          const timer = setTimeout(function(){
+           timer = setTimeout(function(){
             fetchreqs();
             
           } , 1000)
@@ -247,7 +250,11 @@ function New_Requests() {
     useEffect(function(){
         const fetchattachmentsinfo = async function(){
             console.log('fetching attachments');
+
             try{
+                if(!selectedrequest){
+                    return;
+                }
                if(selectedrequest.attachments.length > 0){
                  console.log('attachments' , selectedrequest.attachments);
                  const infos = selectedrequest.attachments.map(function(val , index){
