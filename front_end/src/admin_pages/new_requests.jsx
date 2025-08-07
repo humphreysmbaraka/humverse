@@ -1214,7 +1214,7 @@ const rejectrequest = async function(){
                      {selectedrequest&&(!selectedrequest.accepted&&!selectedrequest.initiated&&!selectedrequest.cancelled&&!selectedrequest.rejected) && 
                      <>
                      <Text color={'green.500'}  fontSize={'x-large'}  >NEW REQUEST</Text>
-                     <Avatar mt={'10px'} width={'200px'}  height={'200px'} borderRadius={'50%'} display={'flex'} alignItems={'center'} justifyContent={'center'} p={0} src={selectedrequest.client.picture?`${BASE_URL}/profile_pic/${selectedrequest.client.picture}`:undefined} name={selectedrequest.client.username} />
+                     <Avatar mt={'10px'} width={'200px'}  height={'200px'} borderRadius={'50%'} display={'flex'} alignItems={'center'} justifyContent={'center'} p={0} src={selectedrequest?.client?.picture?`${BASE_URL}/profile_pic/${selectedrequest.client.picture}`:undefined} name={selectedrequest.client.username} />
                      <Text mt={'10px'} mb={'5px'} color={'white'}   fontWeight={'light'} >sent by
                      <Text as={'span'} fontSize={'medium'}  fontWeight={'bold'} color={'black'} >{`${selectedrequest.client.username}`}</Text>
                      </Text>
