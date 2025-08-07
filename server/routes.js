@@ -15,6 +15,7 @@ const ai = require('./configs/openAi');
 const index = require('./configs/pineconedb');
 const Query = require('./configs/schemas/queries');
 const Transaction = require('./configs/schemas/transaction');
+const { Readable } = require('stream');
 // const humverseindex = require('./configs/pineconedb');
 // const  pineconedb  = require('./configs/pineconedb');
 // console.log('TYPE OF INDEX' , index , typeof(index));
@@ -180,7 +181,7 @@ const router = express.Router();
 
 
 
-router.post('/sign_up' , file_uploader.single('picture') ,   async function(req , res){
+router.post('/sign_up' , memstorage.single('picture') ,   async function(req , res){
   try{
     console.log('signing you up' , req.body , req.file);
   const {username , email , password} = req.body;
@@ -196,11 +197,11 @@ router.post('/sign_up' , file_uploader.single('picture') ,   async function(req 
     if(profilepic){
       const upload = new Promise(function(resolve , reject){
         const name = profilepic.originalname;
-        const path = profilepic.path;
+        // const path = profilepic.path;
         const type = profilepic.mimetype;
         const size = profilepic.size;
 
-        const readstream = fs.createReadStream(path);
+        const readstream = Readable.from(profilepic.buffer);
         const uploadstream = profilepicturesbucket.openUploadStream(name , {
           metadata:{
             size , type
@@ -210,15 +211,11 @@ router.post('/sign_up' , file_uploader.single('picture') ,   async function(req 
 
         uploadstream.on('finish' ,async  function(){
           resolve(uploadstream.id);
-            fs.unlink(path , function(){
-              console.log('file deleted')
-            })
+           
         })
         uploadstream.on('error' , function(err){
           reject(err);
-          fs.unlink(path , function(){
-            console.log('file deleted')
-          })
+         
         })
       
       })
@@ -349,7 +346,7 @@ router.get('/profile_pic/:pic_id' , async function(req , res){
 
 
 
-router.post('/send_request' , file_uploader.array('attachments' , 20) ,  async function(req , res){
+router.post('/send_request' , memstorage.array('attachments' , 20) ,  async function(req , res){
   try{
   console.log('request received' , req.body , req.files);
   const {type , description , timeunit , timequantity , names , number , email , user} = req.body;
@@ -364,12 +361,12 @@ router.post('/send_request' , file_uploader.array('attachments' , 20) ,  async f
          return (
           new Promise(function(resolve , reject){
   
-            const path = val.path;
+            // const path = val.path;
             const name = val.originalname;
             const type = val.mimetype;
             const size = val.size;
     
-            const readstream = fs.createReadStream(path);
+            const readstream = Readable.from(val.buffer);
             const uploadstream = requestbucket.openUploadStream(name , {
               metadata : {
                 name , type , size 
@@ -381,26 +378,12 @@ router.post('/send_request' , file_uploader.array('attachments' , 20) ,  async f
             uploadstream.on('finish' , function(){
               resolve( uploadstream.id);
   
-              fs.unlink(path , function(err){
-             if(err){
-              console.log('error unlinking file');
-             }
-             else{
-              console.log('file unlinked');
-             }
-              })
+            
             })
   
             uploadstream.on('error' , function(err){
               reject(err);
-              fs.unlink(path , function(err){
-                if(err){
-                 console.log('error unlinking file');
-                }
-                else{
-                 console.log('file unlinked');
-                }
-                 })
+              
               
             })
   
@@ -1236,7 +1219,7 @@ router.post('/callback', express.json(), async function(req, res){
 
 
 
-router.patch('/edit_request' , file_uploader.array('attachments' , 20) ,  async function(req , res){
+router.patch('/edit_request' , memstorage.array('attachments' , 20) ,  async function(req , res){
   try{
     
   console.log('EDITTING REQUEST RECEIVED' , req.body ,   'FILES' , req.files);
@@ -1252,12 +1235,12 @@ router.patch('/edit_request' , file_uploader.array('attachments' , 20) ,  async 
          return (
           new Promise(function(resolve , reject){
   
-            const path = val.path;
+            // const path = val.path;
             const name = val.originalname;
             const type = val.mimetype;
             const size = val.size;
     
-            const readstream = fs.createReadStream(path);
+            const readstream =  Readable.from(val.buffer);
             const uploadstream = requestbucket.openUploadStream(name , {
               metadata : {
                 name , type , size 
@@ -1269,26 +1252,12 @@ router.patch('/edit_request' , file_uploader.array('attachments' , 20) ,  async 
             uploadstream.on('finish' , function(){
               resolve( uploadstream.id);
   
-              fs.unlink(path , function(err){
-             if(err){
-              console.log('error unlinking file');
-             }
-             else{
-              console.log('file unlinked');
-             }
-              })
+             
             })
   
             uploadstream.on('error' , function(err){
               reject(err);
-              fs.unlink(path , function(err){
-                if(err){
-                 console.log('error unlinking file');
-                }
-                else{
-                 console.log('file unlinked');
-                }
-                 })
+             
               
             })
   
