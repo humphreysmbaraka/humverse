@@ -51,7 +51,8 @@ io.on('connection' , function(socket){
   socket.on('register' , async function(data , callback){
       try{
     // const {data} = data;
-    socket.join(`${data}`);
+    console.log('registering client' , data)
+    socket.join(`${data._id}`);
     callback();
       }
       catch(err){
@@ -63,6 +64,7 @@ io.on('connection' , function(socket){
   socket.on('register_admin' , async function(data , callback){
     try{
   // const {data} = data;
+  console.log('registering admin' , data)
   socket.join(`admins`);
   callback();
     }
@@ -94,14 +96,14 @@ io.on('connection' , function(socket){
 
   socket.on('request_rejected' , function(data , callback){
     console.log('request rejected...' , data);
-    socket.to('admins').emit('request_rejected');
+    socket.to(`${data.client}`).emit('request_rejected');
     callback();
   })
 
 
   socket.on('redeem' , function(data , callback){
     console.log('request redeemed...' , data);
-    socket.to('admins').emit('request_redeemed');
+    socket.to(`${data.client}`).emit('request_redeemed');
     callback();
   })
 
@@ -119,7 +121,7 @@ io.on('connection' , function(socket){
   
   socket.on('request_accepted' , function(data , callback){
     console.log('request accepted...' , data);
-    socket.to('admins').emit('acceptance');
+    socket.to(`${data.client}`).emit('acceptance');
     callback();
   })
 
@@ -128,7 +130,7 @@ io.on('connection' , function(socket){
  
   socket.on('sent_previews' , function(data , callback){
     console.log('previews incoming...' , data);
-    socket.to('admins').emit('previews');
+    socket.to(`${data.client}`).emit('previews');
     callback();
   })
 

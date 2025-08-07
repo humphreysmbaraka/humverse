@@ -156,7 +156,20 @@ function New_Requests() {
 
 
 
+    useEffect(function(){
+        let timer;
+        if(requestuncancelled){
+           timer = setTimeout(function(){
+            fetchreqs();
+            
+          } , 1000)
+        }
+        else{
 
+        }
+
+        return () => clearTimeout(timer);
+    }  ,[requestuncancelled])
 
 
 
@@ -517,7 +530,7 @@ function New_Requests() {
                     })
                 })
 
-                socket.current.emit('sent_previews' , {data:info,request}, function(){
+                socket.current.emit('sent_previews' , {data:info.request}, function(){
                     console.log('acceptance request sent successfully');
                 })
             }
