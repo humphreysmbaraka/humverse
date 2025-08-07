@@ -68,13 +68,19 @@ function New_Requests() {
             setallreqs(function(prev){
                 // if(selectedrequest){
                    const newlist = reqdata.requests.map(function(val ,index){
-                     if(selectedrequest._id === val._id){
+                    if(selectedrequest){
+                        if(selectedrequest._id === val._id){
                        
-                        return {...selectedrequest , selected:true}
-                     }
-                     else{
+                            return {...val , selected:true}
+                         }
+                         else{
+                            return {...val , selected:false};
+                         }
+                    }
+                    else{
                         return {...val , selected:false};
-                     }
+                    }
+                   
                     })
 
                     return newlist;
