@@ -248,13 +248,15 @@ function New_Requests() {
 
 
     useEffect(function(){
+
+        if(!selectedrequest){
+            return;
+        }
         const fetchattachmentsinfo = async function(){
             console.log('fetching attachments');
 
             try{
-                if(!selectedrequest){
-                    return;
-                }
+                
                if(selectedrequest.attachments.length > 0){
                  console.log('attachments' , selectedrequest.attachments);
                  const infos = selectedrequest.attachments.map(function(val , index){

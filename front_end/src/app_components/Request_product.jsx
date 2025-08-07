@@ -511,16 +511,23 @@ const reducetime = async function(){
 
 
 
-       <Box as='button'   mt={'10px'} mb={'10px'}   borderColor={'white'} borderWidth={'2px'} height={'45px'} width={'30%'} display={'flex'} flexDirection={'row'} alignItems={'center'} justifyContent={'center'} p={'3px'} bg={'blue'} borderRadius={'10px'} gap={'10px'} >
-  <IoMdSend  size={'18px'} color='blue' />
-  <Text color={'white'}  fontSize={'xs'}  >BACK TO PRODUCT</Text>
-  {/* {submitting &&
-   <Spinner width={'20px'} height={'20px'} color='white'  />
-  } */}
- 
- 
- 
-  </Box>           
+   {( mode && mode=='editting')  &&  
+   
+
+   <Box as='button'   mt={'10px'} mb={'10px'}   borderColor={'white'} borderWidth={'2px'} height={'45px'} width={'30%'} display={'flex'} flexDirection={'row'} alignItems={'center'} justifyContent={'center'} p={'3px'} bg={'blue'} borderRadius={'10px'} gap={'10px'} >
+   <IoMdSend  size={'18px'} color='blue' />
+   <Text color={'white'}  fontSize={'xs'}  >BACK TO PRODUCT</Text>
+   {/* {submitting &&
+    <Spinner width={'20px'} height={'20px'} color='white'  />
+   } */}
+  
+  
+  
+   </Box>   
+
+
+   }
+             
 
                    
 
