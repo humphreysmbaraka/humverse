@@ -19,9 +19,9 @@ function Ai_setup() {
     const [deleteerror ,setdeleteerror] = useState(null);
 
 
-    useEffect(function(){
-        window.open(`${BASE_URL}/ai_doc/${clickeddoc._id}`, '_blank')
-    },[clickeddoc])
+        const clickeedondoc = function(val){
+            window.open(`${BASE_URL}/ai_doc/${val._id}`, '_blank')}
+        }
 
 
     const getdocs =  async function(){
@@ -255,7 +255,7 @@ function Ai_setup() {
             {docs.length > 0 ?( 
                docs.map(function(val , index){
                 return (
-                    <VStack  onClick={()=>{setclickeddoc(val)}}  key={index} borderWidth={'1px'} borderColor={'white'}  width={'21%'} p={'2px'} gap={'10px'} alignItems={'center'} >
+                    <VStack  onClick={()=>{clickeedondoc(val)}}  key={index} borderWidth={'1px'} borderColor={'white'}  width={'21%'} p={'2px'} gap={'10px'} alignItems={'center'} >
                     <IoDocumentTextOutline   size={'120px'}  color='red'   />
                      <Text  color={'white'} isTruncated={true}   fontSize={'small'}  >{val?.metadata?.name}</Text>
                      <HStack  width={'95%'}  p={'2px'}  gap={'10px'}  alignItems={'center'}  justifyContent={'center'} >
