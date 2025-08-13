@@ -152,8 +152,9 @@ function Pricing() {
                   ["Maintenance Basic (monthly)", "3,000", "2,200"],
                   ["Maintenance Advanced (monthly)", "5,000–10,000", "4,000–7,500"]
                 ], ["Service", "Price (KES)", "Offer Price (KES)"])}
-
               </VStack>
+              <Text color={'white'} fontSize={'large'} fontWeight={'bold'} >FOR MORE CLARIFICATIONS OR QUESTIONS ON AYTHING , YOU CAN CONTACT US OR ASK THE ASSISTANS</Text>
+
             </TabPanel>
 
             {/* Terms & Conditions Tab */}
@@ -227,7 +228,11 @@ function Pricing() {
                   "Terms may be updated periodically",
                   "Clients notified of major changes"
                 ])}
+
+
               </VStack>
+              <Text color={'white'} fontSize={'large'} fontWeight={'bold'} >FOR MORE CLARIFICATIONS OR QUESTIONS ON AYTHING , YOU CAN CONTACT US OR ASK THE ASSISTANS</Text>
+
             </TabPanel>
           </TabPanels>
         </Tabs>

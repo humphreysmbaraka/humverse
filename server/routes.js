@@ -598,7 +598,7 @@ router.get('/get_requests' , async function(req , res){
         return res.status(200).json({error:false , requests:requests , message:'fetched requests'});
       }
       else{
-        console.log('np requests found' , requests);
+        console.log('no requests found' , requests);
         return res.status(200).json({error:false , requests:requests , message:'no requests found'});
       }
   }
@@ -676,6 +676,10 @@ router.patch('/edit_accepted_request'  , async function(req , res){
      const {makingcost , deploymentcost , hostingcost , currency , maintainance ,reqid , domaincost } = req.body;
      const request = await Request.findOne({_id:reqid});
      if(request){
+       if(request.cancelled){
+        return res.status(400).json({error:true , message:'request was cancelled'})
+
+       }
       request.received = true;
       request.accepted = true;
       request.rejected = false;
@@ -775,6 +779,10 @@ router.post('/cancel_request' , async function(req , res){
   }
   
   else{
+    if(request.rejected){
+      return res.status(400).json({error:true , message:'request is already rejected'});
+
+    }
     request.cancelled = true;
     await request.save();
     console.log('request cancelled succesfully');
@@ -1229,7 +1237,10 @@ router.patch('/edit_request' , memstorage.array('attachments' , 20) ,  async fun
   const request = await Request.findOne({_id:reqid});
   if(request){
   
+   if(request.rejected){
+    return res.status(400).json({error:true , message:'request is already rejected' })
 
+   }
     if(files?.length > 0){
       const attachments_upload = await files.map(function(val , index){
          return (
@@ -1337,7 +1348,7 @@ router.patch('/view_updates/:id' , async function(){
       return res.status(400).json({error:true , message:'no such request found'})
     }
     else{
-      reguest.updated = false;
+      request.updated = false;
       request.update_seen = true;
       await request.save();
 
