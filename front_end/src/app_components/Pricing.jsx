@@ -58,6 +58,7 @@ function Pricing() {
             {/* Services Tab */}
             <TabPanel>
               <VStack spacing={8} width="100%">
+
                 {/* Advertising Websites */}
                 {renderTable("Advertising Websites", [
                   ["1–3 pages", "15,000", "10,000"],
@@ -74,48 +75,84 @@ function Pricing() {
                   ["Extra page", "+1,800", "+1,200"]
                 ])}
 
-                {/* Interactive Websites */}
+                {/* Interactive Websites (CMS) */}
                 {renderTable("Interactive Websites (CMS)", [
                   ["One-sided CMS", "From 35,000", "25,000"],
                   ["Two-sided CMS", "From 50,000", "35,000"]
                 ], ["Type", "Price (KES)", "Offer Price (KES)"])}
 
-                {/* E-commerce Websites */}
-                {renderTable("E-commerce Websites", [
-                  ["Basic Store (up to 20 products)", "45,000", "35,000"],
-                  ["Medium Store (21–100 products)", "65,000", "50,000"],
-                  ["Large Store (100+ products)", "From 90,000", "70,000"]
-                ])}
+                {/* Blog Sites (Web Apps) */}
+                {renderTable("Blog Sites (Web Apps)", [
+                  ["Blog web app", "From 55,000", "40,000"]
+                ], ["Type", "Price (KES)", "Offer Price (KES)"])}
 
-                {/* Web & Mobile Applications */}
-                {renderTable("Web & Mobile Applications", [
-                  ["Basic App", "From 80,000", "65,000"],
-                  ["Advanced App", "From 150,000", "120,000"]
-                ])}
+                {/* E-Commerce (Web Apps) */}
+                {renderTable("E-Commerce (Web Apps)", [
+                  ["Basic store", "80,000", "60,000"],
+                  ["Advanced store", "120,000+", "90,000+"]
+                ], ["Type", "Price (KES)", "Offer Price (KES)"])}
 
-                {/* Website Maintenance */}
-                {renderTable("Website Maintenance & Support", [
-                  ["Basic Plan", "5,000/month", "3,500/month"],
-                  ["Standard Plan", "8,000/month", "6,000/month"],
-                  ["Premium Plan", "12,000/month", "9,000/month"]
-                ])}
+                {/* Social Platforms (Web Apps) */}
+                {renderTable("Social Platforms (Web Apps)", [
+                  ["Social platform app", "From 150,000", "110,000"]
+                ], ["Type", "Price (KES)", "Offer Price (KES)"])}
 
-                {/* Branding & Graphics */}
-                {renderTable("Branding & Graphics", [
-                  ["Logo Design", "5,000", "3,500"],
-                  ["Business Card Design", "2,500", "1,800"],
-                  ["Full Branding Package", "15,000", "12,000"]
-                ])}
+                {/* Dashboards (Web Apps) */}
+                {renderTable("Dashboards (Web Apps)", [
+                  ["Basic", "45,000", "35,000"],
+                  ["Advanced", "65,000+", "50,000+"]
+                ], ["Type", "Price (KES)", "Offer Price (KES)"])}
 
-                {/* Content Writing & SEO */}
-                {renderTable("Content Writing & SEO", [
-                  ["Basic SEO Package", "10,000", "7,500"],
-                  ["Blog/Article Writing (per 1,000 words)", "3,000", "2,500"]
-                ])}
+                {/* Tools (Web Apps) */}
+                {renderTable("Tools (Web Apps)", [
+                  ["Functional tools", "From 50,000", "38,000"]
+                ], ["Type", "Price (KES)", "Offer Price (KES)"])}
 
-                <Text color="gray.400" fontSize="sm" mt={6}>
-                  * Contact us for complete pricing details of all services
-                </Text>
+                {/* Phone Apps */}
+                {renderTable("Phone Apps", [
+                  ["Blog apps", "From 70,000", "50,000"],
+                  ["E-commerce apps", "From 100,000", "75,000"],
+                  ["Social platform apps", "From 180,000", "130,000"],
+                  ["Dashboard apps", "From 60,000", "45,000"],
+                  ["Tools apps", "From 60,000", "45,000"]
+                ], ["Category", "Price (KES)", "Offer Price (KES)"])}
+
+                {/* AI Products */}
+                {renderTable("AI Products", [
+                  ["AI Chatbots", "From 40,000", "30,000"],
+                  ["AI Recommendation Systems", "From 50,000", "38,000"],
+                  ["AI Data Analysis Tools", "From 70,000", "50,000"],
+                  ["AI Image Recognition", "From 80,000", "60,000"],
+                  ["AI Voice Assistants", "From 90,000", "65,000"],
+                  ["Speech-to-Text AI (mobile)", "From 60,000", "45,000"],
+                  ["AI-based Translation Apps (mobile)", "From 70,000", "50,000"],
+                  ["AI Media Filters/Enhancers (mobile)", "From 80,000", "60,000"]
+                ], ["AI Service", "Price (KES)", "Offer Price (KES)"])}
+
+                {/* API Development */}
+                {renderTable("API Development", [
+                  ["Basic REST API", "From 20,000", "15,000"],
+                  ["Complex API", "From 30,000", "22,000"]
+                ], ["Type", "Price (KES)", "Offer Price (KES)"])}
+
+                {/* Deployment & Hosting */}
+                {renderTable("Deployment & Hosting", [
+                  ["Website deployment", "5,000", "3,500"],
+                  ["Web app deployment", "8,000", "6,000"],
+                  ["Phone app publishing", "10,000", "7,500"]
+                ], ["Service", "Price (KES)", "Offer Price (KES)"])}
+
+                {/* Other Charges */}
+                {renderTable("Other Charges", [
+                  ["MongoDB Atlas DB (monthly)", "From 1,200", "From 900"],
+                  [".com Domain (yearly)", "1,200–1,500", "1,000–1,200"],
+                  [".co.ke Domain (yearly)", "1,000", "850"],
+                  ["Vercel Hosting (monthly)", "From 500", "From 400"],
+                  ["Render Hosting (monthly)", "800–2,000", "600–1,500"],
+                  ["Maintenance Basic (monthly)", "3,000", "2,200"],
+                  ["Maintenance Advanced (monthly)", "5,000–10,000", "4,000–7,500"]
+                ], ["Service", "Price (KES)", "Offer Price (KES)"])}
+
               </VStack>
             </TabPanel>
 
@@ -140,7 +177,7 @@ function Pricing() {
                   "Client review period before handover"
                 ])}
 
-                {/* Cancellation with fee table */}
+                {/* Cancellation Fees */}
                 <Box bg="gray.900" p={5} borderRadius="md" width="100%">
                   <Heading size="md" color="blue.300" mb={3}>4. SERVICE CANCELLATION</Heading>
                   <Text fontWeight="bold" mb={2}>Cancellation Fees:</Text>
@@ -190,10 +227,6 @@ function Pricing() {
                   "Terms may be updated periodically",
                   "Clients notified of major changes"
                 ])}
-
-                <Text color="gray.400" fontSize="sm" mt={4}>
-                  * Full terms available upon request
-                </Text>
               </VStack>
             </TabPanel>
           </TabPanels>
@@ -203,7 +236,6 @@ function Pricing() {
   );
 }
 
-// Helper to render pricing tables
 function renderTable(title, rows, headers = ["Pages", "Price (KES)", "Offer Price (KES)"]) {
   return (
     <TableContainer width="100%" bg="gray.900" borderRadius="md" p={4}>
@@ -230,7 +262,6 @@ function renderTable(title, rows, headers = ["Pages", "Price (KES)", "Offer Pric
   );
 }
 
-// Helper to render clause sections
 function renderClause(title, points) {
   return (
     <Box bg="gray.900" p={5} borderRadius="md" width="100%">
