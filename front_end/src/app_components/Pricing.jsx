@@ -59,106 +59,60 @@ function Pricing() {
             <TabPanel>
               <VStack spacing={8} width="100%">
                 {/* Advertising Websites */}
-                <TableContainer width="100%" bg="gray.900" borderRadius="md" p={4}>
-                  <Heading size="md" color="blue.300" mb={4}>Advertising Websites</Heading>
-                  <Table variant="simple" colorScheme="whiteAlpha">
-                    <Thead>
-                      <Tr>
-                        <Th color="gray.200">Pages</Th>
-                        <Th color="gray.200">Price (KES)</Th>
-                        <Th color="gray.200">Offer Price (KES)</Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody>
-                      <Tr>
-                        <Td color="white">1–3 pages</Td>
-                        <Td color="white">15,000</Td>
-                        <Td color="green.300">10,000</Td>
-                      </Tr>
-                      <Tr>
-                        <Td color="white">4–6 pages</Td>
-                        <Td color="white">20,000</Td>
-                        <Td color="green.300">15,000</Td>
-                      </Tr>
-                      <Tr>
-                        <Td color="white">7–10 pages</Td>
-                        <Td color="white">25,000</Td>
-                        <Td color="green.300">20,000</Td>
-                      </Tr>
-                      <Tr>
-                        <Td color="white">Extra page</Td>
-                        <Td color="white">+1,500</Td>
-                        <Td color="green.300">+1,000</Td>
-                      </Tr>
-                    </Tbody>
-                  </Table>
-                </TableContainer>
+                {renderTable("Advertising Websites", [
+                  ["1–3 pages", "15,000", "10,000"],
+                  ["4–6 pages", "20,000", "15,000"],
+                  ["7–10 pages", "25,000", "20,000"],
+                  ["Extra page", "+1,500", "+1,000"]
+                ])}
 
                 {/* Collection Websites */}
-                <TableContainer width="100%" bg="gray.900" borderRadius="md" p={4}>
-                  <Heading size="md" color="blue.300" mb={4}>Collection Websites</Heading>
-                  <Table variant="simple" colorScheme="whiteAlpha">
-                    <Thead>
-                      <Tr>
-                        <Th color="gray.200">Pages</Th>
-                        <Th color="gray.200">Price (KES)</Th>
-                        <Th color="gray.200">Offer Price (KES)</Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody>
-                      <Tr>
-                        <Td color="white">1–3 pages</Td>
-                        <Td color="white">18,000</Td>
-                        <Td color="green.300">12,000</Td>
-                      </Tr>
-                      <Tr>
-                        <Td color="white">4–6 pages</Td>
-                        <Td color="white">25,000</Td>
-                        <Td color="green.300">18,000</Td>
-                      </Tr>
-                      <Tr>
-                        <Td color="white">7–10 pages</Td>
-                        <Td color="white">32,000</Td>
-                        <Td color="green.300">25,000</Td>
-                      </Tr>
-                      <Tr>
-                        <Td color="white">Extra page</Td>
-                        <Td color="white">+1,800</Td>
-                        <Td color="green.300">+1,200</Td>
-                      </Tr>
-                    </Tbody>
-                  </Table>
-                </TableContainer>
+                {renderTable("Collection Websites", [
+                  ["1–3 pages", "18,000", "12,000"],
+                  ["4–6 pages", "25,000", "18,000"],
+                  ["7–10 pages", "32,000", "25,000"],
+                  ["Extra page", "+1,800", "+1,200"]
+                ])}
 
-                {/* Interactive Websites (CMS) */}
-                <TableContainer width="100%" bg="gray.900" borderRadius="md" p={4}>
-                  <Heading size="md" color="blue.300" mb={4}>Interactive Websites (CMS)</Heading>
-                  <Table variant="simple" colorScheme="whiteAlpha">
-                    <Thead>
-                      <Tr>
-                        <Th color="gray.200">Type</Th>
-                        <Th color="gray.200">Price (KES)</Th>
-                        <Th color="gray.200">Offer Price (KES)</Th>
-                      </Tr>
-                    </Thead>
-                    <Tbody>
-                      <Tr>
-                        <Td color="white">One-sided CMS</Td>
-                        <Td color="white">From 35,000</Td>
-                        <Td color="green.300">25,000</Td>
-                      </Tr>
-                      <Tr>
-                        <Td color="white">Two-sided CMS</Td>
-                        <Td color="white">From 50,000</Td>
-                        <Td color="green.300">35,000</Td>
-                      </Tr>
-                    </Tbody>
-                  </Table>
-                </TableContainer>
+                {/* Interactive Websites */}
+                {renderTable("Interactive Websites (CMS)", [
+                  ["One-sided CMS", "From 35,000", "25,000"],
+                  ["Two-sided CMS", "From 50,000", "35,000"]
+                ], ["Type", "Price (KES)", "Offer Price (KES)"])}
 
-                {/* Other Services Tables */}
-                {/* Add similar table structures for other services */}
-                
+                {/* E-commerce Websites */}
+                {renderTable("E-commerce Websites", [
+                  ["Basic Store (up to 20 products)", "45,000", "35,000"],
+                  ["Medium Store (21–100 products)", "65,000", "50,000"],
+                  ["Large Store (100+ products)", "From 90,000", "70,000"]
+                ])}
+
+                {/* Web & Mobile Applications */}
+                {renderTable("Web & Mobile Applications", [
+                  ["Basic App", "From 80,000", "65,000"],
+                  ["Advanced App", "From 150,000", "120,000"]
+                ])}
+
+                {/* Website Maintenance */}
+                {renderTable("Website Maintenance & Support", [
+                  ["Basic Plan", "5,000/month", "3,500/month"],
+                  ["Standard Plan", "8,000/month", "6,000/month"],
+                  ["Premium Plan", "12,000/month", "9,000/month"]
+                ])}
+
+                {/* Branding & Graphics */}
+                {renderTable("Branding & Graphics", [
+                  ["Logo Design", "5,000", "3,500"],
+                  ["Business Card Design", "2,500", "1,800"],
+                  ["Full Branding Package", "15,000", "12,000"]
+                ])}
+
+                {/* Content Writing & SEO */}
+                {renderTable("Content Writing & SEO", [
+                  ["Basic SEO Package", "10,000", "7,500"],
+                  ["Blog/Article Writing (per 1,000 words)", "3,000", "2,500"]
+                ])}
+
                 <Text color="gray.400" fontSize="sm" mt={6}>
                   * Contact us for complete pricing details of all services
                 </Text>
@@ -168,46 +122,25 @@ function Pricing() {
             {/* Terms & Conditions Tab */}
             <TabPanel>
               <VStack spacing={6} align="start" width="100%" color="white">
-                <Heading size="lg" color="blue.300" mb={4}>
-                  Humverse Terms & Conditions
-                </Heading>
-                
-                <Box bg="gray.900" p={5} borderRadius="md" width="100%">
-                  <Heading size="md" color="blue.300" mb={3}>1. SERVICE INITIALIZATION</Heading>
-                  <List spacing={2}>
-                    <ListItem>
-                      <ListIcon as={BsDot} color="blue.300" />
-                      50% deposit required before work begins
-                    </ListItem>
-                    <ListItem>
-                      <ListIcon as={BsDot} color="blue.300" />
-                      Project starts after deposit received
-                    </ListItem>
-                    <ListItem>
-                      <ListIcon as={BsDot} color="blue.300" />
-                      Progress updates provided regularly
-                    </ListItem>
-                  </List>
-                </Box>
+                {renderClause("1. SERVICE INITIALIZATION", [
+                  "50% deposit required before work begins",
+                  "Project starts after deposit received",
+                  "Progress updates provided regularly"
+                ])}
 
-                <Box bg="gray.900" p={5} borderRadius="md" width="100%">
-                  <Heading size="md" color="blue.300" mb={3}>2. SERVICE PAYMENTS</Heading>
-                  <List spacing={2}>
-                    <ListItem>
-                      <ListIcon as={BsDot} color="blue.300" />
-                      Installment payments allowed after deposit
-                    </ListItem>
-                    <ListItem>
-                      <ListIcon as={BsDot} color="blue.300" />
-                      Full payment required before deployment
-                    </ListItem>
-                    <ListItem>
-                      <ListIcon as={BsDot} color="blue.300" />
-                      5% late fee per week for overdue payments
-                    </ListItem>
-                  </List>
-                </Box>
+                {renderClause("2. SERVICE PAYMENTS", [
+                  "Installment payments allowed after deposit",
+                  "Full payment required before deployment",
+                  "5% late fee per week for overdue payments"
+                ])}
 
+                {renderClause("3. SERVICE COMPLETION", [
+                  "Final delivery only after full payment",
+                  "Testing and quality assurance before deployment",
+                  "Client review period before handover"
+                ])}
+
+                {/* Cancellation with fee table */}
                 <Box bg="gray.900" p={5} borderRadius="md" width="100%">
                   <Heading size="md" color="blue.300" mb={3}>4. SERVICE CANCELLATION</Heading>
                   <Text fontWeight="bold" mb={2}>Cancellation Fees:</Text>
@@ -219,31 +152,45 @@ function Pricing() {
                       </Tr>
                     </Thead>
                     <Tbody>
-                      <Tr>
-                        <Td color="white">Within 24 hours</Td>
-                        <Td color="white">10% of total</Td>
-                      </Tr>
-                      <Tr>
-                        <Td color="white">After initial designs</Td>
-                        <Td color="white">25% of total</Td>
-                      </Tr>
-                      <Tr>
-                        <Td color="white">After core build</Td>
-                        <Td color="white">50% of total</Td>
-                      </Tr>
-                      <Tr>
-                        <Td color="white">Major functionality complete</Td>
-                        <Td color="white">75% of total</Td>
-                      </Tr>
-                      <Tr>
-                        <Td color="white">Near completion</Td>
-                        <Td color="white">100% of total</Td>
-                      </Tr>
+                      <Tr><Td color="white">Within 24 hours</Td><Td color="white">10% of total</Td></Tr>
+                      <Tr><Td color="white">After initial designs</Td><Td color="white">25% of total</Td></Tr>
+                      <Tr><Td color="white">After core build</Td><Td color="white">50% of total</Td></Tr>
+                      <Tr><Td color="white">Major functionality complete</Td><Td color="white">75% of total</Td></Tr>
+                      <Tr><Td color="white">Near completion</Td><Td color="white">100% of total</Td></Tr>
                     </Tbody>
                   </Table>
                 </Box>
 
-                {/* Additional terms sections */}
+                {renderClause("5. COMPENSATION POLICY", [
+                  "Refunds processed within 24 hours after cancellation",
+                  "Compensation = Amount paid - Cancellation fee"
+                ])}
+
+                {renderClause("6. REVISIONS POLICY", [
+                  "Up to 3 free revisions included",
+                  "Additional revisions charged separately"
+                ])}
+
+                {renderClause("7. INTELLECTUAL PROPERTY", [
+                  "Final work ownership transferred upon full payment",
+                  "Humverse retains rights to showcase work in portfolio"
+                ])}
+
+                {renderClause("8. TRANSACTIONS & DISPUTES", [
+                  "All transactions must be through official channels",
+                  "Disputes resolved within 14 working days"
+                ])}
+
+                {renderClause("9. LIMITATION OF LIABILITY", [
+                  "No liability for delays caused by client",
+                  "Not responsible for third-party service issues"
+                ])}
+
+                {renderClause("10. AMENDMENTS TO TERMS", [
+                  "Terms may be updated periodically",
+                  "Clients notified of major changes"
+                ])}
+
                 <Text color="gray.400" fontSize="sm" mt={4}>
                   * Full terms available upon request
                 </Text>
@@ -253,6 +200,50 @@ function Pricing() {
         </Tabs>
       </VStack>
     </Motionbox>
+  );
+}
+
+// Helper to render pricing tables
+function renderTable(title, rows, headers = ["Pages", "Price (KES)", "Offer Price (KES)"]) {
+  return (
+    <TableContainer width="100%" bg="gray.900" borderRadius="md" p={4}>
+      <Heading size="md" color="blue.300" mb={4}>{title}</Heading>
+      <Table variant="simple" colorScheme="whiteAlpha">
+        <Thead>
+          <Tr>
+            {headers.map((h, i) => (
+              <Th key={i} color="gray.200">{h}</Th>
+            ))}
+          </Tr>
+        </Thead>
+        <Tbody>
+          {rows.map((row, i) => (
+            <Tr key={i}>
+              {row.map((cell, j) => (
+                <Td key={j} color={j === 2 ? "green.300" : "white"}>{cell}</Td>
+              ))}
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
+    </TableContainer>
+  );
+}
+
+// Helper to render clause sections
+function renderClause(title, points) {
+  return (
+    <Box bg="gray.900" p={5} borderRadius="md" width="100%">
+      <Heading size="md" color="blue.300" mb={3}>{title}</Heading>
+      <List spacing={2}>
+        {points.map((point, i) => (
+          <ListItem key={i}>
+            <ListIcon as={BsDot} color="blue.300" />
+            {point}
+          </ListItem>
+        ))}
+      </List>
+    </Box>
   );
 }
 
