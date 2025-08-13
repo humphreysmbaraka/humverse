@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom"
 import Landing from "./app_components/landing"
 import Home from "./app_components/Home"
-
+import {Helmet} from 'react-helmet';
 import Contacts from "./app_components/Contacts_page"
 import Signup_prompt from "./app_components/signup_prompt"
 import { Dimensions_Proviver } from "./appcontexts/dimensions"
@@ -30,6 +30,31 @@ function App() {
   return (
 
     <>
+
+
+<Helmet>
+        {/* Basic */}
+        <title>Humverse</title>
+        <meta name="description" content="Welcome to humverse , here we offer a wide array of software services. we make websites , web apps , phone apps , AI agents  AI products for phone apps , websites  web appsetc . we also offer  deployment services , hosting services , maintainance services , we make APIs , " />
+        <meta name="keywords" content="website makers , website , web app ,  web app makers , app makers , app ,  phone app makers , API makers , software makers , software , API ,  API makers" />
+        <meta name="author" content="Humphrey Mbaraka" />
+
+        {/* Favicon */}
+        <link rel="icon" href="/squares.png" />
+
+        {/* Open Graph (Facebook, WhatsApp, LinkedIn) */}
+        {/* <meta property="og:title" content="My MERN App" />
+        <meta property="og:description" content="Join My MERN App – the best place to buy and sell gadgets online." />
+        <meta property="og:image" content="/preview-image.jpg" />
+        <meta property="og:url" content="https://mymernapp.com" />
+        <meta property="og:type" content="website" /> */}
+
+        {/* Twitter Card */}
+        {/* <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="My MERN App" />
+        <meta name="twitter:description" content="The best gadget shop online." />
+        <meta name="twitter:image" content="/preview-image.jpg" /> */}
+      </Helmet>
 
     <Auth_Provider>
       <Socket_provider>

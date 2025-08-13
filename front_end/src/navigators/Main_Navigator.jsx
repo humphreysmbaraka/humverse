@@ -28,6 +28,11 @@ const {loggedin , admin , loading} = useContext(AuthContext);
 //        navigate('../main'); 
 //   } , [loggedin])
 
+useEffect(() => {
+    if (loggedin) navigate('/main', { replace: true });
+  }, [loggedin]);
+  
+
    if(loading){
       return (
         <Box  width={'100%'} height={'100vh'} bg={'gray.800'}  display={'flex'} alignItems={'center'} justifyContent={'center'} >

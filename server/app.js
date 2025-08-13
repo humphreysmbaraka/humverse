@@ -12,6 +12,7 @@ app.use(cookieParser());
 const dotenv = require('dotenv').config();
 console.log('client url' , process.env.CLIENT_URL);
 
+
 // const allowedOrigin = process.env.CLIENT_URL?.trim() || 'http://localhost:5173';
 
 app.use(cors({

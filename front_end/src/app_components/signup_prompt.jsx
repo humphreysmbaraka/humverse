@@ -77,7 +77,7 @@ useEffect(function(){
            }
        
            setsubmissionerror(false)
-           navigate('/main')
+          //  navigate('/main')
 
         }
         else{
@@ -121,7 +121,7 @@ useEffect(function(){
              const feedback = await upload.json();
              setsubmitting(false);
              setsubmissionerror(null)
-             navigate('/main')
+            //  navigate('/main')
              checkauthstatus();
              const user = feedback.user;
              if(user.admin){
