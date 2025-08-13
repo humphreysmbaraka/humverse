@@ -19,6 +19,11 @@ function Ai_setup() {
     const [deleteerror ,setdeleteerror] = useState(null);
 
 
+    useEffect(function(){
+        window.open(`${BASE_URL}/ai_doc/${clickeddoc._id}`, '_blank')
+    },[clickeddoc])
+
+
     const getdocs =  async function(){
         try{
             const files = await fetch(`${BASE_URL}/ai_doc_objects` ,{
