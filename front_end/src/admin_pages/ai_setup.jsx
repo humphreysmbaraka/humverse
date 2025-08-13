@@ -20,7 +20,7 @@ function Ai_setup() {
 
 
         const clickeedondoc = function(val){
-            window.open(`${BASE_URL}/ai_doc/${val._id}`, '_blank')}
+            window.open(`${BASE_URL}/ai_doc/${val._id}`, '_blank')
         }
 
 
@@ -40,7 +40,7 @@ function Ai_setup() {
             setdocs(objects.docs);
             }
             else{
-                console.lod('docs not fetched')
+                console.log('docs not fetched')
                setdocs([]) 
             }
          }
