@@ -1,218 +1,377 @@
-import { Avatar, Box, Button, HStack, Image, Text, VStack, useBreakpointValue } from '@chakra-ui/react'
+import { Box, HStack, Spinner, Text, Textarea, VStack, useBreakpointValue } from '@chakra-ui/react'
 import React, { useContext, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../appcontexts/auth';
+import { GoSidebarExpand } from "react-icons/go";
+import { IoMdSend } from "react-icons/io";
+import { GoSidebarCollapse } from "react-icons/go";
 import BASE_URL from '../constants/urls';
-import squares from '../assets/squares.png';
-import sphere from '../assets/sphere.png';
+import { AuthContext } from '../appcontexts/auth';
 
-function Home() {
-    const [winheight, setwinheight] = useState(window.innerHeight);
-    const [winwidth, setwinwidth] = useState(window.innerWidth);
-    const [isfetchingdata, setisfetchingdata] = useState(false);
-    const [fetcherror, setfetcherror] = useState(false);
-    const [info, setinfo] = useState(null);
-    const {user} = useContext(AuthContext)
-    const navigate = useNavigate();
-    const icons = [squares, sphere];
+function Assistant() {
+    const [query, setquery] = useState(null);
+    const [sending, setsending] = useState(false);
+    const [senderror, setsenderror] = useState(null);
+    const {loggedin, user, admin} = useContext(AuthContext); 
+    const [response, setresponse] = useState('');
+    const [streaming, setstreaming] = useState(false);
+    const [messages, setmessages] = useState(new Map());
+    const [currenttimestamp, setcurrenttimestamp] = useState(null);
+    const [showsidebar, setshowsidebar] = useState(false);
+    const [showhistory, setshowhistory] = useState(false);
 
-    // Get responsive values
+    // Responsive values
     const isMobile = useBreakpointValue({ base: true, md: false });
-    const isTablet = useBreakpointValue({ base: false, md: true, lg: false });
-    const requestItemWidth = useBreakpointValue({ 
-        base: "100%", 
-        md: "48%", 
-        lg: "48%",
-        xl: "48%"
+    const sidebarWidth = useBreakpointValue({ 
+        base: showsidebar ? "100%" : "0%", 
+        md: showsidebar ? "20%" : "5%" 
     });
-    const requestImageWidth = useBreakpointValue({ 
+    const contentWidth = useBreakpointValue({ 
         base: "100%", 
-        md: "100%"
+        md: showsidebar ? "75%" : "95%" 
+    });
+    const messageWidth = useBreakpointValue({ 
+        base: "90%", 
+        md: "55%" 
+    });
+    const inputWidth = useBreakpointValue({ 
+        base: "90%", 
+        md: "85%" 
     });
 
     useEffect(function(){
-        setisfetchingdata(true);
-        const fetchdata = (async function(){
-            try{
-                const data = await fetch(`${BASE_URL}/fetch_homedata/${user._id}`);
-                if(data.ok){
-                    console.log('user info fetched')
-                    setisfetchingdata(false);
-                    setfetcherror(false);
-                    const receiveddata = await data.json();
-                    console.log(receiveddata);
-                    setinfo(receiveddata.data);
-                    console.log('info', info)
+        if(!currenttimestamp || messages.size == 0){
+            return;
+        }
+        
+        const newmessages = new Map(messages);
+        const messagebody = newmessages.get(currenttimestamp);
+        newmessages.set(currenttimestamp, {...messagebody, response:response});
+        setmessages(newmessages);
+    }, [response])
+         
+    const sendquery = async function(){
+        try{
+            if(!query || query.trim()=='' || sending){
+                return;
+            }
+            else{
+                const timestamp =  Date.now();
+                setcurrenttimestamp(timestamp);
+                setsending(true);
+                setsenderror(null);
+                
+                const newmessages = new Map(messages);
+                newmessages.set(timestamp, {message:query, response:''});
+                setmessages(newmessages);
+                setquery('');
+                
+                const ask = await fetch(`${BASE_URL}/ask_assistant`, {
+                    method:'POST',
+                    headers:{
+                        'Content-Type':'application/json'
+                    },
+                    credentials:'include',
+                    body:JSON.stringify({question:query, user:user._id})
+                })
+
+                if(ask.ok || !ask.body){
+                    setsending(false);
+                    setsenderror(null);
+
+                    const reader = ask.body.getReader();
+                    const decoder = new TextDecoder();
+                    let partial = '';
+
+                    while(true){
+                        setstreaming(true);
+                        const {value, done} = await reader.read();
+                        if(done){
+                            break;
+                        }
+                        else{
+                            const chunk = decoder.decode(value, {stream:true});
+                            partial += chunk;
+                            const lines = partial.split('\n\n');
+                            partial = lines.pop();
+                        
+                            for(let line of lines){
+                                if(line.startsWith('data: ')){
+                                    const data = line.replace(/^data: /, '');
+                                    if(data.trim() === '[DONE]'){
+                                        return;
+                                    }
+                                    setresponse((prev)=>{
+                                        const addSpace = prev.length > 0 && !/\s$/.test(prev);
+                                        return prev + (addSpace ? ' ' : '') + data;
+                                    });
+                                }
+                            }
+                        }
+                    }
+                    setstreaming(false);
                 }
                 else{
-                    if(String(data.status).startsWith('4')){
-                        console.log('error fetching data');
-                        setisfetchingdata(false);
-                        const receiveddata = await data.json();
-                        setfetcherror(receiveddata.message);
+                    setsending(false);
+                    if(String(ask.status).startsWith('4')){
+                        const info = await ask.json();
+                        setsenderror(ask.message);
                     }
                     else{
-                        console.log('user info not fetched')
-                        setisfetchingdata(false);
-                        const receiveddata = await data.json();
-                        console.log(receiveddata);
-                        setfetcherror('server error');
+                        setsenderror('server error')
                     }
                 }
             }
-            catch(err){
-                console.log('error occured while fetching data', err);
-                setisfetchingdata(false);
-                setfetcherror('error fetching data, refresh page to try again')
-            }
-        })();
-    },[])
+        }
+        catch(err){
+            setsending(false);
+            setsenderror('could not send query')
+            console.log('could not send query', err);
+        }
+    }
 
-    useEffect(function(){
-        console.log('info set', info)
-    }, [info])
-            
-    useEffect(() => {
-        const handleResize = function(){
-            setwinwidth(window.innerWidth);
-            setwinheight(window.innerHeight)
-        };
-        
-        // Attach event listener
-        window.addEventListener('resize', handleResize);
-    
-        // Cleanup listener on unmount
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    return (
-        <Box width="100%" minHeight="100vh" bg="black" p={{ base: 2, md: 4 }} display="flex" flexDirection="column" alignItems="center" overflow="hidden">
-            {/* Welcome Section */}
-            <Box width="100%" maxW="1200px" p={4} borderRadius="15px" bg="black" mt={4} mb={4}>
-                <HStack width="100%" justifyContent="flex-end" p={2}>
-                    <Avatar size={{ base: "xs", md: "sm" }} />
-                </HStack>
-                <Text fontSize={{ base: "xl", md: "2xl" }} color="white" fontWeight="bold">
-                    WELCOME TO HUMVERSE
-                </Text>
-                <Text fontSize={{ base: "md", md: "lg" }} color="white" fontWeight="bold">
-                    USERNAME
-                </Text>
-            </Box>
-
-            {/* Requests Title */}
-            <Text width="100%" maxW="1200px" mt={4} mb={4} fontSize={{ base: "lg", md: "xl" }} color="white" fontWeight="bold">
-                YOUR REQUESTS
-            </Text>
-            
-            {/* Requests Container */}
-            <Box 
-                width="100%"
-                maxW="1200px"
-                p={4}
-                minH="400px"
-                bg="white"
-                borderRadius="10px"
-                overflow="auto"
-            >
-                <Box 
-                    display="flex"
-                    flexWrap="wrap"
-                    gap={{ base: 4, md: 6 }}
-                    justifyContent={{ base: "center", md: "flex-start" }}
-                    alignItems="center"
+    if(loggedin){
+        return (
+            <Box width="100%" minHeight="100vh" bg="black" display="flex" flexDirection={{ base: "column", md: "row" }} alignItems="center" justifyContent="space-between" overflow="hidden">
+                {/* Sidebar */}
+                <VStack 
+                    bg="gray.800" 
+                    width={sidebarWidth}
+                    height={{ base: showsidebar ? "100%" : "auto", md: "100vh" }}
+                    borderRightRadius={{ base: "0", md: "15px" }}
+                    position={{ base: showsidebar ? "absolute" : "relative", md: "relative" }}
+                    zIndex={{ base: 10, md: 1 }}
+                    transition="width 0.3s ease"
+                    overflow="hidden"
+                    display={{ base: showsidebar ? "flex" : "none", md: "flex" }}
                 >
-                    {info?.requests?.length > 0 ?  
-                        info.requests.map(function(val, index){
-                            return (
-                                <Box
-                                    key={index}
-                                    onClick={() => {navigate('view_product', {state:{request:val}})}}
-                                    width={{ base: "100%", md: "48%", lg: "48%" }}
-                                    _hover={{ bg: "gray.100" }}
-                                    p={3}
-                                    borderRadius="md"
-                                    cursor="pointer"
-                                    borderWidth="1px"
-                                >
-                                    <VStack width="100%" spacing={3}>
-                                        <Box width="100%" height={{ base: "200px", md: "250px" }} bg="black" borderRadius="md" overflow="hidden">
-                                            <Image width="100%" height="100%" objectFit="contain" src={icons[Math.round(Math.random())]} />
-                                        </Box>
-                                        <HStack width="100%">
-                                            <Button 
-                                                size="sm"
-                                                colorScheme={
-                                                    !val.accepted&&!val.rejected&&!val.cancelled&&!val.initiated?'orange':
-                                                    val.accepted&&!val.initiated&&!val.rejected&&!val.cancelled?'green':
-                                                    val.accepted&&val.initiated&&!val.rejected&&!val.cancelled?'purple':
-                                                    val.rejected?'red':
-                                                    val.cancelled?'orange':
-                                                    val.completed?'green':'blue'
-                                                } 
-                                                borderRadius="10px"
-                                                width="100%"
-                                            >
-                                                {
-                                                    !val.accepted&&!val.rejected&&!val.cancelled&&!val.initiated?'not yet received':
-                                                    val.accepted&&!val.initiated&&!val.rejected&&!val.cancelled?'ACCEPTED':
-                                                    val.accepted&&val.initiated&&!val.rejected&&!val.cancelled?'INITIATED':
-                                                    val.rejected?'REJECTED':
-                                                    val.cancelled?'CANCELLED':
-                                                    val.completed?'COMPLETED':''
-                                                }
-                                            </Button>
-                                        </HStack>
-                                        <VStack width="100%" alignItems="flex-start" spacing={1}>
-                                            <Text fontWeight="bold">REQUEST INFO</Text>
-                                            <Text fontSize="sm">
-                                                DATE OF REQUEST: {val.date}
-                                            </Text>
-                                            <Text fontSize="sm">
-                                                DURATION: {`${val.timequantity} ${val.timeunit}`}
-                                            </Text>
-                                            <Text fontSize="sm">
-                                                PREVIEWS: {val.previews.length}
-                                            </Text>
-                                        </VStack>
-                                    </VStack>
-                                </Box>
-                            )
-                        }) :
-                        <Text fontSize="xl" color="blue.400" fontWeight="bold" width="100%" textAlign="center" py={10}>
-                            YOU DO NOT HAVE ANY REQUESTS YET
-                        </Text>
+                    <Box 
+                        as="button" 
+                        onClick={() => { setshowsidebar(!showsidebar) }} 
+                        position="absolute" 
+                        top="10px" 
+                        left="10px" 
+                        width="30px" 
+                        height="30px" 
+                        borderRadius="10px" 
+                        display="flex" 
+                        alignItems="center" 
+                        justifyContent="center" 
+                        p="2px"
+                        zIndex={10}
+                    >
+                        {showsidebar ? 
+                            <GoSidebarExpand color="white" size="20px" /> : 
+                            <GoSidebarCollapse color="white" size="20px" />
+                        }
+                    </Box>
+
+                    {!showsidebar && 
+                        <Box 
+                            as="button" 
+                            mt="30px" 
+                            mb="5px" 
+                            width="90%" 
+                            borderBottomWidth="1px" 
+                            borderBottomColor="white" 
+                            height="30px" 
+                            _hover={{ borderBottomWidth: "2px", borderBottomColor: "blue" }}
+                            color="white"
+                        >
+                            Start New Chat
+                        </Box>
                     }
+
+                    {showsidebar && 
+                        <>
+                            <Text 
+                                as="button" 
+                                mt="30px" 
+                                mb="5px" 
+                                width="90%" 
+                                borderBottomWidth="1px" 
+                                borderBottomColor="white" 
+                                height="30px" 
+                                fontSize="sm" 
+                                color="white" 
+                                _hover={{ borderBottomWidth: "2px", borderBottomColor: "blue" }}
+                                textAlign="left"
+                            >
+                                Start New Chat
+                            </Text>
+
+                            <Text 
+                                as="button" 
+                                onClick={() => { setshowhistory(!showhistory) }} 
+                                mt="10px" 
+                                mb="5px" 
+                                width="90%" 
+                                borderBottomWidth="1px" 
+                                borderBottomColor="white" 
+                                height="30px" 
+                                fontSize="sm" 
+                                color="white" 
+                                _hover={{ borderBottomWidth: "2px", borderBottomColor: "blue" }}
+                                textAlign="left"
+                            >
+                                Previous Chats
+                            </Text>
+                            
+                            {showhistory &&  
+                                <VStack width="95%" alignSelf="center" minH="250px" maxH="550px" bg="white" borderRadius="10px" overflow="auto">
+                                    {/* History items would go here */}
+                                </VStack>
+                            }
+                            
+                            {/* Additional menu items */}
+                            {[1, 2, 3, 4, 5].map((item) => (
+                                <Text 
+                                    key={item}
+                                    as="button" 
+                                    mt="10px" 
+                                    mb="5px" 
+                                    width="90%" 
+                                    borderBottomWidth="1px" 
+                                    borderBottomColor="white" 
+                                    height="30px" 
+                                    fontSize="sm" 
+                                    color="white" 
+                                    _hover={{ borderBottomWidth: "2px", borderBottomColor: "blue" }}
+                                    textAlign="left"
+                                >
+                                    Menu Item {item}
+                                </Text>
+                            ))}
+                        </>
+                    }
+                </VStack>
+
+                {/* Main Content */}
+                <Box 
+                    width={contentWidth}
+                    height="100vh"
+                    bg="black" 
+                    display="flex" 
+                    flexDirection="column" 
+                    alignItems="center" 
+                    overflow="hidden"
+                    position="relative"
+                >
+                    {/* Messages Area */}
+                    <VStack 
+                        width="100%"
+                        height="calc(100vh - 100px)"
+                        mt="10px"
+                        mb="10px"
+                        bg="gray.900" 
+                        borderRadius="15px"
+                        p="4px"
+                        overflow="auto"
+                        css={{ '&::-webkit-scrollbar': { display: 'none' } }}
+                        spacing={4}
+                    >
+                        {messages.size > 0 &&  
+                            [...messages].map(function([key, val], index){
+                                return (
+                                    <VStack key={key} width="100%" p="5px" alignItems="flex-end">
+                                        <Textarea 
+                                            color="white" 
+                                            value={val.message} 
+                                            width={messageWidth}
+                                            minHeight="45px" 
+                                            maxHeight="1500px" 
+                                            readOnly={true} 
+                                            resize="none"  
+                                            p="4px" 
+                                            borderRadius="10px" 
+                                            css={{ '&::-webkit-scrollbar': { display: 'none' } }}
+                                            bg="blue.700"
+                                        />
+                                        <Box 
+                                            color="white" 
+                                            bg="gray.800" 
+                                            width={messageWidth}
+                                            minHeight="45px" 
+                                            maxHeight="1500px" 
+                                            p="4px" 
+                                            borderRadius="10px" 
+                                            whiteSpace="pre-wrap" 
+                                            wordBreak="break-word" 
+                                            overflowY="auto" 
+                                            fontSize="sm"
+                                        >
+                                            {val.response}
+                                        </Box>
+                                    </VStack>
+                                )
+                            })
+                        }
+                    </VStack>
+
+                    {/* Input Area */}
+                    <HStack   
+                        position="absolute"
+                        bottom="20px"
+                        width={inputWidth}
+                        minHeight="40px"
+                        p="10px"
+                        borderRadius="15px"
+                        bg="gray.700"
+                        justifyContent="space-between"
+                        zIndex={100}
+                    >
+                        {senderror && 
+                            <Text color="red.500" fontSize="sm" position="absolute" top="-25px" left="0">
+                                {senderror}
+                            </Text>
+                        }
+                        
+                        <Textarea 
+                            placeholder="Ask anything about the Humverse platform, what services we offer and other related things"  
+                            width="85%"
+                            minH="30px"  
+                            maxH="120px" 
+                            bg="white"    
+                            resize="none"  
+                            value={query} 
+                            onChange={(e) => { setquery(e.target.value) }}
+                            size="sm"
+                        />
+                        
+                        <Box 
+                            as="button"  
+                            _hover={{ bg: "gray" }} 
+                            _active={{ bg: "black" }}  
+                            onClick={sendquery} 
+                            width="30px" 
+                            height="30px" 
+                            borderRadius="50%" 
+                            display="flex" 
+                            alignItems="center" 
+                            justifyContent="center" 
+                            p="2px"
+                            bg="white"
+                        >
+                            {sending ?
+                                <Spinner color="blue.500" size="sm" /> :
+                                <IoMdSend size="20px" color="black" />
+                            }
+                        </Box>
+                    </HStack>
                 </Box>
             </Box>
-
-            {/* Request Button */}
-            <Box 
-                width="100%"
-                maxW="1200px"
-                display="flex"
-                justifyContent={{ base: "center", md: "flex-end" }}
-                mt={6}
-                mb={4}
-            >
-                <Button
-                    onClick={() => {navigate('make_request')}}
-                    minWidth="150px"
-                    p={4}
-                    borderRadius="10px"
-                    borderColor="white"
-                    borderWidth="1px"
-                    color="white"
-                    bg="black"
-                    fontWeight="bold"
-                    fontSize={{ base: "xs", md: "sm" }}
-                    _hover={{ bg: "gray.800" }}
-                >
-                    REQUEST FOR A PRODUCT
-                </Button>
+        )
+    }
+    else {
+        return (
+            <Box width="100%" height="100vh" display="flex" flexDirection="column" alignItems="center" justifyContent="center" bg="gray.800">
+                <Text color="white" fontSize={{ base: "xl", md: "xxx-large" }} fontWeight="bold" mb={4}>
+                    OOPS!
+                </Text>
+                <Text color="white" fontSize={{ base: "sm", md: "md" }} fontWeight="bold" textAlign="center" px={4}>
+                    YOU NEED TO BE LOGGED IN OR HAVE AN ACCOUNT TO BE ABLE TO USE THE ASSISTANT
+                </Text>
             </Box>
-        </Box>
-    )
+        )
+    }
 }
 
-export default Home
+export default Assistant
