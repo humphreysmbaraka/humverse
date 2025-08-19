@@ -38,7 +38,6 @@ function Make_request() {
   
   // Responsive values
   const isMobile = useBreakpointValue({ base: true, md: false });
-  const isTablet = useBreakpointValue({ base: false, md: true, lg: false });
   const sidePanelWidth = useBreakpointValue({ base: "0%", md: "25%" });
   const middlePanelWidth = useBreakpointValue({ base: "0%", md: "30%" });
   const formPanelWidth = useBreakpointValue({ base: "100%", md: "40%" });
@@ -65,7 +64,266 @@ function Make_request() {
     console.log('product', product);
   }, []);
 
-  // ... (all the existing functions remain exactly the same)
+  const editrequest = async function(){
+    try{
+      console.log(type ,description , timeunit , timequantity , names , number , email , attachedfiles)
+       if(!type || type.trim()=='' ||  !description || description.trim()=='' || !timeunit || timeunit.trim()=='' || !timequantity  || !names || names.trim()=='' || !number || number.trim()=='' || !email || email.trim()==''){
+        // Handle validation error
+        return;
+       }
+       else{
+        if(submitting){
+          return;
+        }
+        else{
+          setsubmitting(true);
+          if(attachedfiles.length > 0){
+            const body = new FormData();
+            body.append('reqid' , product._id)
+            body.append('type' , type);
+            body.append('description' , description);
+            body.append('timeunit' , timeunit);
+            body.append('timequantity' , timequantity);
+            body.append('names' , names);
+            body.append('number' , number);
+            body.append('email' , email);
+            body.append('user' , user._id);
+            attachedfiles.forEach(function(val , index){
+              body.append('attachments' ,val);
+            })
+           
+  
+            const upload = await fetch(`${BASE_URL}/edit_request` , {
+              method:'PATCH',
+              body:body
+            })
+  
+            if(upload.ok){
+              setsubmitting(false);
+              setsubmittingerror(false);
+              console.log('request sent successfully');
+              const data = await upload.json();
+              socket.current.emit('editt_request' , data , function(){
+                console.log('edit request has been received');
+              })
+              navigate('/main');
+             
+            }
+            else{
+              setsubmitting(false);
+              if(String(upload.status).startsWith('4')){
+                const feedback = await upload.json();
+                setsubmittingerror(feedback.message);
+              }
+              else{
+                const feedback = await upload.json();
+                setsubmittingerror('server error');
+              }
+  
+            }
+          }
+          else{
+            const upload = await fetch(`${BASE_URL}/edit_request` , {
+              method:'PATCH',
+              headers: {
+                'Content-Type' : 'application/json'
+              },
+              body:JSON.stringify({type , description , timeunit , timequantity , names , number , email , user:user._id , reqid:product._id})
+            })
+  
+            if(upload.ok){
+              setsubmitting(false);
+              setsubmittingerror(false);
+              const data = await upload.json();
+              socket.current.emit('edit_request' , data , function(){
+                console.log('edit request has been received');
+              })
+              navigate('/main');
+            }
+            else{
+              setsubmitting(false);
+              if(String(upload.status).startsWith('4')){
+                const feedback = await upload.json();
+                setsubmittingerror(feedback.message);
+              }
+              else{
+                const feedback = await upload.json();
+                setsubmittingerror('server error');
+              }
+  
+            }
+          }
+        }
+       }
+    }
+    catch(err){
+      console.log('error submitting request' , err);
+      setsubmitting(false);
+      setsubmittingerror('Error submitting request');
+    }
+  }
+
+  const commitrequest = async function(){
+    try{
+      const userConfirmed = confirm('Commit request?');
+
+      if (userConfirmed) {
+        setcomitted(true); 
+      } else {
+        console.log('User cancelled the commit.');
+        setcomitted(false); 
+      }
+    }
+    catch(err){
+      console.log('error comitting request' , err);
+    }
+  }
+
+  const addtime = async function(){
+    try{
+      settimequantity(timequantity + 1);
+    }
+    catch(err){
+      console.log('error increasing time' , err);
+    }
+  }
+
+  const reducetime = async function(){
+    try{
+      if(timequantity - 1 <= 0 ){
+        settimequantity(1);
+      }
+      else{
+        settimequantity(timequantity - 1);
+      }
+    }
+    catch(err){
+      console.log('error decreasing time' , err);
+    }
+  }
+
+  const detatchfile = async function(itemindex){
+    try{
+      const newfilelist = attachedfiles.filter(function(val , index){
+        return index !== itemindex;
+      })
+      setattachedfiles(newfilelist);
+    }
+    catch(err){
+      console.log('error detatching file' , err);
+      return;
+    }
+  }
+
+  const handlefileinput = async function(e){
+    try{
+      const files = [...e.target.files];
+      setattachedfiles((prev)=>[...prev , ...files]);
+    }
+    catch(err){
+      console.log('error handling file selection' , err);
+      return;
+    }
+  }
+
+  const submitrequest = async function(){
+    try{
+      console.log(type ,description , timeunit , timequantity , names , number , email , attachedfiles)
+       if(!type || type.trim()=='' ||  !description || description.trim()=='' || !timeunit || timeunit.trim()=='' || !timequantity  || !names || names.trim()=='' || !number || number.trim()=='' || !email || email.trim()==''){
+        // Handle validation error
+        return;
+       }
+       else{
+        if(submitting){
+          return;
+        }
+        else{
+          setsubmitting(true);
+          if(attachedfiles.length > 0){
+            const body = new FormData();
+            body.append('type' , type);
+            body.append('description' , description);
+            body.append('timeunit' , timeunit);
+            body.append('timequantity' , timequantity);
+            body.append('names' , names);
+            body.append('number' , number);
+            body.append('email' , email);
+            body.append('user' , user._id);
+            attachedfiles.forEach(function(val , index){
+              body.append('attachments' ,val);
+            })
+           
+  
+            const upload = await fetch(`${BASE_URL}/send_request` , {
+              method:'POST',
+              body:body
+            })
+  
+            if(upload.ok){
+              setsubmitting(false);
+              setsubmittingerror(false);
+              console.log('request sent successfully');
+              const data = await upload.json();
+              
+              socket.current.emit('sent_request' , data , function(){
+                console.log('request has been received');
+              })
+              navigate('/main');
+             
+            }
+            else{
+              setsubmitting(false);
+              if(String(upload.status).startsWith('4')){
+                const feedback = await upload.json();
+                setsubmittingerror(feedback.message);
+              }
+              else{
+                const feedback = await upload.json();
+                setsubmittingerror('server error');
+              }
+  
+            }
+          }
+          else{
+            const upload = await fetch(`${BASE_URL}/send_request` , {
+              method:'POST',
+              headers: {
+                'Content-Type' : 'application/json'
+              },
+              body:JSON.stringify({type , description , timeunit , timequantity , names , number , email , user:user._id})
+            })
+  
+            if(upload.ok){
+              setsubmitting(false);
+              setsubmittingerror(false);
+              const data = await upload.json();
+              socket.current.emit('sent_request' , data , function(){
+                console.log('request has been received');
+              })
+              navigate('/main');
+            }
+            else{
+              setsubmitting(false);
+              if(String(upload.status).startsWith('4')){
+                const feedback = await upload.json();
+                setsubmittingerror(feedback.message);
+              }
+              else{
+                const feedback = await upload.json();
+                setsubmittingerror('server error');
+              }
+  
+            }
+          }
+        }
+       }
+    }
+    catch(err){
+      console.log('error submitting request' , err);
+      setsubmitting(false);
+      setsubmittingerror('Error submitting request');
+    }
+  }
 
   return (
     <Box 
@@ -184,7 +442,7 @@ function Make_request() {
         >
           <HStack width="100%" height="100%" gap="5px">
             <IoDocumentAttach color="white" size="20px" />
-            <Input type="file" display="none" ref={fileinputref} onChange={(e) => handlefileinput(e)} multiple />
+            <Input type="file" display="none" ref={fileinputref} onChange={handlefileinput} multiple />
             <Text color="white" fontSize="small" fontWeight="bold">
               attach document(s)/file(s)
             </Text>
