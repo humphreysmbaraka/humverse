@@ -365,7 +365,18 @@ function View_Product() {
                             overflow={'auto'}
                             css={{ '&::-webkit-scrollbar': { display: 'none', scrollbarWidth: '1px' } }}
                             alignItems={'center'}
+                            minHeight={{ base: "auto", lg: "100vh" }}
+                            position="relative"
                         >
+                            <Box 
+                                position="absolute" 
+                                right={0} 
+                                top={0} 
+                                bottom={0} 
+                                width="1px" 
+                                bg="white" 
+                                display={{ base: "none", lg: "block" }}
+                            />
                             <Avatar width={{ base: "80px", md: "120px" }} height={{ base: "80px", md: "120px" }} borderRadius={'50%'} fit={'cover'} mt={{ base: 2, md: 10 }} borderWidth={'2px'} />
                             <Text mt={4} mb={2} fontSize={{ base: "lg", md: "xl" }} fontWeight={'bold'} color={'white'} textAlign="center">PRODUCT NAME</Text>
 
@@ -456,61 +467,73 @@ function View_Product() {
                                             initiate the project <Text as={'span'} color={'white'} fontWeight={'bold'}>by paying a deposit of at least half the charge</Text>
                                         </Text>
                                     </VStack>
-                                    <HStack p={4} bgGradient="linear(to-r, purple.600, blue.500, cyan.400)" borderColor={'black'} borderWidth={'1px'} borderRadius={'10px'} width={{ base: "100%", md: "73%" }} height={'200px'} overflowX={'auto'} css={{ '&::-webkit-scrollbar': { scrollbarWidth: '1px' } }} alignItems={'center'}>
-                                        <VStack width={{ base: "100%", sm: "23%" }} borderRightColor={'white'} borderRightWidth={{ base: 0, sm: "1px" }} height={'95%'}>
-                                            <Text color={'white'} fontSize="sm">making cost(paid only once)</Text>
-                                            <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={{ base: "xl", md: "xxx-large" }}>
-                                                .<Text as={'span'} fontSize={{ base: "xs", md: "small" }}>{product.payments.payments_required.making_cost}</Text>
-                                            </Text>
+                                    <Box 
+                                        p={4} 
+                                        bgGradient="linear(to-r, purple.600, blue.500, cyan.400)" 
+                                        borderColor={'black'} 
+                                        borderWidth={'1px'} 
+                                        borderRadius={'10px'} 
+                                        width={{ base: "100%", md: "73%" }} 
+                                        height={'200px'} 
+                                        overflowX={'auto'}
+                                        css={{ '&::-webkit-scrollbar': { scrollbarWidth: '1px' } }}
+                                    >
+                                        <Flex width="100%" minW="600px" height="100%">
+                                            <VStack width="23%" borderRightColor={'white'} borderRightWidth={'1px'} height={'95%'} p={2}>
+                                                <Text color={'white'} fontSize="sm">making cost(paid only once)</Text>
+                                                <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={{ base: "xl", md: "xxx-large" }}>
+                                                    .<Text as={'span'} fontSize={{ base: "xs", md: "small" }}>{product.payments.payments_required.making_cost}</Text>
+                                                </Text>
 
-                                            <Text color={'white'} fontSize="sm">deployment cost(paid only once)</Text>
-                                            <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={{ base: "xl", md: "xxx-large" }}>
-                                                .<Text as={'span'} fontSize={{ base: "xs", md: "small" }}>{product.payments.payments_required.deploying_cost}</Text>
-                                            </Text>
-                                        </VStack>
-                                        <VStack width={{ base: "100%", sm: "23%" }} borderRightColor={'white'} borderRightWidth={{ base: 0, sm: "1px" }} height={'95%'}>
-                                            <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize="sm">recurring charges</Text>
-                                            <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={{ base: "xs", sm: "sm" }} fontWeight={'bold'}>domain name(yearly) :
-                                                <Text color={'blue.800'} fontSize={{ base: "sm", md: "md" }} fontWeight={'bold'} as={'span'}>{product.payments.payments_required.domain_name_cost}</Text>
-                                            </Text>
+                                                <Text color={'white'} fontSize="sm">deployment cost(paid only once)</Text>
+                                                <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={{ base: "xl", md: "xxx-large" }}>
+                                                    .<Text as={'span'} fontSize={{ base: "xs", md: "small" }}>{product.payments.payments_required.deploying_cost}</Text>
+                                                </Text>
+                                            </VStack>
+                                            <VStack width="23%" borderRightColor={'white'} borderRightWidth={'1px'} height={'95%'} p={2}>
+                                                <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize="sm">recurring charges</Text>
+                                                <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={{ base: "xs", sm: "sm" }} fontWeight={'bold'}>domain name(yearly) :
+                                                    <Text color={'blue.800'} fontSize={{ base: "sm", md: "md" }} fontWeight={'bold'} as={'span'}>{product.payments.payments_required.domain_name_cost}</Text>
+                                                </Text>
 
-                                            <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={{ base: "xs", sm: "sm" }} fontWeight={'bold'}>hosting(monthly) :
-                                                <Text color={'blue.800'} fontSize={{ base: "sm", md: "md" }} fontWeight={'bold'} as={'span'}>{product.payments.payments_required.hosting_cost}</Text>
-                                            </Text>
+                                                <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={{ base: "xs", sm: "sm" }} fontWeight={'bold'}>hosting(monthly) :
+                                                    <Text color={'blue.800'} fontSize={{ base: "sm", md: "md" }} fontWeight={'bold'} as={'span'}>{product.payments.payments_required.hosting_cost}</Text>
+                                                </Text>
 
-                                            <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={{ base: "xs", sm: "sm" }} fontWeight={'bold'}>maintainance(monthly) :
-                                                <Text color={'blue.800'} fontSize={{ base: "sm", md: "md" }} fontWeight={'bold'} as={'span'}>{product.payments.payments_required.maintainance_cost}</Text>
-                                            </Text>
-                                        </VStack>
+                                                <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={{ base: "xs", sm: "sm" }} fontWeight={'bold'}>maintainance(monthly) :
+                                                    <Text color={'blue.800'} fontSize={{ base: "sm", md: "md" }} fontWeight={'bold'} as={'span'}>{product.payments.payments_required.maintainance_cost}</Text>
+                                                </Text>
+                                            </VStack>
 
-                                        <VStack width={{ base: "100%", sm: "23%" }} borderRightColor={'white'} borderRightWidth={{ base: 0, sm: "1px" }} height={'95%'}>
-                                            <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize="sm">total payment(inclusive of all charges)</Text>
+                                            <VStack width="23%" borderRightColor={'white'} borderRightWidth={'1px'} height={'95%'} p={2}>
+                                                <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize="sm">total payment(inclusive of all charges)</Text>
 
-                                            <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={{ base: "xs", sm: "sm" }} fontWeight={'bold'}>full price :
-                                                <Text color={'blue.800'} fontSize={{ base: "sm", md: "md" }} fontWeight={'bold'} as={'span'}>{product.payments.total_payment_required}</Text>
-                                            </Text>
+                                                <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={{ base: "xs", sm: "sm" }} fontWeight={'bold'}>full price :
+                                                    <Text color={'blue.800'} fontSize={{ base: "sm", md: "md" }} fontWeight={'bold'} as={'span'}>{product.payments.total_payment_required}</Text>
+                                                </Text>
 
-                                            <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={{ base: "xs", sm: "sm" }} fontWeight={'bold'}>allowed deposit :
-                                                <Text color={'blue.800'} fontSize={{ base: "sm", md: "md" }} fontWeight={'bold'} as={'span'}>{product.payments.deposit_required}</Text>
-                                            </Text>
-                                        </VStack>
+                                                <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={{ base: "xs", sm: "sm" }} fontWeight={'bold'}>allowed deposit :
+                                                    <Text color={'blue.800'} fontSize={{ base: "sm", md: "md" }} fontWeight={'bold'} as={'span'}>{product.payments.deposit_required}</Text>
+                                                </Text>
+                                            </VStack>
 
-                                        <VStack width={{ base: "100%", sm: "23%" }} borderRightColor={'white'} borderRightWidth={{ base: 0, sm: "1px" }} height={'95%'}>
-                                            <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize="sm">payment progress</Text>
+                                            <VStack width="23%" height={'95%'} p={2}>
+                                                <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize="sm">payment progress</Text>
 
-                                            <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={{ base: "xs", sm: "sm" }} fontWeight={'bold'}>payment status :
-                                                <Text color={'blue.800'} fontSize={{ base: "sm", md: "md" }} fontWeight={'bold'} as={'span'}>{product.payments.status}</Text>
-                                            </Text>
+                                                <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={{ base: "xs", sm: "sm" }} fontWeight={'bold'}>payment status :
+                                                    <Text color={'blue.800'} fontSize={{ base: "sm", md: "md" }} fontWeight={'bold'} as={'span'}>{product.payments.status}</Text>
+                                                </Text>
 
-                                            <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={{ base: "xs", sm: "sm" }} fontWeight={'bold'}>total paid :
-                                                <Text color={'blue.800'} fontSize={{ base: "sm", md: "md" }} fontWeight={'bold'} as={'span'}>{product.payments.total_paid}</Text>
-                                            </Text>
+                                                <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={{ base: "xs", sm: "sm" }} fontWeight={'bold'}>total paid :
+                                                    <Text color={'blue.800'} fontSize={{ base: "sm", md: "md" }} fontWeight={'bold'} as={'span'}>{product.payments.total_paid}</Text>
+                                                </Text>
 
-                                            <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={{ base: "xs", sm: "sm" }} fontWeight={'bold'}>amount remaining :
-                                                <Text color={'blue.800'} fontSize={{ base: "sm", md: "md" }} fontWeight={'bold'} as={'span'}>{product.payments.amount_remaining}</Text>
-                                            </Text>
-                                        </VStack>
-                                    </HStack>
+                                                <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={{ base: "xs", sm: "sm" }} fontWeight={'bold'}>amount remaining :
+                                                    <Text color={'blue.800'} fontSize={{ base: "sm", md: "md" }} fontWeight={'bold'} as={'span'}>{product.payments.amount_remaining}</Text>
+                                                </Text>
+                                            </VStack>
+                                        </Flex>
+                                    </Box>
                                 </Flex>
                                 <Text fontSize={{ base: "sm", md: "md" }} color={'black'} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'}>status :{(!product.accepted && !product.initiated && !product.cancelled && !product.rejected) ? 'not yet accepted' : (product.accepted && !product.initiated && !product.cancelled && !product.rejected) ? 'accepted' : (product.rejected) ? 'rejected' : (product.cancelled) ? 'cancelled' : (product.accepted && product.initiated && !product.cancelled && !product.rejected) ? 'initiated' : ''}</Text>
 
@@ -563,7 +586,7 @@ function View_Product() {
 
                                         <HStack width={{ base: "100%", md: "80%" }} p={2} alignItems={'center'} justifyContent={'space-between'} flexWrap="wrap">
                                             <Button colorScheme='red' display={'flex'} alignItems={'center'} justifyContent={'center'} onClick={cancel} size={{ base: "sm", md: "md" }}>PROCEED TO CANCEL</Button>
-                                            <Button colorScheme='orange' display={'flex'} alignItems={'center'} justifyContent={'center'} onClick={() => { setwanttocancel(false) }} size={{ base: "sm", md: "md" }}>DO NOT CANCEL</Button>
+                                            <Button colorScheme='orange' display={'flex'} alignItems={'center'} justifyContent={'center'} onClick={() => { setwanttoCancel(false) }} size={{ base: "sm", md: "md" }}>DO NOT CANCEL</Button>
                                         </HStack>
                                     </VStack>
                                 }
