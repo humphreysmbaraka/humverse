@@ -21,33 +21,32 @@ function Make_request() {
   const fileinputref = useRef(null);
   const timeunitref = useRef('');
   const typeref = useRef('');
-  const {winwidth, winheight} = useContext(dimensions);
-  const [submitting, setsubmitting] = useState(false);
-  const [submittingerror, setsubmittingerror] = useState(null);
-  const [attachedfiles, setattachedfiles] = useState(product?.attachments || []);   
-  const [type, settype] = useState(product?.type || '');
-  const [description, setdescription] = useState(product?.description || null);
-  const [timeunit, settimeunits] = useState(product?.timeunit || '');
-  const [timequantity, settimequantity] = useState(product?.timequantity || 4);
-  const [names, setnames] = useState(product?.names || null);
-  const [number, setnumber] = useState(product?.number || null);
-  const [email, setemail] = useState(product?.email || null)
-  const [comitted, setcomitted] = useState(false);
-  const {loggedin, admin, user} = useContext(AuthContext);
-  const {socket, socketconnected} = useContext(socketcontext);
-  
-  // Responsive values
-  const showSidebars = useBreakpointValue({ base: false, md: true });
-  const mainWidth = useBreakpointValue({ base: "100%", md: "40%" });
-  const inputWidth = useBreakpointValue({ base: "90%", md: "65%" });
-  const timelineWidth = useBreakpointValue({ base: "95%", md: "80%" });
-  const contactInputWidth = useBreakpointValue({ base: "90%", md: "60%" });
-  const buttonWidth = useBreakpointValue({ base: "50%", md: "30%" });
-  const fileListWidth = useBreakpointValue({ base: "90%", md: "60%" });
+  const {winwidth , winheight} = useContext(dimensions);
+  const [submitting , setsubmitting] = useState(false);
+  const [submittingerror , setsubmittingerror] = useState(null);
+  const [attachedfiles , setattachedfiles] = useState(product?.attachments || []);   
+  const [type , settype] = useState(product?.type || '');
+  const [description , setdescription] = useState(product?.description || null);
+  const [timeunit , settimeunits] = useState(product?.timeunit || '');
+  const [timequantity , settimequantity] = useState(product?.timequantity || 4);
+  const [names , setnames] = useState(product?.names || null);
+  const [number , setnumber] = useState(product?.number || null);
+  const [email , setemail] = useState(product?.email || null)
+  const [comitted , setcomitted] = useState(false);
+  const {loggedin , admin , user} = useContext(AuthContext);
+  const {socket , socketconnected} = useContext(socketcontext);
+
+  const isMobile = useBreakpointValue({ base: true, md: false });
+  const mainWidth = useBreakpointValue({ base: '100%', md: '40%' });
+  const sideWidth = useBreakpointValue({ base: '0%', md: '25%' });
+  const sideWidth2 = useBreakpointValue({ base: '0%', md: '30%' });
+  const inputWidth = useBreakpointValue({ base: '90%', md: '65%' });
+  const fileContainerWidth = useBreakpointValue({ base: '90%', md: '60%' });
+  const buttonWidth = useBreakpointValue({ base: '50%', md: '30%' });
 
   useEffect(function(){
-    console.log('socket on mount', socket);
-  }, [socket])
+    console.log('socket on mount' , socket);
+  } , [socket])
 
   useEffect(() => {
     if (timeunitref.current) {
@@ -56,37 +55,36 @@ function Make_request() {
     }
 
     console.log(product?`product received  ${JSON.stringify(product)}`:'no product recieved');
-    console.log('product', product);
+    console.log('product' , product);
   }, []);
 
+  
   const editrequest = async function(){
     try{
-      console.log(type, description, timeunit, timequantity, names, number, email, attachedfiles)
-      if(!type || type.trim()=='' || !description || description.trim()=='' || !timeunit || timeunit.trim()=='' || !timequantity || !names || names.trim()=='' || !number || number.trim()=='' || !email || email.trim()==''){
-        // Validation error handling
-      }
-      else{
+      console.log(type ,description , timeunit , timequantity , names , number , email , attachedfiles)
+       if(!type || type.trim()=='' ||  !description || description.trim()=='' || !timeunit || timeunit.trim()=='' || !timequantity  || !names || names.trim()=='' || !number || number.trim()=='' || !email || email.trim()==''){
+       }
+       else{
         if(submitting){
-          // Already submitting
         }
         else{
           setsubmitting(true);
           if(attachedfiles.length > 0){
             const body = new FormData();
-            body.append('reqid', product._id)
-            body.append('type', type);
-            body.append('description', description);
-            body.append('timeunit', timeunit);
-            body.append('timequantity', timequantity);
-            body.append('names', names);
-            body.append('number', number);
-            body.append('email', email);
-            body.append('user', user._id);
-            attachedfiles.forEach(function(val, index){
-              body.append('attachments', val);
+            body.append('reqid' , product._id)
+            body.append('type' , type);
+            body.append('description' , description);
+            body.append('timeunit' , timeunit);
+            body.append('timequantity' , timequantity);
+            body.append('names' , names);
+            body.append('number' , number);
+            body.append('email' , email);
+            body.append('user' , user._id);
+            attachedfiles.forEach(function(val , index){
+              body.append('attachments' ,val);
             })
   
-            const upload = await fetch(`${BASE_URL}/edit_request`, {
+            const upload = await fetch(`${BASE_URL}/edit_request` , {
               method:'PATCH',
               body:body
             })
@@ -96,7 +94,7 @@ function Make_request() {
               setsubmittingerror(false);
               console.log('request sent successfully');
               const data = await upload.json();
-              socket.current.emit('editt_request', data, function(){
+              socket.current.emit('editt_request' , data , function(){
                 console.log('edit request has been received');
               })
               navigate('/main');
@@ -114,19 +112,19 @@ function Make_request() {
             }
           }
           else{
-            const upload = await fetch(`${BASE_URL}/edit_request`, {
+            const upload = await fetch(`${BASE_URL}/edit_request` , {
               method:'PATCH',
               headers: {
-                'Content-Type': 'application/json'
+                'Content-Type' : 'application/json'
               },
-              body:JSON.stringify({type, description, timeunit, timequantity, names, number, email, user:user._id, reqid:product._id})
+              body:JSON.stringify({type , description , timeunit , timequantity , names , number , email , user:user._id , reqid:product._id})
             })
   
             if(upload.ok){
               setsubmitting(false);
               setsubmittingerror(false);
               const data = await upload.json();
-              socket.current.emit('edit_request', data, function(){
+              socket.current.emit('edit_request' , data , function(){
                 console.log('edit request has been received');
               })
               navigate('/main');
@@ -144,10 +142,10 @@ function Make_request() {
             }
           }
         }
-      }
+       }
     }
     catch(err){
-      console.log('error submitting request', err);
+      console.log('error submitting request' , err);
     }
   }
 
@@ -162,7 +160,7 @@ function Make_request() {
       }
     }
     catch(err){
-      console.log('error comitting request', err);
+      console.log('error comitting request' , err);
     }
   }
 
@@ -171,7 +169,7 @@ function Make_request() {
       settimequantity(timequantity + 1);
     }
     catch(err){
-      console.log('error increasing time', err);
+      console.log('error increasing time' , err);
     }
   }
 
@@ -185,63 +183,59 @@ function Make_request() {
       }
     }
     catch(err){
-      console.log('error increasing time', err);
+      console.log('error increasing time' , err);
     }
   }
 
   const detatchfile = async function(itemindex){
     try{
-      const newfilelist = attachedfiles.filter(function(val, index){
-        return index !== itemindex
-      })
-      setattachedfiles(newfilelist);
+     const newfilelist = attachedfiles.filter(function(val , index){
+       return index !== itemindex
+     })
+     setattachedfiles(newfilelist);
     }
     catch(err){
-      console.log('error detatching file', err);
+      console.log('error detatching file' , err);
       return;
     }
   }
 
   const handlefileinput = async function(e){
     try{
-      console.log('a file has been selected', e.target.files);
-      const files = [...e.target.files];
-      console.log('files', files);
-      setattachedfiles((prev)=>[...prev, ...files]);
+     const files = [...e.target.files];
+     setattachedfiles((prev)=>[...prev , ...files]);
     }
     catch(err){
-      console.log('error handling file selection', err);
+      console.log('error handling file selection' , err);
       return;
     }
   }
 
   const submitrequest = async function(){
     try{
-      console.log(type, description, timeunit, timequantity, names, number, email, attachedfiles)
-      if(!type || type.trim()=='' || !description || description.trim()=='' || !timeunit || timeunit.trim()=='' || !timequantity || !names || names.trim()=='' || !number || number.trim()=='' || !email || email.trim()==''){
-        // Validation error handling
-      }
-      else{
+      console.log(type ,description , timeunit , timequantity , names , number , email , attachedfiles)
+       if(!type || type.trim()=='' ||  !description || description.trim()=='' || !timeunit || timeunit.trim()=='' || !timequantity  || !names || names.trim()=='' || !number || number.trim()=='' || !email || email.trim()==''){
+       }
+       else{
         if(submitting){
-          // Already submitting
         }
         else{
           setsubmitting(true);
           if(attachedfiles.length > 0){
             const body = new FormData();
-            body.append('type', type);
-            body.append('description', description);
-            body.append('timeunit', timeunit);
-            body.append('timequantity', timequantity);
-            body.append('names', names);
-            body.append('number', number);
-            body.append('email', email);
-            body.append('user', user._id);
-            attachedfiles.forEach(function(val, index){
-              body.append('attachments', val);
+            body.append('type' , type);
+            body.append('description' , description);
+            body.append('timeunit' , timeunit);
+            body.append('timequantity' , timequantity);
+            body.append('names' , names);
+            body.append('number' , number);
+            body.append('email' , email);
+            body.append('user' , user._id);
+            attachedfiles.forEach(function(val , index){
+              body.append('attachments' ,val);
             })
   
-            const upload = await fetch(`${BASE_URL}/send_request`, {
+            const upload = await fetch(`${BASE_URL}/send_request` , {
               method:'POST',
               body:body
             })
@@ -252,7 +246,7 @@ function Make_request() {
               console.log('request sent successfully');
               const data = await upload.json();
               
-              socket.current.emit('sent_request', data, function(){
+              socket.current.emit('sent_request' , data , function(){
                 console.log('request has been received');
               })
               navigate('/main');
@@ -270,19 +264,19 @@ function Make_request() {
             }
           }
           else{
-            const upload = await fetch(`${BASE_URL}/send_request`, {
+            const upload = await fetch(`${BASE_URL}/send_request` , {
               method:'POST',
               headers: {
-                'Content-Type': 'application/json'
+                'Content-Type' : 'application/json'
               },
-              body:JSON.stringify({type, description, timeunit, timequantity, names, number, email, user:user._id})
+              body:JSON.stringify({type , description , timeunit , timequantity , names , number , email , user:user._id})
             })
   
             if(upload.ok){
               setsubmitting(false);
               setsubmittingerror(false);
               const data = await upload.json();
-              socket.current.emit('sent_request', data, function(){
+              socket.current.emit('sent_request' , data , function(){
                 console.log('request has been received');
               })
               navigate('/main');
@@ -300,83 +294,93 @@ function Make_request() {
             }
           }
         }
-      }
+       }
     }
     catch(err){
-      console.log('error submitting request', err);
+      console.log('error submitting request' , err);
     }
   }
 
   return (
-    <Box width={winwidth} height={winheight} padding={'2px'} bg={'gray.800'} 
-         display={'flex'} flexDir={'row'} alignItems={'center'} paddingBottom={'40px'} overflow={'auto'}>
-      
-      {/* Sidebars - only visible on medium screens and up */}
-      {showSidebars && (
-        <>
-          <VStack width={'25%'} height={'100%'} borderRightWidth={'1px'} borderRightColor={'white'} 
-                  display={{base: 'none', md: 'flex'}} />
-          <VStack width={'30%'} height={'100%'} borderRightWidth={'1px'} borderRightColor={'white'} 
-                  display={{base: 'none', md: 'flex'}} />
-        </>
-      )}
+   <Box width={winwidth} height={winheight} padding={'2px'} bg={'gray.800'} 
+        display={'flex'} flexDir={{ base: 'column', md: 'row' }} 
+        alignItems={'center'} paddingBottom={'40px'} overflow={'auto'}>
+       
+       <VStack width={sideWidth} height={'100%'} 
+               borderRightWidth={'1px'} borderRightColor={'white'} 
+               display={{ base: 'none', md: 'flex' }} />
 
-      <VStack width={mainWidth} height={'100%'} paddingLeft={{base: '5px', md: '10px'}} 
-              overflow={'auto'} css={{ '&::-webkit-scrollbar': { display: 'none', scrollbarWidth: '1px' }}}>
-        <Text color={'white'} fontSize={{base: 'md', md: 'lg'}}>DESCRIBE YOUR PRODUCT</Text>
+       <VStack width={sideWidth2} height={'100%'} 
+               borderRightWidth={'1px'} borderRightColor={'white'} 
+               display={{ base: 'none', md: 'flex' }} />
+ 
+       <VStack width={mainWidth} height={'100%'} paddingLeft={{ base: '0', md: '10px' }} 
+               overflow={'auto'} css={{ '&::-webkit-scrollbar': { display: 'none' } }}>
+        
+        <Text color={'white'} fontSize={{ base: 'sm', md: 'md' }}>DESCRIBE YOUR PRODUCT</Text>
         <Text color={'red.500'} fontWeight={'bold'} fontSize={'medium'}>{submittingerror}</Text>
 
-        <Text textAlign={'left'} alignSelf={'flex-start'} color={'white'} fontSize={'medium'} fontWeight={'bold'}>
+        <Text textAlign={'left'} alignSelf={'flex-start'} color={'white'} 
+              fontSize={{ base: 'sm', md: 'medium' }} fontWeight={'bold'}>
           SELECT TYPE OF PRODUCT
         </Text>
+        
         <Select onChange={(e)=>{settype(e.target.value)}} value={type} ref={typeref} 
-                width={inputWidth} height={'30px'} borderRadius={'5px'} color={'white'} fontSize={'small'}  
-                placeholder='select type of product you want'>
-          <option style={{color:'black', fontSize:'xxs'}} value={'simple website'}>website (simple with one page for eg advertising, no user interacions, just a viewing page)</option>
-          <option style={{color:'black', fontSize:'xxs'}} value={'medium website'}>website (simple, with multiple functions eg registering, enrolling, etc)</option>
-          <option style={{color:'black', fontSize:'xxs'}} value={'web app'}>web app (a web based app, where the user can do everything in, eg register, sign up/log in, access services, products, entertainment, do business etc)</option>
-          <option style={{color:'black', fontSize:'xxs'}} value={'simple phone app'}>phone app (a simple one with few capabilities)</option>
-          <option style={{color:'black', fontSize:'xxs'}} value={'complex phone app'}>phone app (a full blown app, with full scale functionalities)</option>
-          <option style={{color:'black', fontSize:'xxs'}} value={'simple ai agent'}>AI agent (a simple ai agent eg a customer care service clients can interract with (ask questions and get responses))</option>
-          <option style={{color:'black', fontSize:'xxs'}} value={'complex ai agent'}>AI agent that can perform defined tasks, eg edit videos, ocuments, etc</option>
+                width={inputWidth} height={'30px'} borderRadius={'5px'} color={'white'} 
+                fontSize={{ base: 'xs', md: 'small' }} placeholder='select type of product you want'>
+          <option style={{color:'black'}} value={'simple website'} >website (simple with one page for eg advertising , no user interacions , just a viewing page)</option>
+          <option style={{color:'black'}} value={'medium website'} >website (simple , with multiple functions eg registering , enrolling , etc)</option>
+          <option style={{color:'black'}} value={'web app'} >web app (a web based app , where the user can do everything in , eg register , sign up/log in , access services , products , entertainment , do business etc)</option>
+          <option style={{color:'black'}} value={'simple phone app'} >phone app (a simple one with few capabilities)</option>
+          <option style={{color:'black'}} value={'complex phone app'} >phone app (a full blown app , with full scale functionalities)</option>
+          <option style={{color:'black'}} value={'simple ai agent'}>AI agent (a simple ai agent eg a customer care service clients can interract with (ask questions and get responses))</option>
+          <option style={{color:'black'}} value={'complex ai agent'}>AI agent that can perform defined tasks , eg edit videos , ocuments , etc</option>
         </Select>
 
         <Divider width={'100%'} mt={'10px'} mb={'10px'} />
 
-        <Text textAlign={'left'} alignSelf={'flex-start'} color={'white'} fontSize={'medium'} fontWeight={'bold'}>
+        <Text textAlign={'left'} alignSelf={'flex-start'} color={'white'} 
+              fontSize={{ base: 'sm', md: 'medium' }} fontWeight={'bold'}>
           DESCRIPTION
         </Text>
-        <Textarea value={description} onChange={(e)=>{setdescription(e.target.value)}}  
-                  css={{ '&::-webkit-scrollbar': { display: 'none', scrollbarWidth: '1px' }}}  
-                  width={'95%'} bg={'white'} borderRadius={'15px'} resize={'none'} minH={'400px'} 
-                  wordBreak={'break-word'} whiteSpace={'pre-wrap'} overflowWrap={'break-word'} />
+        
+        <Textarea value={description} onChange={(e)=>{setdescription(e.target.value)}} 
+                  css={{ '&::-webkit-scrollbar': { display: 'none' }}} width={'95%'} bg={'white'} 
+                  borderRadius={'15px'} resize={'none'} minH={'400px'} wordBreak={'break-word'} 
+                  whiteSpace={'pre-wrap'} overflowWrap={'break-word'} />
    
         <Divider width={'100%'} mt={'10px'} mb={'10px'} />
 
-        <Text color={'white'} fontSize={'small'} fontWeight={'bold'} textAlign="center">
-          attach related document(s) eg logo image, terms and conditions docs, description docs, etc
+        <Text color={'white'} fontSize={{ base: 'xs', md: 'small' }} fontWeight={'bold'} textAlign="center">
+          attach related document(s) eg logo image , terms and conditions docs , description docs  , etc
         </Text>
 
         <Box as={'button'} mt={'20px'} mb={'20px'} onClick={()=>{fileinputref.current.click()}} 
              borderColor={'white'} borderWidth={'1px'} borderRadius={'10px'} p={'2px'} color={'white'} 
-             fontSize={'small'} fontWeight={'bold'} width={{base: '90%', md: '200px'}} 
+             fontSize={{ base: 'xs', md: 'small' }} fontWeight={'bold'} width={'200px'} 
              display={'flex'} alignItems={'center'} justifyContent={'center'}>
-          <HStack width={'100%'} height={'100%'} gap={'5px'} justifyContent="center">
+          <HStack width={'100%'} height={'100%'} gap={'5px'}>
             <IoDocumentAttach color='white' size={'20px'} />
             <Input type='file' display={'none'} ref={fileinputref} onChange={(e)=>handlefileinput(e)} multiple />
-            <Text color={'white'} fontSize={'small'} fontWeight={'bold'}>attach document(s)/file(s)</Text>
+            <Text color={'white'} fontSize={{ base: 'xs', md: 'small' }} fontWeight={'bold'}>
+              attach document(s)/file(s)
+            </Text>
           </HStack>
         </Box> 
         
         {(attachedfiles.length > 0) &&  
-          <VStack mt={'10px'} mb={'10px'} width={fileListWidth} height={'200px'} borderRadius={'15px'} 
-                  p={'2px'} bg={'white'} overflow="auto">
-            {attachedfiles.map(function(val, itemindex){
+          <VStack mt={'10px'} mb={'10px'} width={fileContainerWidth} height={'200px'} 
+                  borderRadius={'15px'} p={'2px'} bg={'white'}>
+            {attachedfiles.map(function(val , itemindex){
               return(
-                <HStack width={'90%'} height={'30px'} borderBottomWidth={'1px'} borderBottomColor={'black'} 
-                        p={'2px'} justifyContent={'space-between'} key={itemindex}>
+                <HStack width={'90%'} height={'30px'} borderBottomWidth={'1px'} 
+                        borderBottomColor={'black'} p={'2px'} justifyContent={'space-between'}  
+                        key={itemindex}>
                  <FaFileAlt size={'20px'} color='black' />
-                 <Text fontSize={'small'} color={'black'} fontWeight={'light'} isTruncated>{val.name}</Text>
+                 <Text fontSize={'small'} color={'black'} fontWeight={'light'} 
+                       overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" maxWidth="60%">
+                   {val.name}
+                 </Text>
                  <Box as='button' width={'25px'} height={'25px'} bg={'none'} p={'1px'} 
                       display={'flex'} justifyContent={'center'} alignItems={'center'} 
                       onClick={()=>detatchfile(itemindex)}>
@@ -388,62 +392,69 @@ function Make_request() {
           </VStack>
         }
         
-        <Text textAlign={'left'} alignSelf={'flex-start'} color={'white'} fontSize={'medium'} fontWeight={'bold'}>
+        <Text textAlign={'left'} alignSelf={'flex-start'} color={'white'} 
+              fontSize={{ base: 'sm', md: 'medium' }} fontWeight={'bold'}>
           TIMELINE
         </Text>
 
-        <HStack width={timelineWidth} p={'2px'} alignItems={'center'} flexWrap="wrap">
+        <HStack width={{ base: '95%', md: '80%' }} p={'2px'} alignItems={'center'}>
           <Select ref={timeunitref} value={timeunit} onChange={(e)=>{settimeunits(e.target.value)}} 
-                  width={{base: '100%', md: '55%'}} height={'30px'} borderRadius={'5px'} color={'white'} 
-                  fontSize={'small'} mb={{base: 2, md: 0}}>
-            <option style={{color:'black', fontSize:'xxs'}} value={'weeks'}>Weeks</option>
-            <option style={{color:'black', fontSize:'xxs'}} value={'days'}>Days</option>
-            <option style={{color:'black', fontSize:'xxs'}} value={'months'}>Months</option>
+                  width={{ base: '50%', md: '55%' }} height={'30px'} borderRadius={'5px'} 
+                  color={'white'} fontSize={{ base: 'xs', md: 'small' }}>
+            <option style={{color:'black'}} value={'weeks'}>Weeks</option>
+            <option style={{color:'black'}} value={'days'}>Days</option>
+            <option style={{color:'black'}} value={'months'}>Months</option>
           </Select>
 
-          <HStack width={{base: '100%', md: '40%'}} alignItems={'center'} justifyContent={'space-around'}>
-            <Box as='button' onClick={reducetime} width={'20px'} height={'20px'} display={'flex'} 
-                 alignItems={'center'} justifyContent={'center'} p={'1px'} bg={'black'} borderRadius={'10px'}>
+          <HStack width={{ base: '45%', md: '40%' }} alignItems={'center'} justifyContent={'space-around'}>
+            <Box as='button' onClick={reducetime} width={'20px'} height={'20px'} 
+                 display={'flex'} alignItems={'center'} justifyContent={'center'} p={'1px'} 
+                 bg={'black'} borderRadius={'10px'}>
               <FiMinus size={'18px'} color='white' />
             </Box>
-            <Textarea value={timequantity} onChange={(e)=>{settimequantity(e.target.value)}}  
-                      css={{ '&::-webkit-scrollbar': { display: 'none', scrollbarWidth: '1px' }}}  
-                      bg={'white'} borderRadius={'10px'} color={'black'} p={'1px'} resize={'none'} 
-                      height={'25px'} rows={1} width={'60%'} />
-            <Box as='button' onClick={addtime} width={'20px'} height={'20px'} display={'flex'} 
-                 alignItems={'center'} justifyContent={'center'} p={'1px'} bg={'black'} borderRadius={'10px'}>
+            <Textarea value={timequantity} onChange={(e)=>{settimequantity(e.target.value)}} 
+                      css={{ '&::-webkit-scrollbar': { display: 'none' }}} bg={'white'} 
+                      borderRadius={'10px'} color={'black'} p={'1px'} resize={'none'} 
+                      height={'25px'} rows={1} width={'60%'} textAlign="center" />
+            <Box as='button' onClick={addtime} width={'20px'} height={'20px'} 
+                 display={'flex'} alignItems={'center'} justifyContent={'center'} p={'1px'} 
+                 bg={'black'} borderRadius={'10px'}>
               <FaPlus size={'18px'} color='white' />
             </Box>
           </HStack>
         </HStack>
 
-        <Text textAlign={'left'} alignSelf={'flex-start'} color={'white'} fontSize={'medium'} fontWeight={'bold'}>
+        <Text textAlign={'left'} alignSelf={'flex-start'} color={'white'} 
+              fontSize={{ base: 'sm', md: 'medium' }} fontWeight={'bold'}>
           CONTACT INFO
         </Text>
 
-        <Text textAlign={'left'} alignSelf={'flex-start'} color={'white'} fontSize={'xs'} fontWeight={'light'}>
+        <Text textAlign={'left'} alignSelf={'flex-start'} color={'white'} 
+              fontSize={{ base: 'xs', md: 'xs' }} fontWeight={'light'}>
           Names
         </Text>
-        <Input value={names} onChange={(e)=>{setnames(e.target.value)}}  
-               css={{ '&::-webkit-scrollbar': { display: 'none', scrollbarWidth: '1px' }}}  
-               bg={'white'} borderRadius={'10px'} color={'black'} width={contactInputWidth}   
-               resize={'none'} placeholder='enter name(s)' />
+        <Input value={names} onChange={(e)=>{setnames(e.target.value)}} 
+               css={{ '&::-webkit-scrollbar': { display: 'none' }}} bg={'white'} 
+               borderRadius={'10px'} color={'black'} width={inputWidth} resize={'none'} 
+               placeholder='enter name(s)' />
 
-        <Text textAlign={'left'} alignSelf={'flex-start'} color={'white'} fontSize={'xs'} fontWeight={'light'}>
+        <Text textAlign={'left'} alignSelf={'flex-start'} color={'white'} 
+              fontSize={{ base: 'xs', md: 'xs' }} fontWeight={'light'}>
           phone number(active)
         </Text>
-        <Input value={number} onChange={(e)=>{setnumber(e.target.value)}}  
-               css={{ '&::-webkit-scrollbar': { display: 'none', scrollbarWidth: '1px' }}}  
-               bg={'white'} borderRadius={'15px'} color={'black'} width={contactInputWidth}   
-               resize={'none'} placeholder='enter phone number' />
+        <Input value={number} onChange={(e)=>{setnumber(e.target.value)}} 
+               css={{ '&::-webkit-scrollbar': { display: 'none' }}} bg={'white'} 
+               borderRadius={'15px'} color={'black'} width={inputWidth} resize={'none'} 
+               placeholder='enter phone number' />
 
-        <Text textAlign={'left'} alignSelf={'flex-start'} color={'white'} fontSize={'xs'} fontWeight={'light'}>
+        <Text textAlign={'left'} alignSelf={'flex-start'} color={'white'} 
+              fontSize={{ base: 'xs', md: 'xs' }} fontWeight={'light'}>
           E-mail(active)
         </Text>
-        <Input value={email} onChange={(e)=>{setemail(e.target.value)}}  
-               css={{ '&::-webkit-scrollbar': { display: 'none', scrollbarWidth: '1px' }}}  
-               bg={'white'} borderRadius={'10px'} color={'black'} width={contactInputWidth}   
-               resize={'none'} placeholder='enter email' />
+        <Input value={email} onChange={(e)=>{setemail(e.target.value)}} 
+               css={{ '&::-webkit-scrollbar': { display: 'none' }}} bg={'white'} 
+               borderRadius={'10px'} color={'black'} width={inputWidth} resize={'none'} 
+               placeholder='enter email' />
 
         {comitted ? (
           mode && mode=='editting' ? (
@@ -452,7 +463,7 @@ function Make_request() {
                  flexDirection={'row'} alignItems={'center'} justifyContent={'center'} p={'3px'} 
                  bg={'black'} borderRadius={'10px'} gap={'10px'}>
               <IoMdSend size={'18px'} color='blue' />
-              <Text color={'white'} fontSize={'xs'}>edit request</Text>
+              <Text color={'white'} fontSize={{ base: 'xs', md: 'xs' }}>edit request</Text>
               {submitting && <Spinner width={'20px'} height={'20px'} color='white' />}
             </Box>
           ) : (
@@ -461,34 +472,34 @@ function Make_request() {
                  flexDirection={'row'} alignItems={'center'} justifyContent={'center'} p={'3px'} 
                  bg={'black'} borderRadius={'10px'} gap={'10px'}>
               <IoMdSend size={'18px'} color='blue' />
-              <Text color={'white'} fontSize={'xs'}>send request</Text>
+              <Text color={'white'} fontSize={{ base: 'xs', md: 'xs' }}>send request</Text>
               {submitting && <Spinner width={'20px'} height={'20px'} color='white' />}
             </Box>
           )
         ) : (
           <Box as='button' mt={'10px'} mb={'10px'} onClick={commitrequest} borderColor={'white'} 
                borderWidth={'2px'} height={'45px'} width={buttonWidth} display={'flex'} 
-               flexDirection={'row'} alignItems={'center'} justifyContent={'space-around'} p={'3px'} 
-               bg={'black'} borderRadius={'10px'} gap={'10px'}>
+               flexDirection={'row'} alignItems={'center'} justifyContent={'space-around'} 
+               p={'3px'} bg={'black'} borderRadius={'10px'} gap={'10px'}>
             <MdOutlineVerified size={'18px'} color='white' />
-            <Text color={'white'} fontSize={'xs'}>commit request</Text>
+            <Text color={'white'} fontSize={{ base: 'xs', md: 'xs' }}>commit request</Text>
             {submitting && <Spinner width={'20px'} height={'20px'} color='white' />}
           </Box>
         )}
 
-        {(mode && mode=='editting') && (
+        {(mode && mode=='editting') &&  
           <Box as='button' mt={'10px'} mb={'10px'} borderColor={'white'} borderWidth={'2px'} 
                height={'45px'} width={buttonWidth} display={'flex'} flexDirection={'row'} 
                alignItems={'center'} justifyContent={'center'} p={'3px'} bg={'blue'} 
-               borderRadius={'10px'} gap={'10px'}>
-            <IoMdSend size={'18px'} color='blue' />
-            <Text color={'white'} fontSize={'xs'}>BACK TO PRODUCT</Text>
+               borderRadius={'10px'} gap={'10px'} onClick={() => navigate(-1)}>
+            <Text color={'white'} fontSize={{ base: 'xs', md: 'xs' }}>BACK TO PRODUCT</Text>
           </Box>
-        )}
+        }
 
         <Text color={'red.500'} fontWeight={'bold'} fontSize={'medium'}>{submittingerror}</Text>
-      </VStack>
-    </Box>
+
+       </VStack>
+   </Box>
   )
 }
 
