@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, HStack, Image, Text, VStack, useBreakpointValue, SimpleGrid, Spinner, Alert, AlertIcon } from '@chakra-ui/react'
+import { Avatar, Box, Button, HStack, Image, Text, VStack, useBreakpointValue } from '@chakra-ui/react'
 import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../appcontexts/auth';
@@ -12,37 +12,27 @@ function Home() {
     const [isfetchingdata, setisfetchingdata] = useState(false);
     const [fetcherror, setfetcherror] = useState(false);
     const [info, setinfo] = useState(null);
-    const { user } = useContext(AuthContext)
+    const {user} = useContext(AuthContext)
     const navigate = useNavigate();
     const icons = [squares, sphere];
 
-    // Responsive values
+    // Get responsive values
     const isMobile = useBreakpointValue({ base: true, md: false });
-    const isTablet = useBreakpointValue({ base: false, md: true, lg: false });
     const requestItemWidth = useBreakpointValue({ 
         base: "100%", 
-        sm: "100%", 
-        md: "48%", 
-        lg: "48%", 
-        xl: "48%" 
+        md: "40%" 
     });
-    const requestGridColumns = useBreakpointValue({ 
-        base: 1, 
-        sm: 1, 
-        md: 2, 
-        lg: 2, 
-        xl: 2 
+    const requestImageWidth = useBreakpointValue({ 
+        base: "100%", 
+        md: "45%" 
     });
-    const avatarSize = useBreakpointValue({ base: "xs", md: "sm" });
-    const titleFontSize = useBreakpointValue({ base: "lg", md: "xl", lg: "x-large" });
-    const subtitleFontSize = useBreakpointValue({ base: "md", md: "lg" });
 
-    useEffect(function() {
+    useEffect(function(){
         setisfetchingdata(true);
-        const fetchdata = (async function() {
-            try {
+        const fetchdata = (async function(){
+            try{
                 const data = await fetch(`${BASE_URL}/fetch_homedata/${user._id}`);
-                if (data.ok) {
+                if(data.ok){
                     console.log('user info fetched')
                     setisfetchingdata(false);
                     setfetcherror(false);
@@ -50,13 +40,15 @@ function Home() {
                     console.log(receiveddata);
                     setinfo(receiveddata.data);
                     console.log('info', info)
-                } else {
-                    if (String(data.status).startsWith('4')) {
+                }
+                else{
+                    if(String(data.status).startsWith('4')){
                         console.log('error fetching data');
                         setisfetchingdata(false);
                         const receiveddata = await data.json();
                         setfetcherror(receiveddata.message);
-                    } else {
+                    }
+                    else{
                         console.log('user info not fetched')
                         setisfetchingdata(false);
                         const receiveddata = await data.json();
@@ -64,164 +56,158 @@ function Home() {
                         setfetcherror('server error');
                     }
                 }
-            } catch (err) {
+            }
+            catch(err){
                 console.log('error occured while fetching data', err);
                 setisfetchingdata(false);
                 setfetcherror('error fetching data, refresh page to try again')
             }
         })();
-    }, [])
+    },[])
 
-    useEffect(function() {
+    useEffect(function(){
         console.log('info set', info)
     }, [info])
-
+            
     useEffect(() => {
-        const handleResize = function() {
+        const handleResize = function(){
             setwinwidth(window.innerWidth);
             setwinheight(window.innerHeight)
         };
-
+        
         // Attach event listener
         window.addEventListener('resize', handleResize);
-
+    
         // Cleanup listener on unmount
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    const getStatusColor = (val) => {
-        if (!val.accepted && !val.rejected && !val.cancelled && !val.initiated) return 'orange';
-        if (val.accepted && !val.initiated && !val.rejected && !val.cancelled) return 'green';
-        if (val.accepted && val.initiated && !val.rejected && !val.cancelled) return 'purple';
-        if (val.rejected) return 'red';
-        if (val.cancelled) return 'orange';
-        if (val.completed) return 'green';
-        return 'blue';
-    }
-
-    const getStatusText = (val) => {
-        if (!val.accepted && !val.rejected && !val.cancelled && !val.initiated) return 'not yet received';
-        if (val.accepted && !val.initiated && !val.rejected && !val.cancelled) return 'ACCEPTED';
-        if (val.accepted && val.initiated && !val.rejected && !val.cancelled) return 'INITIATED';
-        if (val.rejected) return 'REJECTED';
-        if (val.cancelled) return 'CANCELLED';
-        if (val.completed) return 'COMPLETED';
-        return '';
-    }
-
     return (
-        <Box width="100%" bg="black" minHeight="100vh" p={{ base: 1, md: 2 }} display="flex" flexDirection="column" alignItems="center" overflow="auto" css={{ '&::-webkit-scrollbar': { display: 'none' } }} gap={{ base: 4, md: 5 }}>
-            {/* Header Section */}
-            <Box width="100%" padding={{ base: 3, md: 4 }} borderRadius="15px" bg="black" mt={{ base: 2, md: 4 }} mb={{ base: 2, md: 4 }} display="flex" flexDirection="column" position="relative">
-                <HStack width="100%" padding={2} borderRadius="10px" justifyContent="flex-end">
-                    <Avatar size={avatarSize} />
+        <Box width={winwidth} bg={'black'} height={winheight} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} overflow={'auto'} css={{ '&::-webkit-scrollbar': { display:'none', scrollbarWidth: '1px' }}} gap={'20px'}>
+            {/* Welcome Section */}
+            <Box width={'98%'} padding={'4px'} borderRadius={'15px'} bg={'black'} minH={'200px'} mt={'10px'} mb={'10px'} display={'flex'} flexDirection={'column'}>
+                <HStack position={'relative'} width={'95%'} padding={'4px'} minH={'35px'} borderRadius={'10px'} alignSelf={'center'}>
+                    <Avatar position={'absolute'} size={'xs'} right={'2px'} />
                 </HStack>
-                <Text fontSize={titleFontSize} color="white" fontWeight="bold" textAlign={{ base: "center", md: "left" }}>
-                    WELCOME TO HUMVERSE
-                </Text>
-                <Text fontSize={subtitleFontSize} color="white" fontWeight="bold" textAlign={{ base: "center", md: "left" }}>
-                    {user?.username ? `USERNAME: ${user.username}` : 'USERNAME'}
-                </Text>
+                <Text fontSize={'x-large'} color={'white'} fontWeight={'bold'}>WELCOME TO HUMVERSE</Text>
+                <Text fontSize={'medium'} color={'white'} fontWeight={'bold'}>USERNAME</Text>
             </Box>
 
-            {/* Loading and Error States */}
-            {isfetchingdata && (
-                <VStack width="100%" py={10}>
-                    <Spinner size="xl" color="white" />
-                    <Text color="white">Loading your requests...</Text>
-                </VStack>
-            )}
+            {/* Requests Title */}
+            <Text mt={'10px'} mb={'15px'} alignSelf={'flex-start'} textAlign={'left'} fontSize={'large'} color={'white'} fontWeight={'bold'}>YOUR REQUESTS</Text>
+            
+            {/* Requests Container */}
+            <Box 
+                width={'95%'} 
+                padding={'4px'} 
+                minH={'550px'} 
+                maxH={'850px'} 
+                bg={'white'} 
+                borderRadius={'10px'} 
+                alignSelf={'center'} 
+                overflow={'auto'} 
+                css={{ '&::-webkit-scrollbar': { display:'none', scrollbarWidth: '1px' }}}
+            >
+                <Box 
+                    display={'flex'} 
+                    flexWrap={'wrap'} 
+                    gap={'20px'} 
+                    justifyContent={isMobile ? 'center' : 'flex-start'}
+                    alignItems={isMobile ? 'center' : 'flex-start'}
+                    flexDirection={isMobile ? 'column' : 'row'}
+                    p={isMobile ? '10px' : '4px'}
+                >
+                    {info?.requests?.length > 0 ?  
+                        info.requests.map(function(val, index){
+                            return (
+                                <HStack 
+                                    key={index}
+                                    onClick={() => {navigate('view_product', {state:{request:val}})}}
+                                    width={requestItemWidth}
+                                    gap={'20px'}
+                                    _hover={{bg:'gray.400'}}
+                                    p={'4px'}
+                                    flexDirection={isMobile ? 'column' : 'row'}
+                                    alignItems={isMobile ? 'center' : 'flex-start'}
+                                >
+                                    <VStack width={requestImageWidth} height={'250px'} bg={'black'} p={'4px'}>
+                                        <Image mt={'2px'} mb={'2px'} width={'95%'} height={'200px'} objectFit={'cover'} src={icons[Math.round(Math.random())]} />
+                                        <HStack width={'100%'} padding={'2px'}>
+                                            <Button 
+                                                size={'medium'} 
+                                                colorScheme={
+                                                    !val.accepted&&!val.rejected&&!val.cancelled&&!val.initiated?'orange':
+                                                    val.accepted&&!val.initiated&&!val.rejected&&!val.cancelled?'green':
+                                                    val.accepted&&val.initiated&&!val.rejected&&!val.cancelled?'purple':
+                                                    val.rejected?'red':
+                                                    val.cancelled?'orange':
+                                                    val.completed?'green':'blue'
+                                                } 
+                                                _hover={{bg:'none'}} 
+                                                borderRadius={'10px'} 
+                                                borderWidth={'1px'} 
+                                                borderColor={'white'} 
+                                                p={'4px'} 
+                                                display={'flex'} 
+                                                alignItems={'center'} 
+                                                justifyContent={'center'}
+                                            >
+                                                {
+                                                    !val.accepted&&!val.rejected&&!val.cancelled&&!val.initiated?'not yet received':
+                                                    val.accepted&&!val.initiated&&!val.rejected&&!val.cancelled?'ACCEPTED':
+                                                    val.accepted&&val.initiated&&!val.rejected&&!val.cancelled?'INITIATED':
+                                                    val.rejected?'REJECTED':
+                                                    val.cancelled?'CANCELLED':
+                                                    val.completed?'COMPLETED':''
+                                                }
+                                            </Button>
+                                        </HStack>
+                                    </VStack>
 
-            {fetcherror && (
-                <Alert status="error" borderRadius="md" mb={4}>
-                    <AlertIcon />
-                    {fetcherror}
-                </Alert>
-            )}
-
-            {/* Requests Section */}
-            <Text mt={4} mb={3} alignSelf="flex-start" fontSize={{ base: "md", md: "lg" }} color="white" fontWeight="bold">
-                YOUR REQUESTS
-            </Text>
-
-            {info?.requests?.length > 0 ? (
-                <SimpleGrid columns={requestGridColumns} spacing={{ base: 3, md: 4 }} width="100%" padding={2} minHeight="400px" bg="white" borderRadius="10px" overflow="auto" css={{ '&::-webkit-scrollbar': { display: 'none' } }}>
-                    {info.requests.map(function(val, index) {
-                        return (
-                            <Box
-                                key={index}
-                                onClick={() => { navigate('view_product', { state: { request: val } }) }}
-                                width={requestItemWidth}
-                                borderWidth="1px"
-                                borderRadius="lg"
-                                overflow="hidden"
-                                p={3}
-                                _hover={{ bg: "gray.100", transform: "scale(1.02)", transition: "all 0.2s" }}
-                                cursor="pointer"
-                                alignSelf="stretch"
-                            >
-                                <VStack align="stretch" spacing={3}>
-                                    <Image
-                                        width="100%"
-                                        height={{ base: "150px", md: "200px" }}
-                                        objectFit="cover"
-                                        src={icons[Math.round(Math.random())]}
-                                        borderRadius="md"
-                                    />
-                                    <Button
-                                        size="sm"
-                                        colorScheme={getStatusColor(val)}
-                                        borderRadius="10px"
-                                        borderWidth="1px"
-                                        p={2}
-                                        isDisabled
-                                    >
-                                        {getStatusText(val)}
-                                    </Button>
-
-                                    <VStack align="start" spacing={1}>
-                                        <Text fontSize={{ base: "sm", md: "md" }} fontWeight="bold">
-                                            DATE OF REQUEST: <Text as="span" fontWeight="normal">{val.date}</Text>
+                                    <VStack alignItems={isMobile ? 'center' : 'flex-start'} textAlign={isMobile ? 'center' : 'left'}>
+                                        <Text>REQUEST INFO</Text>
+                                        <Text fontSize={'medium'} fontWeight={'bold'}>
+                                            DATE OF REQUEST : <Text as={'span'} fontSize={'small'} fontWeight={'bold'}>{val.date}</Text>
                                         </Text>
-                                        <Text fontSize={{ base: "sm", md: "md" }} fontWeight="bold">
-                                            DURATION: <Text as="span" fontWeight="normal">{`${val.timequantity} ${val.timeunit}`}</Text>
+                                        <Text fontSize={'medium'} fontWeight={'bold'}>
+                                            DURATION : <Text as={'span'} fontSize={'small'} fontWeight={'bold'}>{`${val.timequantity} ${val.timeunit}`}</Text>
                                         </Text>
-                                        <Text fontSize={{ base: "sm", md: "md" }} fontWeight="bold">
-                                            PREVIEWS: <Text as="span" fontWeight="normal">{val.previews.length}</Text>
+                                        <Text fontSize={'medium'} fontWeight={'bold'}>
+                                            previews : <Text as={'span'} fontSize={'small'} fontWeight={'bold'}>{val.previews.length}</Text>
                                         </Text>
                                     </VStack>
-                                </VStack>
-                            </Box>
-                        )
-                    })}
-                </SimpleGrid>
-            ) : !isfetchingdata && (
-                <VStack width="100%" bg="white" borderRadius="10px" p={8} minHeight="200px" justify="center">
-                    <Text fontSize={{ base: "lg", md: "xl" }} color="blue.400" fontWeight="bold" textAlign="center">
-                        YOU DO NOT HAVE ANY REQUESTS YET
-                    </Text>
-                </VStack>
-            )}
+                                </HStack>
+                            )
+                        }) :
+                        <Text fontSize={'x-large'} color={'blue.400'} fontWeight={'bold'} width="100%" textAlign="center" py={10}>YOU DO NOT HAVE ANY REQUESTS YET</Text>
+                    }
+                </Box>
+            </Box>
 
             {/* Request Button */}
-            <Box
-                onClick={() => { navigate('make_request') }}
-                mt={{ base: 4, md: 5 }}
-                mb={{ base: 3, md: 4 }}
-                as="button"
-                minWidth={{ base: "120px", md: "150px" }}
-                p={{ base: 3, md: 4 }}
-                borderRadius="10px"
-                borderColor="white"
-                borderWidth="1px"
-                color="white"
-                fontWeight="bold"
-                fontSize={{ base: "xs", md: "sm" }}
-                _hover={{ bg: "whiteAlpha.200" }}
-                alignSelf={{ base: "center", md: "flex-end" }}
-                mx={{ base: "auto", md: 0 }}
+            <Box 
+                width="100%" 
+                display="flex" 
+                justifyContent={isMobile ? "center" : "flex-end"}
+                pr={isMobile ? "0" : "2.5%"}
             >
-                REQUEST FOR A PRODUCT
+                <Box 
+                    onClick={() => {navigate('make_request')}} 
+                    mt={'15px'} 
+                    mb={'10px'} 
+                    as={'button'} 
+                    minWidth={'100px'} 
+                    p={'10px'} 
+                    borderRadius={'10px'} 
+                    borderColor={'white'} 
+                    borderWidth={'1px'} 
+                    color={'white'} 
+                    fontWeight={'bold'} 
+                    fontSize={'xx-small'}
+                    ml={isMobile ? "0" : winwidth/2}
+                >
+                    REQUEST FOR A PRODUCT
+                </Box>
             </Box>
         </Box>
     )
