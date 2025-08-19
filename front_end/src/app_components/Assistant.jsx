@@ -140,7 +140,8 @@ function Assistant() {
       }, []);
 
 
-  return (
+    if(loggedin){
+      return (
    <Box  width={winwidth}  height={winheight} overflow={'auto'} bg={'black'}  p={'3px'} display={'flex'} flexDir={'row'} alignItems={'center'} justifyContent={'space-between'}  >
       <VStack position={'relative'} bg={'gray.800'} width={showsidebar?'20%':'5%'} height={'95%'} borderRightRadius={'15px'}  >
 
@@ -234,6 +235,17 @@ function Assistant() {
       </Box>
    </Box>
   )
+        }
+        else{
+          return(
+            <Box width={'100%'} height={'100vh'}  display={'flex'} alignItems={'center'} justifyContent={'center'} bg={'gray.800'} borderRadius={'10px'} >
+             <Text mb={'100px'} color={'white'} fontSize={'xxx-large'} fontWeight={'bold'} >OOPS!</Text>
+              <Text color={'white'} fontSize={'small'} fontWeight={'bold'} >YOU NEED TO BE LOGGED IN OR HAVE AN ACCOUNT TO BE ABLE TO USE THE ASSISTANT</Text>
+            </Box>
+        )
+        }
+
+        
 }
 
 export default Assistant

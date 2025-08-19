@@ -56,6 +56,7 @@ useEffect(() => {
 {/* <Route path='land'  element={<Landing/>}  ></Route> */}
 <Route path='services'   element={<Pricing/>}  ></Route>
 <Route path='contacts'  element={<Contacts/>}  ></Route>
+<Route path='assistant'  element={<Assistant/>}  ></Route>
 <Route path='*' element={<Navigate to='' replace />} />
 </Route>
 </Routes>
@@ -78,13 +79,13 @@ useEffect(() => {
             <Route path='payment'  element={<Payment_page/>}  ></Route>
             <Route path='make_request'  element={<Make_request/>}  ></Route>
             <Route path='view_product'  element={<View_Product/>}  ></Route>  
-            <Route path='dashboard'  element={<Dashboard/>}  ></Route> 
-            <Route path='dashboard'  element={<Dashboard/>}  ></Route> 
-            <Route  path='view_requests' element={<New_Requests/>}     />
+            {/* <Route path='dashboard'  element={<Dashboard/>}  ></Route>  */}
+            {/* <Route path='dashboard'  element={<Dashboard/>}  ></Route>  */}
+            {/* <Route  path='view_requests' element={<New_Requests/>}     /> */}
             {/* <Route   path='view_product'  element={<View_Product/>}      /> */}
-            <Route  path='view_projects'  element={<Works_in_progress/>}   />
-            <Route    path='view_clients'  element={<Clients/>}  />
-            <Route    path='ai_setup'  element={<Ai_setup/>}  />
+            {/* <Route  path='view_projects'  element={<Works_in_progress/>}   /> */}
+            {/* <Route    path='view_clients'  element={<Clients/>}  /> */}
+            {/* <Route    path='ai_setup'  element={<Ai_setup/>}  /> */}
             <Route path='*' element={<Navigate to='' replace />} />
                             </Route>          
           </Routes>

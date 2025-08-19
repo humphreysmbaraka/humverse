@@ -965,6 +965,7 @@ const rejectrequest = async function(){
                             <Text color={'white'}   >{val.client.username}</Text>
                             <Text color={'white'}   >{val.createdAt.slice(0 , 10)}</Text>
                             <Text color={'white'}   >{val.createdAt.slice(11 , 16)}</Text>
+                            <Text color={'green'} p={'2px'} borderRadius={'10px'} borderWidth={'1px'} borderColor={'white'}  >{val.updated?'UPDATED':''}</Text>
                             <Text color={val.accepted&&!val.initiated&&!val.cancelled&&!val.rejected?'green':val.accepted&&val.initiated&&!val.cancelled&&!val.rejected?'purple':val.rejected?'red':val.cancelled?'orange':'green'}   >{val.accepted&&!val.initiated&&!val.cancelled&&!val.rejected?'ACCEPTED':val.accepted&&val.initiated&&!val.cancelled&&!val.rejected?'INITIATED':val.rejected?'REJECTED':val.cancelled?'CANCELLED':'NEW'}</Text>
                             {/* <Text color={val.received?'green':'orange'} >{val.received?'Received':'not yet received'}</Text>
                             <Text color={val.initiated?'green.500':'orange'} >{val.initiated?'Initiated':'not yet initiated'}</Text>

@@ -40,8 +40,8 @@ function App() {
         <meta name="author" content="Humphrey Mbaraka" />
 
         {/* Favicon */}
-        <link rel="icon" href="/squares.png" />
-
+        {/* <link rel="icon" type="image/png" href="/squares.png" /> */}
+        <link rel="icon" type="image/png" href="/squares.png" />
         {/* Open Graph (Facebook, WhatsApp, LinkedIn) */}
         {/* <meta property="og:title" content="My MERN App" />
         <meta property="og:description" content="Join My MERN App – the best place to buy and sell gadgets online." />
