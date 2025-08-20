@@ -13,11 +13,12 @@ function Pricing() {
   
   return (
     <Motionbox 
-      width={winwidth}  
-      height={winheight} 
+      width="100%"  
+      minH="100vh"
       p={['10px', '20px']} 
       bg={'gray.800'} 
-      overflow={'auto'}
+      overflowY={'auto'}
+      overflowX={'hidden'}
       initial={{x: 3000}}
       animate={{x: 0}}
       transition={{duration: 1.5, ease: 'easeIn', delay: 0}}
@@ -26,15 +27,22 @@ function Pricing() {
       <VStack spacing={6} width="100%" maxW="1200px" mx="auto">
         <Heading 
           color="blue.400" 
-          fontSize={['xl', '2xl']} 
+          fontSize={['xl', '2xl', '3xl']} 
           fontWeight="bold"
           textAlign="center"
-          pt={4}
+          pt={[2, 4]}
+          px={[2, 4]}
         >
           Humverse Services & Terms
         </Heading>
         
-        <Text color="white" fontSize="sm" textAlign="center" maxW="600px">
+        <Text 
+          color="white" 
+          fontSize={['sm', 'md']} 
+          textAlign="center" 
+          maxW={['90%', '600px']}
+          px={[2, 0]}
+        >
           Explore our service packages and terms of engagement
         </Text>
 
@@ -45,19 +53,27 @@ function Pricing() {
           isFitted
           mt={4}
         >
-          <TabList mb="1em">
-            <Tab _selected={{ color: 'white', bg: 'blue.600' }} fontSize={['sm', 'md']}>
+          <TabList mb="1em" flexWrap="wrap">
+            <Tab 
+              _selected={{ color: 'white', bg: 'blue.600' }} 
+              fontSize={['xs', 'sm', 'md']}
+              flex="1"
+            >
               Our Services
             </Tab>
-            <Tab _selected={{ color: 'white', bg: 'blue.600' }} fontSize={['sm', 'md']}>
+            <Tab 
+              _selected={{ color: 'white', bg: 'blue.600' }} 
+              fontSize={['xs', 'sm', 'md']}
+              flex="1"
+            >
               Terms & Conditions
             </Tab>
           </TabList>
           
           <TabPanels>
             {/* Services Tab */}
-            <TabPanel>
-              <VStack spacing={8} width="100%">
+            <TabPanel px={[1, 2, 4]}>
+              <VStack spacing={[6, 8]} width="100%">
 
                 {/* Advertising Websites */}
                 {renderTable("Advertising Websites", [
@@ -157,8 +173,8 @@ function Pricing() {
             </TabPanel>
 
             {/* Terms & Conditions Tab */}
-            <TabPanel>
-              <VStack spacing={6} align="start" width="100%" color="white">
+            <TabPanel px={[1, 2, 4]}>
+              <VStack spacing={[4, 6]} align="start" width="100%" color="white">
                 {renderClause("1. SERVICE INITIALIZATION", [
                   "50% deposit required before work begins",
                   "Project starts after deposit received",
@@ -178,7 +194,7 @@ function Pricing() {
                 ])}
 
                 {/* Cancellation Fees */}
-                <Box bg="gray.900" p={5} borderRadius="md" width="100%">
+                <Box bg="gray.900" p={[3, 5]} borderRadius="md" width="100%" overflowX="auto">
                   <Heading size="md" color="blue.300" mb={3}>4. SERVICE CANCELLATION</Heading>
                   <Text fontWeight="bold" mb={2}>Cancellation Fees:</Text>
                   <Table variant="simple" colorScheme="whiteAlpha" size="sm">
@@ -238,13 +254,13 @@ function Pricing() {
 
 function renderTable(title, rows, headers = ["Pages", "Price (KES)", "Offer Price (KES)"]) {
   return (
-    <TableContainer width="100%" bg="gray.900" borderRadius="md" p={4}>
+    <TableContainer width="100%" bg="gray.900" borderRadius="md" p={[2, 4]} overflowX="auto">
       <Heading size="md" color="blue.300" mb={4}>{title}</Heading>
-      <Table variant="simple" colorScheme="whiteAlpha">
+      <Table variant="simple" colorScheme="whiteAlpha" size={['sm', 'md']}>
         <Thead>
           <Tr>
             {headers.map((h, i) => (
-              <Th key={i} color="gray.200">{h}</Th>
+              <Th key={i} color="gray.200" fontSize={['xs','sm']}>{h}</Th>
             ))}
           </Tr>
         </Thead>
@@ -252,7 +268,9 @@ function renderTable(title, rows, headers = ["Pages", "Price (KES)", "Offer Pric
           {rows.map((row, i) => (
             <Tr key={i}>
               {row.map((cell, j) => (
-                <Td key={j} color={j === 2 ? "green.300" : "white"}>{cell}</Td>
+                <Td key={j} color={j === 2 ? "green.300" : "white"} fontSize={['xs','sm']}>
+                  {cell}
+                </Td>
               ))}
             </Tr>
           ))}
@@ -264,11 +282,11 @@ function renderTable(title, rows, headers = ["Pages", "Price (KES)", "Offer Pric
 
 function renderClause(title, points) {
   return (
-    <Box bg="gray.900" p={5} borderRadius="md" width="100%">
+    <Box bg="gray.900" p={[3, 5]} borderRadius="md" width="100%">
       <Heading size="md" color="blue.300" mb={3}>{title}</Heading>
       <List spacing={2}>
         {points.map((point, i) => (
-          <ListItem key={i}>
+          <ListItem key={i} fontSize={['sm','md']}>
             <ListIcon as={BsDot} color="blue.300" />
             {point}
           </ListItem>
