@@ -53,19 +53,20 @@ function Pricing() {
           width="100%"
           isFitted
           mt={4}
+          orientation={isMobile ? "vertical" : "horizontal"}
         >
-          <TabList mb="1em" flexDirection="row">
+          <TabList mb="1em" flexDirection={isMobile ? "column" : "row"}>
             <Tab 
               _selected={{ color: 'white', bg: 'blue.600' }} 
               fontSize={tabFontSize}
-              py={4}
+              py={isMobile ? 2 : 4}
             >
               Our Services
             </Tab>
             <Tab 
               _selected={{ color: 'white', bg: 'blue.600' }} 
               fontSize={tabFontSize}
-              py={4}
+              py={isMobile ? 2 : 4}
             >
               Terms & Conditions
             </Tab>
