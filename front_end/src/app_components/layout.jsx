@@ -102,6 +102,7 @@ function Layout() {
           height={'100%'}
           alignItems={'center'}
           p={'2px'}
+          pt={'10px'}
           overflow={'auto'}
           css={{ '&::-webkit-scrollbar': { display: 'none', scrollbarWidth: '1px' } }}
           gap={'35px'}
@@ -123,7 +124,7 @@ function Layout() {
             {!showsidebar && <CiMenuFries color='white' size={'20px'} />}
           </Box>
 
-          {/* existing sidebar items remain unchanged */}
+          {/* expanded sidebar with words */}
           {showsidebar && (
             <>
               {!loggedin && (
@@ -145,32 +146,32 @@ function Layout() {
                   </Box>
                 </>
               )}
-
-              {/* loggedin + admin cases unchanged here... */}
-              {/* (keeping your existing structure intact) */}
             </>
           )}
 
+          {/* collapsed sidebar: icons + words under them */}
           {!showsidebar && (
             <>
               {!loggedin && (
                 <>
                   <Box width={'95%'} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
                     <Link to='services'><FaNetworkWired color='white' size='25px' /></Link>
+                    <Text color='white' fontSize='10px'>Services</Text>
                   </Box>
                   <Box width={'95%'} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
                     <Link to='contacts'><IoCallOutline color='white' size='25px' /></Link>
+                    <Text color='white' fontSize='10px'>Contacts</Text>
                   </Box>
                   <Box width={'95%'} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
                     <Link to='assistant'><BiMessageRounded color='white' size='25px' /></Link>
+                    <Text color='white' fontSize='10px'>Assistant</Text>
                   </Box>
                   <Box width={'95%'} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
                     <Link to='/'><IoIosLogIn color='white' size='25px' /></Link>
+                    <Text color='white' fontSize='10px'>Login</Text>
                   </Box>
                 </>
               )}
-
-              {/* loggedin + admin icon-only version unchanged */}
             </>
           )}
         </Motionvstack>
@@ -181,40 +182,32 @@ function Layout() {
         <HStack
           as="nav"
           width="100%"
-          height="50px"
           bg="gray.800"
           p="2"
           spacing="20px"
           overflowX="auto"
           css={{ '&::-webkit-scrollbar': { display: 'none' } }}
           justifyContent="flex-start"
+          position="relative"
         >
           {!loggedin && (
             <>
-              <Link to='services'><FaNetworkWired color="white" size="25px" /></Link>
-              <Link to='contacts'><IoCallOutline color="white" size="25px" /></Link>
-              <Link to='assistant'><BiMessageRounded color="white" size="25px" /></Link>
-              <Link to="/"><IoIosLogIn color="white" size="25px" /></Link>
-            </>
-          )}
-
-          {(loggedin && !admin) && (
-            <>
-              <Link to='dashboard'><RiAccountPinCircleFill color="white" size="25px" /></Link>
-              <Link to='/main'><CiHome color="white" size="25px" /></Link>
-              <Link to='services'><FaNetworkWired color="white" size="25px" /></Link>
-              <Link to='contacts'><IoCallOutline color="white" size="25px" /></Link>
-              <Box onClick={logout}><CiLogout color="white" size="25px" /></Box>
-            </>
-          )}
-
-          {(loggedin && admin) && (
-            <>
-              <Link to='dashboard'><RiAccountPinCircleFill color="white" size="25px" /></Link>
-              <Link to='/main'><CiHome color="white" size="25px" /></Link>
-              <Link to='services'><FaNetworkWired color="white" size="25px" /></Link>
-              <Link to='contacts'><IoCallOutline color="white" size="25px" /></Link>
-              <Box onClick={logout}><CiLogout color="white" size="25px" /></Box>
+              <VStack spacing="1" minW="60px">
+                <Link to='services'><FaNetworkWired color="white" size="25px" /></Link>
+                <Text color="white" fontSize="10px">Services</Text>
+              </VStack>
+              <VStack spacing="1" minW="60px">
+                <Link to='contacts'><IoCallOutline color="white" size="25px" /></Link>
+                <Text color="white" fontSize="10px">Contacts</Text>
+              </VStack>
+              <VStack spacing="1" minW="60px">
+                <Link to='assistant'><BiMessageRounded color="white" size="25px" /></Link>
+                <Text color="white" fontSize="10px">Assistant</Text>
+              </VStack>
+              <VStack spacing="1" minW="60px">
+                <Link to="/"><IoIosLogIn color="white" size="25px" /></Link>
+                <Text color="white" fontSize="10px">Login</Text>
+              </VStack>
             </>
           )}
         </HStack>
