@@ -189,6 +189,7 @@ function Layout() {
           css={{ '&::-webkit-scrollbar': { display: 'none' } }}
           justifyContent="flex-start"
           position="relative"
+          mt={'30px'}
         >
           {!loggedin && (
             <>
