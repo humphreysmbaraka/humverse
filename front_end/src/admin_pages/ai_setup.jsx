@@ -76,7 +76,6 @@ function Ai_setup() {
     const upload_documents = async function () {
         try {
             if (selectedfiles.length == 0 || uploading) {
-
             }
             else {
                 setisuploading(true);
@@ -99,7 +98,6 @@ function Ai_setup() {
                     setselectedfiles([]);
                     const dets = await upload.json();
                     getdocs();
-
                 }
                 else {
                     console.log('could not upload docs');
@@ -131,7 +129,6 @@ function Ai_setup() {
 
         try {
             if (deleting) {
-
             }
             else {
                 setdeleting(true);
@@ -179,28 +176,27 @@ function Ai_setup() {
     return (
         <Box width={winwidth} height={winheight} bg={'gray.800'} p={'10px'} overflow={'hidden'}>
             <HStack
-                gap={'25px'}
+                gap={{ base: '10px', md: '25px' }}
                 width={'100%'}
                 height={'100%'}
-                alignItems={'stretch'}
+                alignItems={'center'}
                 justifyContent={'center'}
                 overflow={'hidden'}
-                flexDirection={{ base: 'column', md: 'row' }}  // ✅ Responsive: column on mobile, row on md+
+                flexDirection={{ base: 'column', md: 'row' }}
             >
-                {/* LEFT PANEL */}
+                {/* LEFT SIDEBAR (hidden on small screens) */}
                 <VStack
-                    borderRightColor={{ base: 'transparent', md: 'white' }}
-                    borderRightWidth={{ base: '0px', md: '1px' }}
+                    display={{ base: 'none', md: 'flex' }}
+                    borderRightColor={'white'}
                     height={'100%'}
+                    borderRightWidth={'1px'}
                     width={{ base: '100%', md: '40%' }}
                     p={'5px'}
                     overflow={'auto'}
                     css={{ '&::-webkit-scrollbar': { display: 'none', scrollbarWidth: '1px' } }}
                 >
                     <Text color={'white'} fontSize={'larger'} fontWeight={'bold'} >AI CONFIGS</Text>
-                    <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={'small'} fontWeight={'bold'}>SUMMARY</Text>
-
-                    {/* Demo summary items (unchanged) */}
+                    <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={'small'} fontWeight={'bold'}  >SUMMARY</Text>
                     {[...Array(7)].map((_, i) => (
                         <Text key={i} color={'blue'} fontSize={'small'} fontWeight={'bold'}>
                             UPLOADS <Text as={'span'} fontSize={'large'} color={'white'} fontWeight={'bold'}>one</Text>
@@ -208,7 +204,7 @@ function Ai_setup() {
                     ))}
                 </VStack>
 
-                {/* RIGHT PANEL */}
+                {/* RIGHT CONTENT */}
                 <VStack
                     width={{ base: '100%', md: '55%' }}
                     p={'5px'}
@@ -216,18 +212,18 @@ function Ai_setup() {
                     overflow={'auto'}
                     css={{ '&::-webkit-scrollbar': { display: 'none', scrollbarWidth: '1px' } }}
                 >
-                    <Text color={'white'} fontSize={'xx-large'} fontWeight={'bold'}>AI FEED</Text>
-                    <Text mt={'40px'} mb={'15px'} color={'white'} fontSize={'medium'}>ATTATCHED DOCUMENTS</Text>
+                    <Text color={'white'} fontSize={{ base: 'xl', md: 'xx-large' }} fontWeight={'bold'}>AI FEED</Text>
+                    <Text mt={'20px'} mb={'15px'} color={'white'} fontSize={{ base: 'sm', md: 'medium' }}>ATTATCHED DOCUMENTS</Text>
 
                     <HStack
                         width={'98%'}
                         borderRadius={'10px'}
                         p={'5px'}
                         flexWrap={'wrap'}
-                        gap={'30px'}
-                        maxH={'400px'}
-                        justifyContent={{ base: 'center', md: 'flex-start' }}  // ✅ center on mobile
+                        gap={{ base: '15px', md: '30px' }}
+                        maxH={{ base: '250px', md: '400px' }}
                         overflow={'auto'}
+                        justifyContent={{ base: 'center', md: 'flex-start' }}
                         css={{ '&::-webkit-scrollbar': { display: 'none', scrollbarWidth: '1px' } }}
                     >
                         {docs.length > 0 ? (
@@ -238,14 +234,20 @@ function Ai_setup() {
                                         key={index}
                                         borderWidth={'1px'}
                                         borderColor={'white'}
-                                        width={{ base: '80%', sm: '45%', md: '21%' }}  // ✅ adjusts with screen
+                                        width={{ base: '45%', md: '21%' }}
                                         p={'2px'}
                                         gap={'10px'}
                                         alignItems={'center'}
                                     >
-                                        <IoDocumentTextOutline size={'120px'} color='red' />
+                                        <IoDocumentTextOutline size={window.innerWidth < 768 ? '60px' : '120px'} color='red' />
                                         <Text color={'white'} isTruncated={true} fontSize={'small'}>{val?.metadata?.name}</Text>
-                                        <HStack width={'95%'} p={'2px'} gap={'10px'} alignItems={'center'} justifyContent={'center'}>
+                                        <HStack
+                                            width={'95%'}
+                                            p={'2px'}
+                                            gap={'10px'}
+                                            alignItems={'center'}
+                                            justifyContent={'center'}
+                                        >
                                             <Button
                                                 onClick={(e) => { delete_document(e, val) }}
                                                 colorScheme='red'
@@ -262,12 +264,9 @@ function Ai_setup() {
                                     </VStack>
                                 )
                             })
-                        )
-                            :
-                            (
-                                <Text>no files attached yet</Text>
-                            )
-                        }
+                        ) : (
+                            <Text color={'white'}>no files attached yet</Text>
+                        )}
                     </HStack>
 
                     {clickeddoc &&
@@ -286,7 +285,7 @@ function Ai_setup() {
                         mt={'40px'}
                         onClick={() => { fileinputref.current.click() }}
                         colorScheme='blue'
-                        width={{ base: '70%', md: '28%' }}
+                        width={{ base: '60%', md: '28%' }}
                         p={'2px'}
                         borderRadius={'10px'}
                         display={'flex'}
@@ -299,7 +298,7 @@ function Ai_setup() {
                     <Text fontSize={'large'} color={'white'} fontWeight={'light'}>SELECTED DOCUMENTS</Text>
                     {selectedfiles.length > 0 &&
                         <VStack
-                            width={{ base: '95%', md: '60%' }}
+                            width={{ base: '90%', md: '60%' }}
                             p={'4px'}
                             bg={'gray.500'}
                             gap={'15px'}
@@ -327,11 +326,12 @@ function Ai_setup() {
                             })}
                         </VStack>
                     }
+
                     <Text color={'red'}>{uploaderror}</Text>
                     <Button
                         alignSelf={'flex-end'}
                         colorScheme='blue'
-                        width={{ base: '70%', md: '28%' }}
+                        width={{ base: '60%', md: '28%' }}
                         p={'2px'}
                         borderRadius={'10px'}
                         display={'flex'}
