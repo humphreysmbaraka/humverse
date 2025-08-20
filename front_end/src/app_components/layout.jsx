@@ -3,46 +3,60 @@ import React, { useContext, useEffect, useState } from 'react'
 import { dimensions } from '../appcontexts/dimensions'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { GoSidebarExpand } from "react-icons/go";
+import { FaExpandAlt } from "react-icons/fa";
+import { CiHome } from "react-icons/ci";
 import { FaNetworkWired } from "react-icons/fa";
 import { IoCallOutline } from "react-icons/io5";
 import { BiMessageRounded } from "react-icons/bi";
 import { RiAccountPinCircleFill } from "react-icons/ri";
 import { IoIosLogIn } from "react-icons/io";
-import { CiMenuFries, CiLogout } from "react-icons/ci";
-import { CiHome } from "react-icons/ci";
+import { CiMenuFries } from "react-icons/ci";
+import { CiLogout } from "react-icons/ci";
 import { AuthContext } from '../appcontexts/auth';
 import { Motionbox, Motionvstack } from '../motion_components';
+import { useCycle } from 'framer-motion';
 import BASE_URL from '../constants/urls';
 
 function Layout() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { loggedin, admin, checkauthstatus } = useContext(AuthContext);
+  const { loggedin, admin, checkauthstatus } = useContext(AuthContext)
   const [showsidebar, setshowsidebar] = useState(false);
   const { winwidth, winheight } = useContext(dimensions);
-
+  
   const isMobile = useBreakpointValue({ base: true, md: false });
+
+  // console.log('logged in' , loggedin , 'admin' , admin)
+
+  // useEffect(function(){
+  //        navigate('/main'); 
+  //        console.log('loggedinstats' , loggedin);
+  //   } , [loggedin])
 
   const logout = async function () {
     try {
       const sure = confirm('are you sure  you want to log out');
-      if (!sure) return;
-
+      if (!sure) {
+        return;
+      }
       const logout = await fetch(`${BASE_URL}/logout`, {
         credentials: 'include',
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         }
-      });
+      })
 
       if (logout.ok) {
         console.log('logged out');
-      } else {
+        // checkauthstatus();
+      }
+      else {
         console.log('error logging out');
       }
-    } catch (err) {
-      console.log('could not log out', err);
+    }
+    catch (err) {
+      console.log('could ont log out', err);
     }
   }
 
@@ -56,7 +70,6 @@ function Layout() {
       }
     }
     check();
-
   }, [location.pathname]);
 
   const sidebarVariants = {
@@ -65,13 +78,11 @@ function Layout() {
       width: '60px',
       transition: { duration: 0.5, ease: 'easeOut' }
     },
-
     show: {
       x: 0,
       width: '20%',
       transition: { duration: 0.5, ease: 'easeOut' }
     },
-
     hide: {
       x: 0,
       width: '60px',
@@ -79,52 +90,131 @@ function Layout() {
     },
   }
 
-  return (
-    <Motionbox
-      width={winwidth}
-      height={winheight}
-      overflow={'auto'}
-      css={{ '&::-webkit-scrollbar': { display: 'none', scrollbarWidth: '1px' } }}
+  // Mobile Navbar Component
+  const MobileNavbar = () => (
+    <HStack 
+      width={'100%'} 
+      height={'60px'} 
+      bg={'gray.800'} 
+      mt={'10px'} 
+      p={2} 
+      spacing={4} 
+      overflowX={'auto'}
+      css={{ '&::-webkit-scrollbar': { display: 'none' } }}
+      display={isMobile ? 'flex' : 'none'}
       position={'relative'}
-      display={'flex'}
+      zIndex={10}
+    >
+      {!loggedin && (
+        <>
+          <Link to="services">
+            <FaNetworkWired color="white" size="25px" />
+          </Link>
+          <Link to="contacts">
+            <IoCallOutline color="white" size="25px" />
+          </Link>
+          <Link to="assistant">
+            <BiMessageRounded color="white" size="25px" />
+          </Link>
+          <Link to="/">
+            <IoIosLogIn color="white" size="25px" />
+          </Link>
+        </>
+      )}
+      
+      {(loggedin && !admin) && (
+        <>
+          <Link to="dashboard">
+            <RiAccountPinCircleFill color="white" size="25px" />
+          </Link>
+          <Link to="/main">
+            <CiHome color="white" size="25px" />
+          </Link>
+          <Link to="assistant">
+            <BiMessageRounded color="white" size="25px" />
+          </Link>
+          <Link to="services">
+            <FaNetworkWired color="white" size="25px" />
+          </Link>
+          <Link to="contacts">
+            <IoCallOutline color="white" size="25px" />
+          </Link>
+          <Box onClick={logout} as="button">
+            <CiLogout color="white" size="25px" />
+          </Box>
+        </>
+      )}
+      
+      {(loggedin && admin) && (
+        <>
+          <Link to="dashboard">
+            <RiAccountPinCircleFill color="white" size="25px" />
+          </Link>
+          <Link to="/main">
+            <CiHome color="white" size="25px" />
+          </Link>
+          <Link to="assistant">
+            <BiMessageRounded color="white" size="25px" />
+          </Link>
+          <Link to="services">
+            <FaNetworkWired color="white" size="25px" />
+          </Link>
+          <Link to="contacts">
+            <IoCallOutline color="white" size="25px" />
+          </Link>
+          <Box onClick={logout} as="button">
+            <CiLogout color="white" size="25px" />
+          </Box>
+        </>
+      )}
+    </HStack>
+  );
+
+  return (
+    <Motionbox 
+      width={winwidth} 
+      bg={'none'}  
+      height={winheight} 
+      overflow={'auto'} 
+      css={{ '&::-webkit-scrollbar': { display: 'none', scrollbarWidth: '1px' } }}  
+      position={'relative'}  
+      display={'flex'}  
       flexDirection={isMobile ? 'column' : 'row'}
-      alignItems={'flex-start'}
+      alignItems={'center'} 
       gap={0}
     >
-
-      {/* --- Sidebar for Desktop --- */}
+      <MobileNavbar />
+      
       {!isMobile && (
-        <Motionvstack
-          bg={'gray.800'}
-          borderRightWidth={'1px'}
-          borderRightColor={'white'}
-          width={showsidebar ? '20%' : '60px'}
-          height={'100%'}
-          alignItems={'center'}
-          p={'2px'}
-          pt={'10px'}
-          overflow={'auto'}
-          css={{ '&::-webkit-scrollbar': { display: 'none', scrollbarWidth: '1px' } }}
-          gap={'35px'}
+        <Motionvstack 
+          bg={'gray.800'}  
+          borderRightWidth={'1px'} 
+          borderRightColor={'white'} 
+          width={showsidebar ? '20%' : '60px'} 
+          height={'100%'} 
+          alignItems={'center'} 
+          p={'2px'}  
+          overflow={'auto'}  
+          css={{ '&::-webkit-scrollbar': { display: 'none', scrollbarWidth: '1px' } }} 
+          gap={'35px'}  
           variants={sidebarVariants}
           initial={'initial'}
           animate={showsidebar ? 'show' : 'hide'}
         >
-          <Box
-            alignSelf={'flex-start'}
-            as='button'
-            onClick={() => { setshowsidebar(!showsidebar) }}
-            bg={'gray.800'}
-            width={'30px'}
-            height={'30px'}
-            borderRadius={'50%'}
-            mt={'20px'}
-          >
+          <Box  
+            alignSelf={'flex-start'} 
+            as='button'  
+            onClick={() => { setshowsidebar(!showsidebar) }} 
+            bg={'gray.800'} 
+            width={'30px'} 
+            height={'30px'} 
+            borderRadius={'50%'} 
+            mt={'20px'}  
+          >   
             {showsidebar && <GoSidebarExpand color='white' size={'20px'} />}
             {!showsidebar && <CiMenuFries color='white' size={'20px'} />}
           </Box>
 
-          {/* expanded sidebar with words */}
           {showsidebar && (
             <>
               {!loggedin && (
@@ -132,43 +222,183 @@ function Layout() {
                   <Box borderBottomColor={'white'} borderBottomWidth={'1px'} width={'95%'} p={'2px'} display={'flex'} alignItems={'center'} justifyContent={'flex-start'} _hover={{ borderBottomWidth: '2px', borderBottomColor: 'blue' }}>
                     <Link style={{ color: 'white', fontSize: 'xs' }} to='services'>OUR SERVICES</Link>
                   </Box>
-
                   <Box borderBottomColor={'white'} borderBottomWidth={'1px'} width={'95%'} p={'2px'} display={'flex'} alignItems={'center'} justifyContent={'flex-start'} _hover={{ borderBottomWidth: '2px', borderBottomColor: 'blue' }}>
                     <Link style={{ color: 'white', fontSize: 'xs' }} to='contacts'>CONTACT US</Link>
                   </Box>
-
                   <Box borderBottomColor={'white'} borderBottomWidth={'1px'} width={'95%'} p={'2px'} display={'flex'} alignItems={'center'} justifyContent={'flex-start'} _hover={{ borderBottomWidth: '2px', borderBottomColor: 'blue' }}>
                     <Link style={{ color: 'white', fontSize: 'xs' }} to='assistant'>ASSISTANT</Link>
                   </Box>
-
                   <Box borderBottomColor={'white'} borderBottomWidth={'1px'} width={'95%'} p={'2px'} display={'flex'} alignItems={'center'} justifyContent={'flex-start'} _hover={{ borderBottomWidth: '2px', borderBottomColor: 'blue' }}>
                     <Link style={{ color: 'white', fontSize: 'xs' }} to='/'>Log-in</Link>
+                  </Box>
+                </>
+              )}
+
+              {(loggedin && !admin) && (
+                <>
+                  <Box borderBottomColor={'white'} borderBottomWidth={'1px'} width={'95%'} p={'2px'} display={'flex'} alignItems={'center'} justifyContent={'flex-start'} _hover={{ borderBottomWidth: '2px', borderBottomColor: 'blue' }}>
+                    <Link style={{ color: 'white', fontSize: 'xs' }} to='dashboard'>ADMIN PANEL</Link>
+                  </Box>
+                  <Box borderBottomColor={'white'} borderBottomWidth={'1px'} width={'95%'} p={'2px'} display={'flex'} alignItems={'center'} justifyContent={'flex-start'} _hover={{ borderBottomWidth: '2px', borderBottomColor: 'blue' }}>
+                    <Link style={{ color: 'white', fontSize: 'xs' }} to='/main'>HOME</Link>
+                  </Box>
+                  <Box borderBottomColor={'white'} borderBottomWidth={'1px'} width={'95%'} p={'2px'} display={'flex'} alignItems={'center'} justifyContent={'flex-start'} _hover={{ borderBottomWidth: '2px', borderBottomColor: 'blue' }}>
+                    <Link style={{ color: 'white', fontSize: 'xs' }} to='services'>OUR SERVICES</Link>
+                  </Box>
+                  <Box borderBottomColor={'white'} borderBottomWidth={'1px'} width={'95%'} p={'2px'} display={'flex'} alignItems={'center'} justifyContent={'flex-start'} _hover={{ borderBottomWidth: '2px', borderBottomColor: 'blue' }}>
+                    <Link style={{ color: 'white', fontSize: 'xs' }} to='contacts'>CONTACT US</Link>
+                  </Box>
+                  <Box borderBottomColor={'white'} borderBottomWidth={'1px'} width={'95%'} p={'2px'} display={'flex'} alignItems={'center'} justifyContent={'flex-start'} _hover={{ borderBottomWidth: '2px', borderBottomColor: 'blue' }}>
+                    <Link style={{ color: 'white', fontSize: 'xs' }} to='make request'>MAKE REQUEST</Link>
+                  </Box>
+                  <Box borderBottomColor={'white'} borderBottomWidth={'1px'} width={'95%'} p={'2px'} display={'flex'} alignItems={'center'} justifyContent={'flex-start'} _hover={{ borderBottomWidth: '2px', borderBottomColor: 'blue' }}>
+                    <Link style={{ color: 'white', fontSize: 'xs' }} to='assistant'>ASSISTANT</Link>
+                  </Box>
+                  <Box onClick={logout} borderBottomColor={'white'} borderBottomWidth={'1px'} width={'95%'} p={'2px'} display={'flex'} alignItems={'center'} justifyContent={'flex-start'} _hover={{ borderBottomWidth: '2px', borderBottomColor: 'blue' }}>
+                    <Text color='white' fontSize='xs'>log_out</Text>
+                  </Box>
+                </>
+              )}
+
+              {(loggedin && admin) && (
+                <>
+                  <Box borderBottomColor={'white'} borderBottomWidth={'1px'} width={'95%'} p={'2px'} display={'flex'} alignItems={'center'} justifyContent={'flex-start'} _hover={{ borderBottomWidth: '2px', borderBottomColor: 'blue' }}>
+                    <Link style={{ color: 'white', fontSize: 'xs' }} to='dashboard'>ADMIN PANEL</Link>
+                  </Box>
+                  <Box borderBottomColor={'white'} borderBottomWidth={'1px'} width={'95%'} p={'2px'} display={'flex'} alignItems={'center'} justifyContent={'flex-start'} _hover={{ borderBottomWidth: '2px', borderBottomColor: 'blue' }}>
+                    <Link style={{ color: 'white', fontSize: 'xs' }} to='/main'>HOME</Link>
+                  </Box>
+                  <Box borderBottomColor={'white'} borderBottomWidth={'1px'} width={'95%'} p={'2px'} display={'flex'} alignItems={'center'} justifyContent={'flex-start'} _hover={{ borderBottomWidth: '2px', borderBottomColor: 'blue' }}>
+                    <Link style={{ color: 'white', fontSize: 'xs' }} to='services'>OUR SERVICES</Link>
+                  </Box>
+                  <Box borderBottomColor={'white'} borderBottomWidth={'1px'} width={'95%'} p={'2px'} display={'flex'} alignItems={'center'} justifyContent={'flex-start'} _hover={{ borderBottomWidth: '2px', borderBottomColor: 'blue' }}>
+                    <Link style={{ color: 'white', fontSize: 'xs' }} to='contacts'>CONTACT US</Link>
+                  </Box>
+                  <Box borderBottomColor={'white'} borderBottomWidth={'1px'} width={'95%'} p={'2px'} display={'flex'} alignItems={'center'} justifyContent={'flex-start'} _hover={{ borderBottomWidth: '2px', borderBottomColor: 'blue' }}>
+                    <Link style={{ color: 'white', fontSize: 'xs' }} to='make request'>MAKE REQUEST</Link>
+                  </Box>
+                  <Box borderBottomColor={'white'} borderBottomWidth={'1px'} width={'95%'} p={'2px'} display={'flex'} alignItems={'center'} justifyContent={'flex-start'} _hover={{ borderBottomWidth: '2px', borderBottomColor: 'blue' }}>
+                    <Link style={{ color: 'white', fontSize: 'xs' }} to='assistant'>ASSISTANT</Link>
+                  </Box>
+                  <Box onClick={logout} borderBottomColor={'white'} borderBottomWidth={'1px'} width={'95%'} p={'2px'} display={'flex'} alignItems={'center'} justifyContent={'flex-start'} _hover={{ borderBottomWidth: '2px', borderBottomColor: 'blue' }}>
+                    <Text color='white' fontSize='xs'>log_out</Text>
                   </Box>
                 </>
               )}
             </>
           )}
 
-          {/* collapsed sidebar: icons + words under them */}
           {!showsidebar && (
             <>
               {!loggedin && (
                 <>
                   <Box width={'95%'} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
-                    <Link to='services'><FaNetworkWired color='white' size='25px' /></Link>
-                    <Text color='white' fontSize='10px'>Services</Text>
+                    <Link to='services'>
+                      <FaNetworkWired color='white' size='25px' />
+                      <Text color={'white'} fontSize={'xx-small'} fontWeight={'light'}>services</Text>
+                    </Link>
                   </Box>
                   <Box width={'95%'} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
-                    <Link to='contacts'><IoCallOutline color='white' size='25px' /></Link>
-                    <Text color='white' fontSize='10px'>Contacts</Text>
+                    <Link to='contacts'>
+                      <IoCallOutline color='white' size='25px' />
+                      <Text color={'white'} fontSize={'xx-small'} fontWeight={'light'}>scontacts</Text>
+                    </Link>
                   </Box>
                   <Box width={'95%'} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
-                    <Link to='assistant'><BiMessageRounded color='white' size='25px' /></Link>
-                    <Text color='white' fontSize='10px'>Assistant</Text>
+                    <Link to='assistant'>
+                      <BiMessageRounded color='white' size='25px' />
+                      <Text color={'white'} fontSize={'xx-small'} fontWeight={'light'}>agent</Text>
+                    </Link>
                   </Box>
                   <Box width={'95%'} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
-                    <Link to='/'><IoIosLogIn color='white' size='25px' /></Link>
-                    <Text color='white' fontSize='10px'>Login</Text>
+                    <Link to='/'>
+                      <IoIosLogIn color='white' size='25px' />
+                      <Text color={'white'} fontSize={'xx-small'} fontWeight={'light'}>Log-in</Text>
+                    </Link>
+                  </Box>
+                </>
+              )}
+
+              {(loggedin && !admin) && (
+                <>
+                  <Box width={'95%'} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
+                    <Link to='dashboard'>
+                      <RiAccountPinCircleFill color='white' size='25px' />
+                      <Text color={'white'} fontSize={'xx-small'} fontWeight={'light'}>Admin Panel</Text>
+                    </Link>
+                  </Box>
+                  <Box width={'95%'} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
+                    <Link to='/main'>
+                      <CiHome color='white' size='25px' />
+                      <Text color={'white'} fontSize={'xx-small'} fontWeight={'light'}>home</Text>
+                    </Link>
+                  </Box>
+                  <Box width={'95%'} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
+                    <Link to='assistant'>
+                      <BiMessageRounded color='white' size='25px' />
+                      <Text color={'white'} fontSize={'xx-small'} fontWeight={'light'}>agent</Text>
+                    </Link>
+                  </Box>
+                  <Box width={'95%'} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
+                    <Link to='services'>
+                      <FaNetworkWired color='white' size='25px' />
+                      <Text color={'white'} fontSize={'xx-small'} fontWeight={'light'}>services</Text>
+                    </Link>
+                  </Box>
+                  <Box width={'95%'} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
+                    <Link to='contacts'>
+                      <IoCallOutline color='white' size='25px' />
+                      <Text color={'white'} fontSize={'xx-small'} fontWeight={'light'}>contacts</Text>
+                    </Link>
+                  </Box>
+                  <Box width={'95%'} onClick={logout} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
+                    <CiLogout color='white' size='25px' />
+                    <Text color={'white'} fontSize={'xx-small'} fontWeight={'light'}>log out</Text>
+                  </Box>
+                </>
+              )}
+
+              {(loggedin && admin) && (
+                <>
+                  <Box width={'95%'} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
+                    <Link to='dashboard'>
+                      <RiAccountPinCircleFill color='white' size='25px' />
+                      <Text color={'white'} fontSize={'xx-small'} fontWeight={'light'}>admin</Text>
+                    </Link>
+                  </Box>
+                  <Box width={'95%'} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
+                    <Link to='/main'>
+                      <CiHome color='white' size='25px' />
+                      <Text color={'white'} fontSize={'xx-small'} fontWeight={'light'}>home</Text>
+                    </Link>
+                  </Box>
+                  <Box width={'95%'} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
+                    <Link to='assistant'>
+                      <BiMessageRounded color='white' size='25px' />
+                      <Text color={'white'} fontSize={'xx-small'} fontWeight={'light'}>agent</Text>
+                    </Link>
+                  </Box>
+                  <Box width={'95%'} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
+                    <Link to='services'>
+                      <FaNetworkWired color='white' size='25px' />
+                      <Text color={'white'} fontSize={'xx-small'} fontWeight={'light'}>services</Text>
+                    </Link>
+                  </Box>
+                  <Box width={'95%'} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
+                    <Link to='contacts'>
+                      <IoCallOutline color='white' size='25px' />
+                      <Text color={'white'} fontSize={'xx-small'} fontWeight={'light'}>scontacts</Text>
+                    </Link>
+                  </Box>
+                  <Box width={'95%'} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
+                    <Link to='dashboard'>
+                      <IoCallOutline color='white' size='25px' />
+                      <Text color={'white'} fontSize={'xx-small'} fontWeight={'light'}>Admin Panel</Text>
+                    </Link>
+                  </Box>
+                  <Box width={'95%'} onClick={logout} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
+                    <CiLogout color='white' size='25px' />
+                    <Text color={'white'} fontSize={'xx-small'} fontWeight={'light'}>log out</Text>
                   </Box>
                 </>
               )}
@@ -177,44 +407,13 @@ function Layout() {
         </Motionvstack>
       )}
 
-      {/* --- Top Navbar for Mobile --- */}
-      {isMobile && (
-        <HStack
-          as="nav"
-          width="100%"
-          bg="gray.800"
-          p="2"
-          spacing="20px"
-          overflowX="auto"
-          css={{ '&::-webkit-scrollbar': { display: 'none' } }}
-          justifyContent="flex-start"
-          position="relative"
-          mt={'30px'}
-        >
-          {!loggedin && (
-            <>
-              <VStack spacing="1" minW="60px">
-                <Link to='services'><FaNetworkWired color="white" size="25px" /></Link>
-                <Text color="white" fontSize="10px">Services</Text>
-              </VStack>
-              <VStack spacing="1" minW="60px">
-                <Link to='contacts'><IoCallOutline color="white" size="25px" /></Link>
-                <Text color="white" fontSize="10px">Contacts</Text>
-              </VStack>
-              <VStack spacing="1" minW="60px">
-                <Link to='assistant'><BiMessageRounded color="white" size="25px" /></Link>
-                <Text color="white" fontSize="10px">Assistant</Text>
-              </VStack>
-              <VStack spacing="1" minW="60px">
-                <Link to="/"><IoIosLogIn color="white" size="25px" /></Link>
-                <Text color="white" fontSize="10px">Login</Text>
-              </VStack>
-            </>
-          )}
-        </HStack>
-      )}
-
-      <Outlet />
+      <Box 
+        flex={1} 
+        height={isMobile ? 'calc(100% - 60px)' : '100%'} 
+        overflow="auto"
+      >
+        <Outlet />
+      </Box>
     </Motionbox>
   )
 }
