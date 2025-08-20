@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { dimensions } from '../appcontexts/dimensions'
-import { Avatar, Box, Button, Divider, FormControl, FormLabel, HStack, Icon, Image, Input, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, Text, Textarea, VStack } from '@chakra-ui/react';
+import { Avatar, Box, Button, Divider, FormControl, FormLabel, HStack, Icon, Image, Input, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, Text, Textarea, VStack, useBreakpointValue } from '@chakra-ui/react';
 import { PiFilePdf, PiIdentificationBadgeDuotone } from "react-icons/pi";
 import { CiEdit } from "react-icons/ci";
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -8,12 +8,9 @@ import { AuthContext } from '../appcontexts/auth';
 import BASE_URL from '../constants/urls';
 import { socketcontext } from '../appcontexts/socket';
 
-
-
 function View_Product() {
     const [fetchingproduct , setfetchingproduct] = useState(false);
     const [fetcherror , setfetcherror] = useState(null);
-
 
     const {winwidth , winheight} = useContext(dimensions);
     const location = useLocation();
@@ -36,12 +33,21 @@ function View_Product() {
     const [cancelling , setcancelling] = useState(false);
     const [cancelerror , setcancelerror] = useState(null);
 
-
     const [uncancelling , setuncancelling] = useState(false);
     const [uncancelerror , setuncancelerror] = useState(null);
 
-     
-      const getrequest = async function(){
+    // Responsive values
+    const avatarSize = useBreakpointValue({ base: '80px', sm: '100px', md: '120px' });
+    const mainLayoutDirection = useBreakpointValue({ base: 'column', lg: 'row' });
+    const leftPanelWidth = useBreakpointValue({ base: '100%', lg: '25%' });
+    const rightPanelWidth = useBreakpointValue({ base: '100%', lg: '70%' });
+    const infoCardLayout = useBreakpointValue({ base: 'column', md: 'row' });
+    const paymentCardWidth = useBreakpointValue({ base: '100%', sm: '45%', md: '23%' });
+    const attachmentWidth = useBreakpointValue({ base: '45%', sm: '30%', md: '23%', lg: '17%' });
+    const previewWidth = useBreakpointValue({ base: '45%', sm: '30%', md: '23%' });
+    const featureCardWidth = useBreakpointValue({ base: '100%', sm: '45%', md: '23%' });
+
+    const getrequest = async function(){
         try{
           setfetchingproduct(true);
           setfetcherror(null);
@@ -94,9 +100,6 @@ function View_Product() {
         return () => clearTimeout(timer);
       } , [requestrejected]);
 
-
-
-      
       useEffect(function(){
         let timer;
         if(requestredeemed){
@@ -111,8 +114,6 @@ function View_Product() {
 
         return () => clearTimeout(timer);
       } , [requestredeemed]);
-
-
 
       useEffect(function(){
         let timer
@@ -129,9 +130,6 @@ function View_Product() {
         return () => clearTimeout(timer);
       } , [requestaccepted]);
 
-
-
-
       useEffect(function(){
         let timer;
         if(previewsreceived){
@@ -146,13 +144,6 @@ function View_Product() {
 
         return () => clearTimeout(timer);
       } , [previewsreceived]);
-
-
-
-
-
-
-
 
        // the poling is set when the component mounts
       useEffect(function(){
@@ -202,7 +193,6 @@ function View_Product() {
         }
 
         poling();
-
 
         return () => {
           if (tracker) clearInterval(tracker);
@@ -259,7 +249,6 @@ function View_Product() {
       }
     }
 
-
     const uncancel = async function(){
       try{
 
@@ -305,7 +294,6 @@ function View_Product() {
         setuncancelerror('could not cancel')
       }
     }
-
 
     const go_to_edit = async function(){
       try{
@@ -373,7 +361,6 @@ function View_Product() {
       }
     }
 
-
     const initiate = async function(){
       try{
          if(!product.accepted){
@@ -394,293 +381,222 @@ function View_Product() {
       }
     }
 
-    
-
   return (
-   <Box width={winwidth}   height={winheight}  bg={'gray.800'} overflow={'auto'}   css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}} padding={'4px'} p={'4px'}  >
+   <Box width="100%" minHeight={winheight} bg={'gray.800'} overflow={'auto'} css={{ '&::-webkit-scrollbar': { display:'none', scrollbarWidth: '1px' }}} p={{ base: '2px', md: '4px' }} >
        {product ?
         (
-          <HStack width={'100%'}  height={'100%'} gap={'40px'} alignItems={'center'} justifyContent={'space-between'}  p={'2px'} >
-          <VStack  width={'25%'} height={'100%'} gap={'15px'} p={'5px'} borderRightColor={'white'} borderRightWidth={'1px'}overflow={'auto'}   css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}} padding={'4px'} alignItems={'center'}  >
-             <Avatar width={'120px'}  height={'120px'}  borderRadius={'50%'} fit={'cover'} mt={'40px'} borderWidth={'2px'} />
-             <Text mt={'20px'} mb={'10px'} fontSize={'larger'} fontWeight={'bold'} color={'white'} >PRODUCT NAME</Text>
+          <VStack width={'100%'} height={'100%'} gap={{ base: '20px', lg: '40px' }} alignItems="center" justifyContent="flex-start" p={'2px'} flexDirection={mainLayoutDirection} >
+          <VStack width={leftPanelWidth} height={{ base: 'auto', lg: '100%' }} gap={'15px'} p={'5px'} borderRightWidth={{ base: '0px', lg: '1px' }} borderRightColor={{ base: 'transparent', lg: 'white' }} overflow={'auto'} css={{ '&::-webkit-scrollbar': { display:'none', scrollbarWidth: '1px' }}} alignItems={'center'}  >
+             <Avatar width={avatarSize} height={avatarSize} borderRadius={'50%'} fit={'cover'} mt={{ base: '20px', md: '40px' }} borderWidth={'2px'} />
+             <Text mt={'20px'} mb={'10px'} fontSize={{ base: 'md', md: 'larger' }} fontWeight={'bold'} color={'white'} textAlign="center">PRODUCT NAME</Text>
   
-             <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-              DATE OF REQUEST : <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.date}</Text>
+             <Text as={'span'} mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} textAlign="center">
+              DATE OF REQUEST : <Text as={'span'} fontSize={'sm'} fontWeight={'light'} color={'white'}>{product.date}</Text>
              </Text>
   
-             <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-              TYPE : <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} width={'70%'} isTruncated={true} >{product.type}</Text>
+             <Text as={'span'} mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} textAlign="center">
+              TYPE : <Text as={'span'} fontSize={'sm'} fontWeight={'light'} color={'white'} width={'70%'} isTruncated={true} >{product.type}</Text>
              </Text>
   
-             <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-              TIME WINDOW : <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{`${product.timequantity}  ${product.timeunit}`}</Text>
+             <Text as={'span'} mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} textAlign="center">
+              TIME WINDOW : <Text as={'span'} fontSize={'sm'} fontWeight={'light'} color={'white'}>{`${product.timequantity}  ${product.timeunit}`}</Text>
              </Text>
   
-             <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-              E-Mail : <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.email}</Text>
+             <Text as={'span'} mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} textAlign="center">
+              E-Mail : <Text as={'span'} fontSize={'sm'} fontWeight={'light'} color={'white'}>{product.email}</Text>
              </Text>
   
-             <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-              NAMES : <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.names}</Text>
+             <Text as={'span'} mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} textAlign="center">
+              NAMES : <Text as={'span'} fontSize={'sm'} fontWeight={'light'} color={'white'}>{product.names}</Text>
              </Text>
   
-  
-             <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-              NUMBER : <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.number}</Text>
+             <Text as={'span'} mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} textAlign="center">
+              NUMBER : <Text as={'span'} fontSize={'sm'} fontWeight={'light'} color={'white'}>{product.number}</Text>
              </Text>
   
-  
-             <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-              STATUS : <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{!product.accepted&&!product.initiated&&!product.rejected&&!product.cancelled?'NOT YET ACCEPTED':product.accepted&&!product.initiated&&!product.cancelled&&!product.rejected?'RECEIVED':product.received&&product.initiated&&!product.cancelled&&!product.rejected?'INITIATED':product.rejected?'REJECTED':product.cancelled?'CANCELLED':''}</Text>
+             <Text as={'span'} mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} textAlign="center">
+              STATUS : <Text as={'span'} fontSize={'sm'} fontWeight={'light'} color={'white'}>{!product.accepted&&!product.initiated&&!product.rejected&&!product.cancelled?'NOT YET ACCEPTED':product.accepted&&!product.initiated&&!product.cancelled&&!product.rejected?'RECEIVED':product.received&&product.initiated&&!product.cancelled&&!product.rejected?'INITIATED':product.rejected?'REJECTED':product.cancelled?'CANCELLED':''}</Text>
              </Text>
   
-  
-             <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-              PREVIEWS : <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{!product.previews.length}</Text>
+             <Text as={'span'} mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} textAlign="center">
+              PREVIEWS : <Text as={'span'} fontSize={'sm'} fontWeight={'light'} color={'white'}>{!product.previews.length}</Text>
              </Text>
   
-                   <Text mt={'30px'}  color={'white'}  fontSize={'large'} fontWeight={'bold'}  >PROJECT'S COSTS</Text>
-                   <Divider     color={'white'}  height={'1px'}  width={'100%'}   />
-             <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-              COST OF MAKING (paid once) : <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.payments.payments_required.making_cost}</Text>
+                   <Text mt={'30px'} color={'white'} fontSize={{ base: 'md', md: 'large' }} fontWeight={'bold'} textAlign="center">PROJECT'S COSTS</Text>
+                   <Divider color={'white'} height={'1px'} width={'100%'} />
+             <Text as={'span'} mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} textAlign="center">
+              COST OF MAKING (paid once) : <Text as={'span'} fontSize={'sm'} fontWeight={'light'} color={'white'}>{product.payments.payments_required.making_cost}</Text>
              </Text>
   
-             <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-               DEPLOYMENT (paid once): <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.payments.payments_required.deploying_cost}</Text>
+             <Text as={'span'} mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} textAlign="center">
+               DEPLOYMENT (paid once): <Text as={'span'} fontSize={'sm'} fontWeight={'light'} color={'white'}>{product.payments.payments_required.deploying_cost}</Text>
              </Text>
 
-             <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-               DOMAIN NAME COST (paid yearly): <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.payments.payments_required.domain_name_cost}</Text>
+             <Text as={'span'} mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} textAlign="center">
+               DOMAIN NAME COST (paid yearly): <Text as={'span'} fontSize={'sm'} fontWeight={'light'} color={'white'}>{product.payments.payments_required.domain_name_cost}</Text>
              </Text>
   
-             <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-               HOSTING COST (paid monthly): <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.payments.payments_required.domain_name_cost}</Text>
+             <Text as={'span'} mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} textAlign="center">
+               HOSTING COST (paid monthly): <Text as={'span'} fontSize={'sm'} fontWeight={'light'} color={'white'}>{product.payments.payments_required.domain_name_cost}</Text>
              </Text>
   
-             <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-               MAINTAINANCE  (paid monthly) : <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.payments.payments_required.maintainance_cost}</Text>
+             <Text as={'span'} mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} textAlign="center">
+               MAINTAINANCE  (paid monthly) : <Text as={'span'} fontSize={'sm'} fontWeight={'light'} color={'white'}>{product.payments.payments_required.maintainance_cost}</Text>
              </Text>
 
-
-             <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-               TOTAL COST : <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.payments.total_payment_required}</Text>
+             <Text as={'span'} mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} textAlign="center">
+               TOTAL COST : <Text as={'span'} fontSize={'sm'} fontWeight={'light'} color={'white'}>{product.payments.total_payment_required}</Text>
              </Text>
 
-             <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-               ACCEPTED DEPOSIT : <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.payments.deposit_required}</Text>
+             <Text as={'span'} mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} textAlign="center">
+               ACCEPTED DEPOSIT : <Text as={'span'} fontSize={'sm'} fontWeight={'light'} color={'white'}>{product.payments.deposit_required}</Text>
              </Text>
 
-             <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-               AMOUNT PAID : <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.payments.total_paid}</Text>
+             <Text as={'span'} mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} textAlign="center">
+               AMOUNT PAID : <Text as={'span'} fontSize={'sm'} fontWeight={'light'} color={'white'}>{product.payments.total_paid}</Text>
              </Text>
 
-             <Text as={'span'}  mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-               AMOUNT REMAINING : <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'sm'} fontWeight={'light'} color={'white'} >{product.payments.amount_remaining}</Text>
+             <Text as={'span'} mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} textAlign="center">
+               AMOUNT REMAINING : <Text as={'span'} fontSize={'sm'} fontWeight={'light'} color={'white'}>{product.payments.amount_remaining}</Text>
              </Text>
-  
-  
-           
-  
           </VStack>
   
-  
-          <VStack   width={'70%'}  height={'100%'}  gap={'15px'} p={'5px'} overflow={'auto'}   css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}} padding={'4px'} alignItems={'center'}   >
-           <VStack width={'98%'}  bg={'white'}  borderRadius={'10px'}  p={'4px'} gap={'20px'} >
-               <HStack   p={'2px'}  gap={'10px'} width={'99%'} minHeight={'200px'} borderRadius={'10px'}  >
-                  <VStack p={'2px'} bgGradient="linear(to-r, purple.600, blue.500, cyan.400)" borderColor={'white'}  borderWidth={'1px'}  borderRadius={'10px'}  width={'25%'} height={'200px'}  >
-                    <Text color={'white'}  fontSize={'large'} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'} >PROJECT INITIATION!</Text>
-                    <Text color={'white'}   fontWeight={'light'} alignSelf={'flex-start'} textAlign={'left'} >
-                       initiate the project <Text as={'span'}  color={'white'} fontWeight={'bold'} >by paying a deposit of at least half the charge</Text>
+          <VStack width={rightPanelWidth} height={'100%'} gap={'15px'} p={'5px'} overflow={'auto'} css={{ '&::-webkit-scrollbar': { display:'none', scrollbarWidth: '1px' }}} alignItems={'center'} >
+           <VStack width={'98%'} bg={'white'} borderRadius={'10px'} p={'4px'} gap={'20px'} >
+               <VStack p={'2px'} gap={'10px'} width={'99%'} minHeight={'200px'} borderRadius={'10px'} flexDirection={infoCardLayout} >
+                  <VStack p={'2px'} bgGradient="linear(to-r, purple.600, blue.500, cyan.400)" borderColor={'white'} borderWidth={'1px'} borderRadius={'10px'} width={{ base: '100%', md: '25%' }} height={'200px'} >
+                    <Text color={'white'} fontSize={{ base: 'md', md: 'large' }} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'} >PROJECT INITIATION!</Text>
+                    <Text color={'white'} fontWeight={'light'} alignSelf={'flex-start'} textAlign={'left'} >
+                       initiate the project <Text as={'span'} color={'white'} fontWeight={'bold'} >by paying a deposit of at least half the charge</Text>
                     </Text>
-  
                   </VStack>
-                  <HStack p={'4px'}  bgGradient="linear(to-r, purple.600, blue.500, cyan.400)" borderColor={'black'}  borderWidth={'1px'}  borderRadius={'10px'}  width={'73%'} height={'200px'} overflowX={'auto'}   css={{ '&::-webkit-scrollbar': { scrollbarWidth: '1px' }}} padding={'4px'} alignItems={'center'}  >
-                  {/* <Text color={'white'}  fontSize={'large'} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'} >CHARGES</Text> */}
-                   <VStack width={'23%'} borderRightColor={'white'} borderRightWidth={'1px'} height={'95%'} >
-                    <Text color={'white'}>making cost(paid only once)</Text>
-                    <Text alignSelf={'flex-start'}  textAlign={'left'} color={'white'} fontSize={'xxx-large'}  >. 
-                    <Text as={'span'} fontSize={'small'} >{product.payments.payments_required.making_cost}</Text>
-                    </Text>
+                  
+                  <HStack p={'4px'} bgGradient="linear(to-r, purple.600, blue.500, cyan.400)" borderColor={'black'} borderWidth={'1px'} borderRadius={'10px'} width={{ base: '100%', md: '73%' }} height={'200px'} overflowX={'auto'} css={{ '&::-webkit-scrollbar': { scrollbarWidth: '1px' }}} alignItems={'center'} flexWrap={{ base: 'wrap', md: 'nowrap' }} >
+                    <VStack width={paymentCardWidth} borderRightColor={'white'} borderRightWidth={'1px'} height={'95%'} minWidth="150px">
+                      <Text color={'white'} fontSize="sm">making cost(paid only once)</Text>
+                      <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={{ base: 'xl', md: 'xxx-large' }} >. 
+                        <Text as={'span'} fontSize={'small'} >{product.payments.payments_required.making_cost}</Text>
+                      </Text>
   
-  
-                    <Text color={'white'}>deployment cost(paid only once)</Text>
-                    <Text alignSelf={'flex-start'}  textAlign={'left'} color={'white'} fontSize={'xxx-large'}  >. 
-                    <Text as={'span'} fontSize={'small'} >{product.payments.payments_required.deploying_cost}</Text>
-                    </Text>
-  
-                   </VStack>
-                   <VStack width={'23%'} borderRightColor={'white'} borderRightWidth={'1px'} height={'95%'}  >
-                    <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'}  >recurring charges</Text>
-                    <Text alignSelf={'flex-start'} textAlign={'left'}color={'white'} fontSize={'small'} fontWeight={'bold'} >domain name(yearly) :
-                       <Text  color={'blue.800'} fontSize={'medium'} fontWeight={'bold'} as={'span'}>{product.payments.payments_required.domain_name_cost}</Text>
-                    </Text>
-  
-                    <Text alignSelf={'flex-start'} textAlign={'left'}color={'white'} fontSize={'small'} fontWeight={'bold'} >hosting(monthly) :
-                       <Text  color={'blue.800'} fontSize={'medium'} fontWeight={'bold'} as={'span'}>{product.payments.payments_required.hosting_cost}</Text>
-                    </Text>
-  
-                    <Text alignSelf={'flex-start'} textAlign={'left'}color={'white'} fontSize={'small'} fontWeight={'bold'} >maintainance(monthly) :
-                       <Text  color={'blue.800'} fontSize={'medium'} fontWeight={'bold'} as={'span'}>{product.payments.payments_required.maintainance_cost}</Text>
-                    </Text>
-                   </VStack>
-                 
-                   <VStack width={'23%'} borderRightColor={'white'} borderRightWidth={'1px'} height={'95%'} >
-                   <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'}  >total payment(inclusive of all charges)</Text>
+                      <Text color={'white'} fontSize="sm">deployment cost(paid only once)</Text>
+                      <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={{ base: 'xl', md: 'xxx-large' }} >. 
+                        <Text as={'span'} fontSize={'small'} >{product.payments.payments_required.deploying_cost}</Text>
+                      </Text>
+                    </VStack>
                     
+                    <VStack width={paymentCardWidth} borderRightColor={'white'} borderRightWidth={'1px'} height={'95%'} minWidth="150px">
+                      <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize="sm">recurring charges</Text>
+                      <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={'xs'} fontWeight={'bold'} >domain name(yearly) :
+                         <Text color={'blue.800'} fontSize={'sm'} fontWeight={'bold'} as={'span'}>{product.payments.payments_required.domain_name_cost}</Text>
+                      </Text>
   
-                    <Text alignSelf={'flex-start'} textAlign={'left'}color={'white'} fontSize={'small'} fontWeight={'bold'} >full price :
-                       <Text  color={'blue.800'} fontSize={'medium'} fontWeight={'bold'} as={'span'}>{product.payments.total_payment_required}</Text>
-                    </Text>
+                      <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={'xs'} fontWeight={'bold'} >hosting(monthly) :
+                         <Text color={'blue.800'} fontSize={'sm'} fontWeight={'bold'} as={'span'}>{product.payments.payments_required.hosting_cost}</Text>
+                      </Text>
   
-                    <Text alignSelf={'flex-start'} textAlign={'left'}color={'white'} fontSize={'small'} fontWeight={'bold'} >allowed deposit :
-                       <Text  color={'blue.800'} fontSize={'medium'} fontWeight={'bold'} as={'span'}>{product.payments.deposit_required}</Text>
-                    </Text>
-                   </VStack>
+                      <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={'xs'} fontWeight={'bold'} >maintainance(monthly) :
+                         <Text color={'blue.800'} fontSize={'sm'} fontWeight={'bold'} as={'span'}>{product.payments.payments_required.maintainance_cost}</Text>
+                      </Text>
+                    </VStack>
+                 
+                    <VStack width={paymentCardWidth} borderRightColor={'white'} borderRightWidth={'1px'} height={'95%'} minWidth="150px">
+                      <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize="sm">total payment(inclusive of all charges)</Text>
+                      <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={'xs'} fontWeight={'bold'} >full price :
+                         <Text color={'blue.800'} fontSize={'sm'} fontWeight={'bold'} as={'span'}>{product.payments.total_payment_required}</Text>
+                      </Text>
   
-                   <VStack width={'23%'} borderRightColor={'white'} borderRightWidth={'1px'} height={'95%'}  >
-                   <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'}  >payment progress</Text>
+                      <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={'xs'} fontWeight={'bold'} >allowed deposit :
+                         <Text color={'blue.800'} fontSize={'sm'} fontWeight={'bold'} as={'span'}>{product.payments.deposit_required}</Text>
+                      </Text>
+                    </VStack>
   
-                   <Text alignSelf={'flex-start'} textAlign={'left'}color={'white'} fontSize={'small'} fontWeight={'bold'} >payment status :
-                       <Text  color={'blue.800'} fontSize={'medium'} fontWeight={'bold'} as={'span'}>{product.payments.status}</Text>
-                    </Text>
+                    <VStack width={paymentCardWidth} borderRightColor={'white'} borderRightWidth={'1px'} height={'95%'} minWidth="150px">
+                      <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize="sm">payment progress</Text>
+                      <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={'xs'} fontWeight={'bold'} >payment status :
+                         <Text color={'blue.800'} fontSize={'sm'} fontWeight={'bold'} as={'span'}>{product.payments.status}</Text>
+                      </Text>
   
-                    <Text alignSelf={'flex-start'} textAlign={'left'}color={'white'} fontSize={'small'} fontWeight={'bold'} >total paid :
-                       <Text  color={'blue.800'} fontSize={'medium'} fontWeight={'bold'} as={'span'}>{product.payments.total_paid}</Text>
-                    </Text>
+                      <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={'xs'} fontWeight={'bold'} >total paid :
+                         <Text color={'blue.800'} fontSize={'sm'} fontWeight={'bold'} as={'span'}>{product.payments.total_paid}</Text>
+                      </Text>
   
-                    <Text alignSelf={'flex-start'} textAlign={'left'}color={'white'} fontSize={'small'} fontWeight={'bold'} >amount remaining :
-                       <Text  color={'blue.800'} fontSize={'medium'} fontWeight={'bold'} as={'span'}>{product.payments.amount_remaining}</Text>
-                    </Text>
-                   </VStack>
+                      <Text alignSelf={'flex-start'} textAlign={'left'} color={'white'} fontSize={'xs'} fontWeight={'bold'} >amount remaining :
+                         <Text color={'blue.800'} fontSize={'sm'} fontWeight={'bold'} as={'span'}>{product.payments.amount_remaining}</Text>
+                      </Text>
+                    </VStack>
                   </HStack>
                </HStack>
-               <Text fontSize={'medium'} color={'black'} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'}  >status :{(!product.accepted && !product.initiated && !product.cancelled && !product.rejected)?'not yet accepted':(product.accepted && !product.initiated && !product.cancelled && !product.rejected)?'accepted':(product.rejected)?'rejected':(product.cancelled)?'cancelled':(product.accepted && product.initiated && !product.cancelled && ! product.rejected)?'initiated':''}</Text>
-               {/* <Text fontSize={'medium'} color={'orange'} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'}  >{initiationerror}</Text> */}
+               
+               <Text fontSize={{ base: 'sm', md: 'medium' }} color={'black'} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'}  >status :{(!product.accepted && !product.initiated && !product.cancelled && !product.rejected)?'not yet accepted':(product.accepted && !product.initiated && !product.cancelled && !product.rejected)?'accepted':(product.rejected)?'rejected':(product.cancelled)?'cancelled':(product.accepted && product.initiated && !product.cancelled && ! product.rejected)?'initiated':''}</Text>
   
-               <HStack width={'98%'} p={'3px'}   >
+               <HStack width={'98%'} p={'3px'} flexWrap="wrap" gap="10px" >
                 {(product.accepted && !product.initiated && !product.rejected && !product.cancelled) &&
-                <Button onClick={initiate}   colorScheme={product.accepted&&!product.initiated&&!product.rejected&&!product.cancelled?'green':'gray'} >
+                <Button onClick={initiate} colorScheme={product.accepted&&!product.initiated&&!product.rejected&&!product.cancelled?'green':'gray'} size={{ base: 'sm', md: 'md' }}>
                 INITIATE PRODUCT
               </Button>
                 }
                   
-                 
-                    {(product.accepted && product.initiated && !product.rejected && !product.cancelled) &&
-                     <Button onClick={()=>{setwanttocancel(true)}}  colorScheme='red' >
+                 {(product.accepted && product.initiated && !product.rejected && !product.cancelled) &&
+                     <Button onClick={()=>{setwanttocancel(true)}} colorScheme='red' size={{ base: 'sm', md: 'md' }}>
                      CANCEL REQUEST
                    </Button>
                     }
   
-  
                   {(product.cancelled) &&
-                     <Button onClick={()=>{setwanttouncancel(true)}}  colorScheme='orange' >
+                     <Button onClick={()=>{setwanttouncancel(true)}} colorScheme='orange' size={{ base: 'sm', md: 'md' }}>
                      UNDO CANCEL
                    </Button>
                     } 
   
-                  {/* {!product.cancelled ?
-                    (
-                      <Button onClick={cancel}  colorScheme='red' >
-                      CANCEL REQUEST
-                    </Button>
-                    )
-                    :
-                    (
-                      <Button onClick={cancel}  colorScheme='orange' >
-                      UNDO CANCEL
-                    </Button>
-                    )
-                  } */}
-  
-                  {/* {(product.accepted && product.initiated && !product.cancelled && !product.rejected) && 
-                    <Button    colorScheme={'purple'} >
-                    PRODUCT INITIATED
-                  </Button>
-                  
-                  } */}
-  
-               {(product.accepted && product.initiated && product.payments.status === "not fully paid"&&!product.rejected&&!product.cancelled) &&
-                    
-                    <Button   onClick={initiate}  colorScheme={'green'} >
+                  {(product.accepted && product.initiated && product.payments.status === "not fully paid"&&!product.rejected&&!product.cancelled) &&
+                    <Button onClick={initiate} colorScheme={'green'} size={{ base: 'sm', md: 'md' }}>
                     TOP UP PAYMENT
                   </Button>
-                  //  ):
-                  //  (
-                  //   <Button  disabled={true}  colorScheme={'gray'} >
-                  //   PRODUCT FULLY PAID FOR
-                  // </Button>
-                  //  )
-                  
                   }
-
 
                   {
                     product.payments.status === "fully paid"  && 
-
-                    <Button  disabled={true}  colorScheme={'gray'} >
+                    <Button disabled={true} colorScheme={'gray'} size={{ base: 'sm', md: 'md' }}>
                     PRODUCT FULLY PAID FOR
                    </Button>
                   }
 
-
                   {
                      product.rejected && 
-
-                    
-
-                    <Button  disabled={true}  colorScheme={'red'} >
+                    <Button disabled={true} colorScheme={'red'} size={{ base: 'sm', md: 'md' }}>
                     THIS REQUEST WAS REJECTED
                    </Button>
                   }
-  
-               
                </HStack>
   
                {wanttocancel  &&  
-                <VStack width={'98%'}  p={'4px'} gap={'10px'} alignItems={'center'}  >
-                  <Text color={'black'} fontSize={'medium'} fontWeight={'bold'} >summarised tips on product cancellation</Text>
-                  <Text fontSize={'sm'} color={'black'}  width={'100%'}  >cancelling  24+ hrs from time of placing request will result to a deduction of 10% of the deposit </Text>
-                  <Text fontSize={'sm'} color={'black'}  width={'100%'}  >you will be refunded in 24 hrs </Text>
+                <VStack width={'98%'} p={'4px'} gap={'10px'} alignItems={'center'}  >
+                  <Text color={'black'} fontSize={{ base: 'sm', md: 'medium' }} fontWeight={'bold'} textAlign="center">summarised tips on product cancellation</Text>
+                  <Text fontSize={'sm'} color={'black'} width={'100%'} textAlign="center">cancelling  24+ hrs from time of placing request will result to a deduction of 10% of the deposit </Text>
+                  <Text fontSize={'sm'} color={'black'} width={'100%'} textAlign="center">you will be refunded in 24 hrs </Text>
+                  <Text fontSize={'sm'} color={'black'} width={'100%'} textAlign="center">ask the assistant for more on the terms and conditions</Text>
   
-  
-  
-                  <Text fontSize={'sm'} color={'black'}  width={'100%'}  >ask the assistant for more on the terms and conditions</Text>
-  
-                  <HStack width={'80%'}  p={'5px'}  alignItems={'center'} justifyContent={'space-between'}   >
-                    <Button colorScheme='red' display={'flex'} alignItems={'center'} justifyContent={'center'} onClick={cancel} >PROCEED TO CANCEL</Button>
-                    <Button  colorScheme='orange' display={'flex'} alignItems={'center'} justifyContent={'center'} onClick={()=>{setwanttocancel(false)}} >DO NOT  CANCEL</Button>
+                  <HStack width={{ base: '100%', md: '80%' }} p={'5px'} alignItems={'center'} justifyContent={'space-between'} flexWrap="wrap" >
+                    <Button colorScheme='red' display={'flex'} alignItems={'center'} justifyContent={'center'} onClick={cancel} size={{ base: 'sm', md: 'md' }} mb={{ base: '10px', md: '0' }}>PROCEED TO CANCEL</Button>
+                    <Button colorScheme='orange' display={'flex'} alignItems={'center'} justifyContent={'center'} onClick={()=>{setwanttocancel(false)}} size={{ base: 'sm', md: 'md' }}>DO NOT CANCEL</Button>
                   </HStack>
                 </VStack>
-               
                }
   
-  
                 {wanttouncancel  &&  
-                              <VStack width={'98%'}  p={'4px'} gap={'10px'} alignItems={'center'}  >
-                                {/* <Text color={'black'} fontSize={'medium'} fontWeight={'bold'} >summarised tips on uncancelling product</Text>
-                                <Text fontSize={'sm'} color={'black'}  width={'100%'}  >cancelling  24+ hrs from time of placing request will result to a deduction of 10% of the deposit </Text>
-                                <Text fontSize={'sm'} color={'black'}  width={'100%'}  >you will be refunded in 24 hrs </Text>
-  
-  
-  
-                                <Text fontSize={'sm'} color={'black'}  width={'100%'}  >ask the assistant for more on the terms and conditions</Text> */}
-                                <Text fontSize={'sm'} color={'black'}  width={'100%'}  >are you sure you want to uncancel</Text>
-  
-                                <HStack width={'80%'}  p={'5px'}  alignItems={'center'} justifyContent={'space-between'}   >
-                                  <Button colorScheme='red' display={'flex'} alignItems={'center'} justifyContent={'center'} onClick={uncancel} >PROCEED TO UNCANCEL</Button>
-                                  <Button  colorScheme='orange' display={'flex'} alignItems={'center'} justifyContent={'center'}  onClick={()=>{setwanttouncancel(false)}} >DO NOT  UNCANCEL</Button>
-                                </HStack>
-                              </VStack>
-                            
-                            }
-  
-  
+                  <VStack width={'98%'} p={'4px'} gap={'10px'} alignItems={'center'}  >
+                    <Text fontSize={'sm'} color={'black'} width={'100%'} textAlign="center">are you sure you want to uncancel</Text>
+                    <HStack width={{ base: '100%', md: '80%' }} p={'5px'} alignItems={'center'} justifyContent={'space-between'} flexWrap="wrap">
+                      <Button colorScheme='red' display={'flex'} alignItems={'center'} justifyContent={'center'} onClick={uncancel} size={{ base: 'sm', md: 'md' }} mb={{ base: '10px', md: '0' }}>PROCEED TO UNCANCEL</Button>
+                      <Button colorScheme='orange' display={'flex'} alignItems={'center'} justifyContent={'center'} onClick={()=>{setwanttouncancel(false)}} size={{ base: 'sm', md: 'md' }}>DO NOT UNCANCEL</Button>
+                    </HStack>
+                  </VStack>
+                }
                 
                {showpayform &&  
                <>
-                  <Button onClick={()=>{setshowpayform(false)}} size={'sm'} borderRadius={'50%'}  colorScheme='red' color={'white'} display={'flex'} alignItems={'center'} justifyContent={'center'} p={'1px'} fontSize={'x-small'} >X</Button>
-                  <Tabs variant="soft-rounded" colorScheme="teal" isFitted>
+                  <Button onClick={()=>{setshowpayform(false)}} size={'sm'} borderRadius={'50%'} colorScheme='red' color={'white'} display={'flex'} alignItems={'center'} justifyContent={'center'} p={'1px'} fontSize={'x-small'} >X</Button>
+                  <Tabs variant="soft-rounded" colorScheme="teal" isFitted width="100%">
                   <TabList mb="1em">
                     <Tab _selected={{ color: "white", bg: "teal.500" }}>M-Pesa</Tab>
                     <Tab _selected={{ color: "white", bg: "teal.500" }}>Visa</Tab>
@@ -715,12 +631,11 @@ function View_Product() {
                           />
                         </FormControl>
                         {payerror &&  
-                        
                         <Text color={'red.500'} fontWeight={'bold'} >{payerror}</Text>
                         }
-                        <Button colorScheme="teal" width="full"  onClick={pay} gap={'10px'} >
+                        <Button colorScheme="teal" width="full" onClick={pay} gap={'10px'} >
                           Pay with M-Pesa
-                         {ispaying&&   <Spinner  width={'20px'}  height={'20px'} color='white' />}
+                         {ispaying&& <Spinner width={'20px'} height={'20px'} color='white' />}
                         </Button>
                       </VStack>
                     </TabPanel>
@@ -733,7 +648,7 @@ function View_Product() {
                           <Input
                             placeholder="1234 5678 9012 3456"
                             bg={'white'}
-                            color="white"
+                            color="black"
                             _placeholder={{ color: "gray.400" }}
                           />
                         </FormControl>
@@ -742,7 +657,7 @@ function View_Product() {
                           <Input
                             placeholder="MM/YY"
                             bg={'white'}
-                            color="white"
+                            color="black"
                             _placeholder={{ color: "gray.400" }}
                           />
                         </FormControl>
@@ -751,7 +666,7 @@ function View_Product() {
                           <Input
                             placeholder="123"
                             bg={'white'}
-                            color="white"
+                            color="black"
                             _placeholder={{ color: "gray.400" }}
                             maxW="100px"
                           />
@@ -764,157 +679,88 @@ function View_Product() {
                   </TabPanels>
                 </Tabs>
                 </>
-               
                }
-  
-  
-              
            </VStack>
-           <Text  color={'white'} fontSize={'medium'} fontWeight={'light'} alignSelf={'flex-start'} textAlign={'left'}  >PRODUCT DESCRIPTION</Text>
+           
+           <Text color={'white'} fontSize={{ base: 'sm', md: 'medium' }} fontWeight={'light'} alignSelf={'flex-start'} textAlign={'left'}  >PRODUCT DESCRIPTION</Text>
   
-           <VStack width={'100%'} p={'5px'}  alignItems={'center'} >
-                <Textarea color={'white'}  fontSize={'medium'} css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}}   width={'90%'} minH={'250px'} value={product.description} p={'4px'} readOnly={true} resize={false} borderRadius={'10px'}  overflow={'auto'} wordBreak={'break-word'} whiteSpace={'pre-wrap'} ></Textarea>
-               </VStack>
+           <VStack width={'100%'} p={'5px'} alignItems={'center'} >
+                <Textarea color={'white'} fontSize={{ base: 'sm', md: 'medium' }} css={{ '&::-webkit-scrollbar': { display:'none', scrollbarWidth: '1px' }}} width={'90%'} minH={'250px'} value={product.description} p={'4px'} readOnly={true} resize={false} borderRadius={'10px'} overflow={'auto'} wordBreak={'break-word'} whiteSpace={'pre-wrap'} ></Textarea>
+           </VStack>
   
-               <Button onClick={go_to_edit} alignSelf={'flex-end'}  display={'flex'} alignItems={'center'} justifyContent={'center'} p={'3px'} borderRadius={'10px'} colorScheme={'gray'}  gap={'30px'} > <CiEdit  size={'25px'}  color=''white /> EDIT REQUEST</Button>
+           <Button onClick={go_to_edit} alignSelf={'flex-end'} display={'flex'} alignItems={'center'} justifyContent={'center'} p={'3px'} borderRadius={'10px'} colorScheme={'gray'} gap={'30px'} size={{ base: 'sm', md: 'md' }}> <CiEdit size={{ base: '20px', md: '25px' }} color='white' /> EDIT REQUEST</Button>
                
-          <Text  color={'white'} fontSize={'larger'} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'}  >YOUR ATTACHMENTS</Text>
-             <HStack  width={'98%'}  padding={'4px'}  flexWrap={'wrap'} alignItems={'center'}  >
-                {product.attachments.length > 0 && 
-                
-                product.attachments.map(function(val , index){
-                  return(
-                    <VStack key={index} as='button'  width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
-                    <PiFilePdf    size={'150px'}   color='red'    />
-                    <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >DOC_NAME</Text>
-                 </VStack>
-  
-                 // <VStack as='button'  width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
-                 //    <PiFilePdf    size={'150px'} borderRadius={'10px'}  color='red'    />
-                 //    <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit deleniti laborum officia ea ullam velit inventore aut hic? Obcaecati delectus, optio ipsum perferendis aliquid pariatur? Assumenda accusamus deserunt cumque unde!</Text>
-                 // </VStack>
-                  )
-                })
-                
+          <Text color={'white'} fontSize={{ base: 'md', md: 'larger' }} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'}  >YOUR ATTACHMENTS</Text>
+             <HStack width={'98%'} padding={'4px'} flexWrap={'wrap'} alignItems={'center'} justifyContent={{ base: 'center', md: 'flex-start' }} gap="10px" >
+                {product.attachments.length > 0 ? 
+                  product.attachments.map(function(val , index){
+                    return(
+                      <VStack key={index} as='button' width={attachmentWidth} borderRadius={'10px'} borderWidth={'1px'} borderColor={'white'} alignItems={'center'} minWidth="120px" >
+                        <PiFilePdf size={{ base: '100px', md: '150px' }} color='red' />
+                        <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'} >DOC_NAME</Text>
+                      </VStack>
+                    )
+                  })
+                  : 
+                  <Text color={'white'} fontSize={{ base: 'md', md: 'larger' }} textAlign="center">THIS REQUEST HAD NO ATTACHMENTS</Text>
                 }
-  
-                {
-                 product.attachments.length <= 0 && 
-                 <Text  color={'white'} fontSize={'larger'}  >THIS REQUEST HAD NO ATTACHMENTS</Text>
-                }
-  
-  
-                
              </HStack>
   
-  
-  
-             <Text  color={'white'} fontSize={'larger'} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'}  >PROGRESS</Text>
-             <HStack  width={'98%'}  padding={'4px'}  flexWrap={'wrap'} alignItems={'center'}  >
-               
-             <VStack   minHeight={'200px'}  width={'23%'} flexWrap={'wrap'} borderRadius={'10px'} borderWidth={'0.5px'}  borderColor={'white'}  alignItems={'center'} p={'4px'}  >
-             <Text  color={'white'} fontSize={'larger'} fontWeight={'light'} alignSelf={'flex-start'} textAlign={'left'}  >FEATURES</Text>
-  
-                 
-             <Text   mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-             ICON   <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >PROPERTY   <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >DONE</Text>
-             </Text>
-  
-             </Text>
-  
-  
-  
-  
-             <Text   mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-             ICON   <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >PROPERTY   <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >DONE</Text>
-             </Text>
-  
-             </Text>
-  
-  
-  
-  
-  
-  
-  
-  
-  
-             <Text   mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-             ICON   <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >PROPERTY   <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >DONE</Text>
-             </Text>
-  
-             </Text>
-  
-  
-  
-  
-             <Text   mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
-             ICON   <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >DATE   <Text as={'span'}   mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >YY/MM/DD/HH/MM/SS</Text>
-             </Text>
-  
-             </Text>
-  
-  
-             
-                 </VStack>
-  
-                
+             <Text color={'white'} fontSize={{ base: 'md', md: 'larger' }} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'}  >PROGRESS</Text>
+             <HStack width={'98%'} padding={'4px'} flexWrap={'wrap'} alignItems={'center'} justifyContent={{ base: 'center', md: 'flex-start' }} gap="10px">
+               <VStack minHeight={'200px'} width={featureCardWidth} flexWrap={'wrap'} borderRadius={'10px'} borderWidth={'0.5px'} borderColor={'white'} alignItems={'center'} p={'4px'} >
+                 <Text color={'white'} fontSize={{ base: 'md', md: 'larger' }} fontWeight={'light'} alignSelf={'flex-start'} textAlign={'left'}  >FEATURES</Text>
+                 <Text mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
+                 ICON   <Text as={'span'} fontSize={'xs'} fontWeight={'light'} color={'white'} >PROPERTY   <Text as={'span'} fontSize={'xs'} fontWeight={'light'} color={'white'} >DONE</Text></Text>
+                 </Text>
+                 <Text mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
+                 ICON   <Text as={'span'} fontSize={'xs'} fontWeight={'light'} color={'white'} >PROPERTY   <Text as={'span'} fontSize={'xs'} fontWeight={'light'} color={'white'} >DONE</Text></Text>
+                 </Text>
+                 <Text mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
+                 ICON   <Text as={'span'} fontSize={'xs'} fontWeight={'light'} color={'white'} >PROPERTY   <Text as={'span'} fontSize={'xs'} fontWeight={'light'} color={'white'} >DONE</Text></Text>
+                 </Text>
+                 <Text mt={'20px'} mb={'10px'} fontSize={'xs'} fontWeight={'light'} color={'white'} >
+                 ICON   <Text as={'span'} fontSize={'xs'} fontWeight={'light'} color={'white'} >DATE   <Text as={'span'} fontSize={'xs'} fontWeight={'light'} color={'white'} >YY/MM/DD/HH/MM/SS</Text></Text>
+                 </Text>
+               </VStack>
              </HStack>
   
+             <Text color={'white'} fontSize={{ base: 'md', md: 'larger' }} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'}  >PREVIEWS</Text>
+             <Text color={'white'} fontSize={'xs'} alignSelf={'flex-start'} textAlign={'left'}  >DATE</Text>
   
-  
-  
-             <Text  color={'white'} fontSize={'larger'} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'}  >PREVIEWS</Text>
-             <Text  color={'white'} fontSize={'xs'}  alignSelf={'flex-start'} textAlign={'left'}  >DATE</Text>
-  
-             <HStack  width={'98%'}  padding={'4px'}  flexWrap={'wrap'} alignItems={'center'} gap={'20px'}  >
-               <VStack   width={'23%'}   borderRadius={'10px'}   >
-               <Image    width={'99%'} height={'200px'}   />
-               <Text fontSize={'xx-small'}  color={'white'}   width={'90%'}  isTruncated={true} textAlign={'center'}   >preview name</Text>
+             <HStack width={'98%'} padding={'4px'} flexWrap={'wrap'} alignItems={'center'} justifyContent={{ base: 'center', md: 'flex-start' }} gap={'20px'}  >
+               <VStack width={previewWidth} borderRadius={'10px'} minWidth="120px">
+                 <Image width={'99%'} height={'200px'} />
+                 <Text fontSize={'xx-small'} color={'white'} width={'90%'} isTruncated={true} textAlign={'center'} >preview name</Text>
                </VStack>
-  
-  
-               <VStack   width={'23%'}   borderRadius={'10px'}   >
-               <Image    width={'99%'} height={'200px'}   />
-               <Text fontSize={'xx-small'}  color={'white'} width={'90%'}  isTruncated={true}  textAlign={'center'}   >preview name</Text>
+               <VStack width={previewWidth} borderRadius={'10px'} minWidth="120px">
+                 <Image width={'99%'} height={'200px'} />
+                 <Text fontSize={'xx-small'} color={'white'} width={'90%'} isTruncated={true} textAlign={'center'} >preview name</Text>
                </VStack>
-  
-  
-               <VStack   width={'23%'}   borderRadius={'10px'}   >
-               <Image    width={'99%'} height={'200px'}   />
-               <Text fontSize={'xx-small'}  color={'white'}   width={'90%'}  isTruncated={true}  textAlign={'center'}   >preview name</Text>
+               <VStack width={previewWidth} borderRadius={'10px'} minWidth="120px">
+                 <Image width={'99%'} height={'200px'} />
+                 <Text fontSize={'xx-small'} color={'white'} width={'90%'} isTruncated={true} textAlign={'center'} >preview name</Text>
                </VStack>
-  
-  
-               <VStack   width={'23%'}   borderRadius={'10px'}   >
-               <Image    width={'99%'} height={'200px'}   />
-               <Text fontSize={'xx-small'}  color={'white'}   width={'90%'}  isTruncated={true}  textAlign={'center'}   >preview name</Text>
+               <VStack width={previewWidth} borderRadius={'10px'} minWidth="120px">
+                 <Image width={'99%'} height={'200px'} />
+                 <Text fontSize={'xx-small'} color={'white'} width={'90%'} isTruncated={true} textAlign={'center'} >preview name</Text>
                </VStack>
-  
-  
-               <VStack   width={'23%'}   borderRadius={'10px'}   >
-               <Image    width={'99%'} height={'200px'}   />
-               <Text fontSize={'xx-small'}  color={'white'}  width={'90%'}  isTruncated={true} textAlign={'center'} >preview name</Text>
+               <VStack width={previewWidth} borderRadius={'10px'} minWidth="120px">
+                 <Image width={'99%'} height={'200px'} />
+                 <Text fontSize={'xx-small'} color={'white'} width={'90%'} isTruncated={true} textAlign={'center'} >preview name</Text>
                </VStack>
-            {/* <Image    width={'23%'} height={'200px'}    borderRadius={'10px'}     />
-            <Image    width={'23%'} height={'200px'}    borderRadius={'10px'}     />
-            <Image    width={'23%'} height={'200px'}    borderRadius={'10px'}     />
-            <Image    width={'23%'} height={'200px'}    borderRadius={'10px'}     />
-            <Image    width={'23%'} height={'200px'}    borderRadius={'10px'}     /> */}
-  
-                
              </HStack>
           </VStack>
-        </HStack>
+        </VStack>
         ) :
 
         (
-          <Box  width={'100%'} height={'100%'} bg={'gray.800'} display={'flex'} alignItems={'center'} justifyContent={'center'}  >
-               <VStack  width={'60%'} borderRadius={'15px'} p={'10px'} borderColor={'white'} borderWidth={'1px'} >
+          <Box width={'100%'} height={'100%'} bg={'gray.800'} display={'flex'} alignItems={'center'} justifyContent={'center'}  >
+               <VStack width={{ base: '90%', md: '60%' }} borderRadius={'15px'} p={'10px'} borderColor={'white'} borderWidth={'1px'} >
                  {fetchingproduct && 
-                 <Spinner   width={'200px'} height={'200px'} color='white'  />
+                 <Spinner width={{ base: '100px', md: '200px' }} height={{ base: '100px', md: '200px' }} color='white'  />
                  }
-                <Text fontSize={'xx-large'} color={'white'} fontWeight={'bold'} >{fetcherror?fetcherror:'fetching request from database...'}</Text>
+                <Text fontSize={{ base: 'lg', md: 'xx-large' }} color={'white'} fontWeight={'bold'} textAlign="center">{fetcherror?fetcherror:'fetching request from database...'}</Text>
                </VStack>
           </Box>
         )
