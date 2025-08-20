@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../appcontexts/auth';
 import BASE_URL from '../constants/urls';
 import { socketcontext } from '../appcontexts/socket';
-
+// responsive
 function View_Product() {
     const [fetchingproduct , setfetchingproduct] = useState(false);
     const [fetcherror , setfetcherror] = useState(null);
