@@ -54,12 +54,11 @@ function Pricing() {
           isFitted
           mt={4}
         >
-          <TabList mb="1em" flexDirection="row" overflowX="auto">
+          <TabList mb="1em" flexDirection="row">
             <Tab 
               _selected={{ color: 'white', bg: 'blue.600' }} 
               fontSize={tabFontSize}
               py={4}
-              whiteSpace="nowrap"
             >
               Our Services
             </Tab>
@@ -67,7 +66,6 @@ function Pricing() {
               _selected={{ color: 'white', bg: 'blue.600' }} 
               fontSize={tabFontSize}
               py={4}
-              whiteSpace="nowrap"
             >
               Terms & Conditions
             </Tab>
