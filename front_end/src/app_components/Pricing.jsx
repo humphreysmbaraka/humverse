@@ -47,21 +47,32 @@ function Pricing() {
           isFitted
           mt={[2, 4]}
         >
-          <TabList mb="1em" flexDirection={['column', 'row']}>
+          <TabList 
+            mb="1em" 
+            flexDirection="row"
+            overflowX="auto"
+            whiteSpace="nowrap"
+            css={{
+              '&::-webkit-scrollbar': { display: 'none' },
+              '-ms-overflow-style': 'none',
+              'scrollbar-width': 'none'
+            }}
+          >
             <Tab 
               _selected={{ color: 'white', bg: 'blue.600' }} 
               fontSize={['xs', 'sm', 'md']}
-              mb={[2, 0]}
-              mx={[1, 0]}
+              minWidth="fit-content"
+              mx={[1, 2]}
             >
-              Our Services
+              Services
             </Tab>
             <Tab 
               _selected={{ color: 'white', bg: 'blue.600' }} 
               fontSize={['xs', 'sm', 'md']}
-              mx={[1, 0]}
+              minWidth="fit-content"
+              mx={[1, 2]}
             >
-              Terms & Conditions
+              Terms
             </Tab>
           </TabList>
           
