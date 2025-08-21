@@ -215,9 +215,9 @@ const logout = async function(){
        
        <>
 
-         <Box  borderBottomColor={'white'} borderBottomWidth={'1px'} width={'95%'} p={'2px'} display={'flex'} alignItems={'center'} justifyContent={'flex-start'}  _hover={{borderBottomWidth:'2px' , borderBottomColor:'blue'}}  >
+         {/* <Box  borderBottomColor={'white'} borderBottomWidth={'1px'} width={'95%'} p={'2px'} display={'flex'} alignItems={'center'} justifyContent={'flex-start'}  _hover={{borderBottomWidth:'2px' , borderBottomColor:'blue'}}  >
                <Link style={{color:'white' , fontSize:'xs'  }}   to='dashboard'    >ADMIN PANEL</Link>
-        </Box>
+        </Box> */}
        
        <Box  borderBottomColor={'white'} borderBottomWidth={'1px'} width={'95%'} p={'2px'} display={'flex'} alignItems={'center'} justifyContent={'flex-start'}  _hover={{borderBottomWidth:'2px' , borderBottomColor:'blue'}}   >
                <Link style={{color:'white' , fontSize:'xs'  }}   to='/main'    >HOME</Link>
@@ -236,9 +236,9 @@ const logout = async function(){
 
 
 
-        <Box  borderBottomColor={'white'} borderBottomWidth={'1px'} width={'95%'} p={'2px'} display={'flex'} alignItems={'center'} justifyContent={'flex-start'}  _hover={{borderBottomWidth:'2px' , borderBottomColor:'blue'}}  >             
+        {/* <Box  borderBottomColor={'white'} borderBottomWidth={'1px'} width={'95%'} p={'2px'} display={'flex'} alignItems={'center'} justifyContent={'flex-start'}  _hover={{borderBottomWidth:'2px' , borderBottomColor:'blue'}}  >             
                <Link style={{color:'white' , fontSize:'xs'  }}   to='make request'    >MAKE REQUEST</Link>
-        </Box>
+        </Box> */}
 
 
 
@@ -284,9 +284,9 @@ const logout = async function(){
 
 
 
-<Box  borderBottomColor={'white'} borderBottomWidth={'1px'} width={'95%'} p={'2px'} display={'flex'} alignItems={'center'} justifyContent={'flex-start'}  _hover={{borderBottomWidth:'2px' , borderBottomColor:'blue'}}  >             
+{/* <Box  borderBottomColor={'white'} borderBottomWidth={'1px'} width={'95%'} p={'2px'} display={'flex'} alignItems={'center'} justifyContent={'flex-start'}  _hover={{borderBottomWidth:'2px' , borderBottomColor:'blue'}}  >             
        <Link style={{color:'white' , fontSize:'xs'  }}   to='make request'    >MAKE REQUEST</Link>
-</Box>
+</Box> */}
 
 
 
@@ -337,7 +337,7 @@ const logout = async function(){
         <Box width={'95%'} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}  >
                <Link style={{color:'white' , fontSize:'sm' , fontWeight:'bold' }}   to='contacts'    >
                <IoCallOutline  color='white'  size='25px' />
-               <Text color={'white'}  fontSize={'xx-small'} fontWeight={'light'} >scontacts</Text>
+               <Text color={'white'}  fontSize={'xx-small'} fontWeight={'light'} >contacts</Text>
                </Link>
         </Box>
 
@@ -369,12 +369,12 @@ const logout = async function(){
 
 <>
 
-<Box width={'95%'} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}  >
+{/* <Box width={'95%'} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}  >
                <Link style={{color:'white' , fontSize:'sm' , fontWeight:'bold' }}   to='dashboard'    >
                <RiAccountPinCircleFill  color='white'  size='25px' />
                <Text color={'white'}  fontSize={'xx-small'} fontWeight={'light'} >Admin Panel</Text>
                </Link>
-        </Box>
+        </Box> */}
 
 
 <Box width={'95%'} p={'2px'} display={'flex'} flexDirection={'column'} alignItems={'center'} justifyContent={'center'}  >
