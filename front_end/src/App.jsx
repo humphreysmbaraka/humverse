@@ -36,6 +36,7 @@ function App() {
 <Helmet>
         {/* Basic */}
         <title>Humverse</title>
+        <meta name="google-site-verification" content="oGs6LClSNHkr6uICUmx2Lm88spU7gU1NvccC7qa5Ijc" />
         <meta name="description" content="We build websites, web apps, mobile apps, APIs, and AI-powered products — complete with hosting, deployment, and maintenance." />
         <meta name="keywords" content="website makers , website , web app ,  web app makers , app makers , app ,  phone app makers , API makers , software makers , software , API ,  API makers" />
         <meta name="author" content="Humphrey Mbaraka" />
