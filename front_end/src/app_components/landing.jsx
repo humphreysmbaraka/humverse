@@ -54,7 +54,6 @@ function Landing() {
     md: { top: "20px", right: "25px", width: "auto" } 
   });
 
-  // Use viewport units instead of tracking window size manually
   const vh = useBreakpointValue({ base: "100vh", md: "100vh" });
   const vw = useBreakpointValue({ base: "100vw", md: "100vw" });
 
@@ -72,12 +71,14 @@ function Landing() {
         transition: { duration: 0.5, ease: 'easeIn' } 
       }}
     >
+      {/* Background image with dark overlay */}
       <Motionimage 
         zIndex={0} 
         width="100%" 
         height="100%" 
         src={landing} 
         objectFit="cover"
+        filter="brightness(0.3)"  // dark overlay effect
         initial={{ y: 1000, scale: 0.5 }}
         animate={{ y: 0, scale: 1 }}
         transition={{ 
