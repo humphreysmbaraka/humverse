@@ -1,9 +1,8 @@
-import { Box, HStack, Image, Text, VStack, useBreakpointValue } from '@chakra-ui/react'
-import React, { useEffect, useRef, useState } from 'react'
-import landing from '../assets/landing.png'
+import { Box, HStack, Text, VStack, useBreakpointValue } from '@chakra-ui/react'
+import React, { useRef, useState } from 'react'
 import Signup_prompt from './signup_prompt';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { Motionbox, Motionbutton, Motionhstack, Motionimage } from '../motion_components';
+import { useNavigate } from 'react-router-dom';
+import { Motionbox, Motionbutton, Motionhstack } from '../motion_components';
 import { AnimatePresence, useCycle } from 'framer-motion';
 
 function Landing() {
@@ -41,7 +40,6 @@ function Landing() {
   }
 
   // Responsive values
-  const isMobile = useBreakpointValue({ base: true, md: false });
   const textWidth = useBreakpointValue({ base: "90%", md: "400px" });
   const buttonStackWidth = useBreakpointValue({ base: "100%", md: "60%" });
   const buttonWidth = useBreakpointValue({ base: "45%", md: "40%" });
@@ -66,26 +64,46 @@ function Landing() {
       height={vh} 
       overflow="hidden" 
       bg="gray.800"
+      bgGradient="linear(to-br, gray.800, gray.700)" // subtle abstract gradient
       exit={{ 
         x: -3000, 
         transition: { duration: 0.5, ease: 'easeIn' } 
       }}
     >
-      {/* Background image with dark overlay */}
-      <Motionimage 
-        zIndex={0} 
-        width="100%" 
-        height="100%" 
-        src={landing} 
-        objectFit="cover"
-        filter="brightness(0.3)"  // dark overlay effect
-        initial={{ y: 1000, scale: 0.5 }}
-        animate={{ y: 0, scale: 1 }}
-        transition={{ 
-          y: { delay: 0.5, duration: 0.5 }, 
-          scale: { delay: 1, duration: 0.5 } 
-        }}
-      />
+      {/* Optional subtle animated circles in the background for extra abstraction */}
+      <Box
+        position="absolute"
+        top="0"
+        left="0"
+        width="100%"
+        height="100%"
+        zIndex={0}
+        overflow="hidden"
+      >
+        {[...Array(5)].map((_, i) => (
+          <Box
+            key={i}
+            position="absolute"
+            width={`${100 + i*50}px`}
+            height={`${100 + i*50}px`}
+            bg="whiteAlpha.50"
+            borderRadius="50%"
+            top={`${i * 20}%`}
+            left={`${i * 15}%`}
+            animation={`float 15s linear infinite`}
+          />
+        ))}
+
+        <style>
+          {`
+            @keyframes float {
+              0% { transform: translateY(0px); }
+              50% { transform: translateY(-30px); }
+              100% { transform: translateY(0px); }
+            }
+          `}
+        </style>
+      </Box>
 
       <Motionhstack 
         zIndex={1} 
