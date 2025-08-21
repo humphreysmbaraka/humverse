@@ -15,6 +15,7 @@ import Main_Navigator from "./navigators/Main_Navigator"
 import { Auth_Provider } from "./appcontexts/auth"
 import Assistant from "./app_components/Assistant"
 import { Socket_provider } from "./appcontexts/socket"
+import squares from './assets/squares.png'
 // import Nav_layout from "./UNUSED_components/Navigator_layout.jsx"
 // import Navbar from "./UNUSED_components/Navigator_layout.jsx"
 // import Main from "./UNUSED_components/Assistant.jsx.jsx"
@@ -35,25 +36,34 @@ function App() {
 <Helmet>
         {/* Basic */}
         <title>Humverse</title>
-        <meta name="description" content="Welcome to humverse , here we offer a wide array of software services. we make websites , web apps , phone apps , AI agents  AI products for phone apps , websites  web appsetc . we also offer  deployment services , hosting services , maintainance services , we make APIs , " />
+        <meta name="description" content="We build websites, web apps, mobile apps, APIs, and AI-powered products — complete with hosting, deployment, and maintenance." />
         <meta name="keywords" content="website makers , website , web app ,  web app makers , app makers , app ,  phone app makers , API makers , software makers , software , API ,  API makers" />
         <meta name="author" content="Humphrey Mbaraka" />
-
-        {/* Favicon */}
-        {/* <link rel="icon" type="image/png" href="/squares.png" /> */}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" type="image/png" href="/squares.png" />
-        {/* Open Graph (Facebook, WhatsApp, LinkedIn) */}
-        {/* <meta property="og:title" content="My MERN App" />
-        <meta property="og:description" content="Join My MERN App – the best place to buy and sell gadgets online." />
-        <meta property="og:image" content="/preview-image.jpg" />
-        <meta property="og:url" content="https://mymernapp.com" />
-        <meta property="og:type" content="website" /> */}
+<link rel="canonical" href="https://humverse.vercel.app" />
+<meta name="theme-color" content="#000000" />
 
-        {/* Twitter Card */}
-        {/* <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="My MERN App" />
-        <meta name="twitter:description" content="The best gadget shop online." />
-        <meta name="twitter:image" content="/preview-image.jpg" /> */}
+
+
+
+{/* Open Graph (WhatsApp, FB, LinkedIn, Slack) */}
+  <meta property="og:title" content="Humverse – web , apps and AI products builder - Web App" />
+  <meta property="og:description" content="We build websites, web apps, mobile apps, APIs, and AI-powered products — complete with hosting, deployment, and maintenance." />
+  <meta property="og:image" content="https://humverse.vercel.app/squares.png" />
+  <meta property="og:url" content="https://humverse.vercel.app" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Humverse" />
+
+  {/* Twitter Card */}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Humverse – web , apps and AI products builder - Web App" />
+  <meta name="twitter:description" content="We build websites, web apps, mobile apps, APIs, and AI-powered products — complete with hosting, deployment, and maintenance." />
+  <meta name="twitter:image" content="https://humverse.vercel.app/squares.png" />
+  {/* <meta name="twitter:site" content="@HumverseAI" /> */}
+  {/* <meta name="twitter:creator" content="@HumverseAI" /> */}
+
+
       </Helmet>
 
     <Auth_Provider>

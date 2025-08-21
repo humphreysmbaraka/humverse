@@ -1,0 +1,6 @@
+# robots.txt for humverse.vercel.app
+User-agent: *
+Allow: /
+
+# Point search engines to your sitemap
+Sitemap: https://humverse.vercel.app/sitemap.xml
