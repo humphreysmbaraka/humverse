@@ -45,7 +45,7 @@ useEffect(() => {
         <Box
           width="100%"
           height="100vh"
-          bgGradient="linear(to-br, purple.700, pink.500)"
+          bg="gray.800" // matches your main color theme
           display="flex"
           flexDirection="column"
           alignItems="center"
@@ -54,15 +54,16 @@ useEffect(() => {
           textAlign="center"
           p={4}
         >
-          {/* Animated bouncing circles */}
+          {/* Animated glowing circles */}
           <Box display="flex" mb={6} gap={3}>
             {[...Array(3)].map((_, i) => (
               <Box
                 key={i}
                 width="20px"
                 height="20px"
-                bg="white"
+                bg="whiteAlpha.800" // semi-transparent white for glow
                 borderRadius="50%"
+                boxShadow="0 0 10px whiteAlpha.600, 0 0 20px whiteAlpha.400"
                 animation={`bounce 0.6s ease-in-out ${i * 0.2}s infinite`}
               />
             ))}
