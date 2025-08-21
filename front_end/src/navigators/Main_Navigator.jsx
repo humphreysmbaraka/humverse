@@ -34,12 +34,59 @@ useEffect(() => {
   
 
    if(loading){
-      return (
-        <Box  width={'100%'} height={'100vh'} bg={'gray.800'}  display={'flex'} alignItems={'center'} justifyContent={'center'} >
-           {/* <Text color={'white'}  fontSize={'xxx-large'} fontWeight={'bold'}  >LOADING</Text> */}
-           <Spinner  color='white' width={'150px'} height={'150px'}  />
+    //   return (
+    //     <Box  width={'100%'} height={'100vh'} bg={'gray.800'}  display={'flex'} alignItems={'center'} justifyContent={'center'} >
+    //        {/* <Text color={'white'}  fontSize={'xxx-large'} fontWeight={'bold'}  >LOADING</Text> */}
+    //        <Spinner  color='white' width={'150px'} height={'150px'}  />
+    //     </Box>
+    //   )
+
+    return (
+        <Box
+          width="100%"
+          height="100vh"
+          bgGradient="linear(to-br, purple.700, pink.500)"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          color="white"
+          textAlign="center"
+          p={4}
+        >
+          {/* Animated bouncing circles */}
+          <Box display="flex" mb={6} gap={3}>
+            {[...Array(3)].map((_, i) => (
+              <Box
+                key={i}
+                width="20px"
+                height="20px"
+                bg="white"
+                borderRadius="50%"
+                animation={`bounce 0.6s ease-in-out ${i * 0.2}s infinite`}
+              />
+            ))}
+          </Box>
+    
+          {/* Loading text */}
+          <Text fontSize={{ base: "2xl", md: "4xl" }} fontWeight="bold">
+            Preparing Your Experience...
+          </Text>
+          <Text mt={2} fontSize={{ base: "md", md: "lg" }} opacity={0.85}>
+            Hang tight, we’re getting things ready for you!
+          </Text>
+    
+          {/* Keyframes for bounce animation */}
+          <style>
+            {`
+              @keyframes bounce {
+                0%, 80%, 100% { transform: scale(0); }
+                40% { transform: scale(1); }
+              }
+            `}
+          </style>
         </Box>
-      )
+      );
    }
 
   
