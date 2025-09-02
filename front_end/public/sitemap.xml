@@ -3,14 +3,14 @@
 
   <!-- Homepage -->
   <url>
-    <loc>https://humverse.vercel.app/</loc>
+    <loc>https://humverse.dev/</loc>
     <lastmod>2025-08-21</lastmod>
     <priority>1.0</priority>
   </url>
 
   <!-- About page -->
   <url>
-    <loc>https://humverse.vercel.app/services</loc>
+    <loc>https://humverse.dev/services</loc>
     <lastmod>2025-08-21</lastmod>
     <priority>0.8</priority>
   </url>

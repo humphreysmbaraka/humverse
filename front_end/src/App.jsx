@@ -42,7 +42,7 @@ function App() {
         <meta name="author" content="Humphrey Mbaraka" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" type="image/png" href="/squares.png" />
-<link rel="canonical" href="https://humverse.vercel.app" />
+<link rel="canonical" href="https://humverse.dev" />
 <meta name="theme-color" content="#000000" />
 
 
@@ -51,8 +51,8 @@ function App() {
 {/* Open Graph (WhatsApp, FB, LinkedIn, Slack) */}
   <meta property="og:title" content="Humverse – web , apps and AI products builder - Web App" />
   <meta property="og:description" content="We build websites, web apps, mobile apps, APIs, and AI-powered products — complete with hosting, deployment, and maintenance." />
-  <meta property="og:image" content="https://humverse.vercel.app/squares.png" />
-  <meta property="og:url" content="https://humverse.vercel.app" />
+  <meta property="og:image" content="https://humverse.dev/squares.png" />
+  <meta property="og:url" content="https://humverse.dev" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Humverse" />
 
@@ -60,7 +60,7 @@ function App() {
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Humverse – web , apps and AI products builder - Web App" />
   <meta name="twitter:description" content="We build websites, web apps, mobile apps, APIs, and AI-powered products — complete with hosting, deployment, and maintenance." />
-  <meta name="twitter:image" content="https://humverse.vercel.app/squares.png" />
+  <meta name="twitter:image" content="https://humverse.dev/squares.png" />
   {/* <meta name="twitter:site" content="@HumverseAI" /> */}
   {/* <meta name="twitter:creator" content="@HumverseAI" /> */}
 
