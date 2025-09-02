@@ -75,7 +75,7 @@ function Home() {
 useEffect(function(){
     
 
-    socket.on('request_received' , async function(){
+    socket.current.on('request_received' , async function(){
         try{
        
         await fetchdata();
@@ -86,7 +86,7 @@ useEffect(function(){
       })
 
 
-      socket.on('request_editted' , async function(){
+      socket.current.on('request_editted' , async function(){
         try{
          
         await fetchdata();
@@ -97,7 +97,7 @@ useEffect(function(){
       })
 
 
-      socket.on('request_cancelled' , async function(){
+      socket.current.on('request_cancelled' , async function(){
         try{
         
         await fetchdata();
@@ -108,7 +108,7 @@ useEffect(function(){
       })
 
 
-      socket.on('request_rejected' , async function(){
+      socket.current.on('request_rejected' , async function(){
         try{
         
         await fetchdata();
@@ -119,7 +119,7 @@ useEffect(function(){
       })
 
 
-      socket.on('request_redeemed' , async function(){
+      socket.current.on('request_redeemed' , async function(){
         try{
         
         await fetchdata();
@@ -130,7 +130,7 @@ useEffect(function(){
       })
 
 
-      socket.on('request_uncancelled' , async function(){
+      socket.current.on('request_uncancelled' , async function(){
         try{
        
         await fetchdata();
@@ -141,7 +141,7 @@ useEffect(function(){
       })
 
 
-      socket.on('acceptance' , async function(){
+      socket.current.on('acceptance' , async function(){
         try{
        
         await fetchdata();
@@ -153,7 +153,7 @@ useEffect(function(){
 
 
 
-      socket.on('previews' , async function(){
+      socket.current.on('previews' , async function(){
         try{
        
         await fetchdata();
