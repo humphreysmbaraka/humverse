@@ -72,7 +72,8 @@ function Home() {
 
 
     // socket events
-
+useEffect(function(){
+    
 
     socket.on('request_received' , async function(){
         try{
@@ -162,6 +163,7 @@ function Home() {
         }
       })
 
+ } , [])
 
 
       

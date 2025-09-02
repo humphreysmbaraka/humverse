@@ -239,7 +239,7 @@ const handlefileinput = async function(e){
    <Motionbox    width={width} height={height} alignSelf={'center'} margin={'auto'} padding={'4px'} borderRadius={'15px'} bg={'gray.800' } 
    
    >
-    <Tabs borderWidth={'1px'} borderColor={'white'} onChange={(index)=>{setactivetab(index)}}  width={'98%'} height={'98%'}  alignSelf={'center'}  borderRadius={'15px'}  p={'2px'} margin={'auto'}>
+    <Tabs  onChange={(index)=>{setactivetab(index)}}  width={'98%'} height={'98%'}  alignSelf={'center'}  borderRadius={'15px'}  p={'2px'} margin={'auto'}>
       <TabList  width={'100%'} alignSelf={'center'} borderBottomWidth={'1px'} borderBottomColor={'black'} borderTopRadius={'15px'}  gap={'10px'} alignItems={'center'} justifyContent={'space-between'}  p={'2px'} >
         <Tab width={'40%'} color={'white'} fontWeight={'bold'} >LOGIN</Tab>
         <Tab width={'40%'} color={'white'}  fontWeight={'bold'}  >CREATE ACCOUNT</Tab>
