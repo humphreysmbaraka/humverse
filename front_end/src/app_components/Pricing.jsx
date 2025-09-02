@@ -109,8 +109,8 @@ function Pricing() {
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Extra page</Td>
-                        <Td color="white" fontSize={['xs', 'sm', 'md']}>+1,500</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>+1,000</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>+1,500 / page</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>+1,000 / page</Td>
                       </Tr>
                     </Tbody>
                   </Table>
@@ -145,8 +145,8 @@ function Pricing() {
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Extra page</Td>
-                        <Td color="white" fontSize={['xs', 'sm', 'md']}>+1,800</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>+1,200</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>+1,800 / page</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>+1,200 / page</Td>
                       </Tr>
                     </Tbody>
                   </Table>
@@ -178,9 +178,321 @@ function Pricing() {
                   </Table>
                 </TableContainer>
 
-                {/* Other Services Tables */}
-                {/* Add similar table structures for other services */}
-                
+                {/* Blog Sites (Web Apps) */}
+                <TableContainer width="100%" bg="gray.900" borderRadius="md" p={[2, 3, 4]} overflowX="auto">
+                  <Heading size={['sm', 'md']} color="blue.300" mb={[2, 3, 4]}>Blog Sites (Web Apps)</Heading>
+                  <Table variant="simple" colorScheme="whiteAlpha" size={['sm', 'md']}>
+                    <Thead>
+                      <Tr>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Type</Th>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Price (KES)</Th>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Offer Price (KES)</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Blog web app</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>From 55,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>40,000</Td>
+                      </Tr>
+                    </Tbody>
+                  </Table>
+                </TableContainer>
+
+                {/* E-Commerce (Web Apps) */}
+                <TableContainer width="100%" bg="gray.900" borderRadius="md" p={[2, 3, 4]} overflowX="auto">
+                  <Heading size={['sm', 'md']} color="blue.300" mb={[2, 3, 4]}>E-Commerce (Web Apps)</Heading>
+                  <Table variant="simple" colorScheme="whiteAlpha" size={['sm', 'md']}>
+                    <Thead>
+                      <Tr>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Type</Th>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Price (KES)</Th>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Offer Price (KES)</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Basic store</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>80,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>60,000</Td>
+                      </Tr>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Advanced store</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>120,000+</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>90,000</Td>
+                      </Tr>
+                    </Tbody>
+                  </Table>
+                </TableContainer>
+
+                {/* Social Platforms (Web Apps) */}
+                <TableContainer width="100%" bg="gray.900" borderRadius="md" p={[2, 3, 4]} overflowX="auto">
+                  <Heading size={['sm', 'md']} color="blue.300" mb={[2, 3, 4]}>Social Platforms (Web Apps)</Heading>
+                  <Table variant="simple" colorScheme="whiteAlpha" size={['sm', 'md']}>
+                    <Thead>
+                      <Tr>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Type</Th>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Price (KES)</Th>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Offer Price (KES)</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Social platform app</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>120,000+</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>90,000</Td>
+                      </Tr>
+                    </Tbody>
+                  </Table>
+                </TableContainer>
+
+                {/* Dashboards (Web Apps) */}
+                <TableContainer width="100%" bg="gray.900" borderRadius="md" p={[2, 3, 4]} overflowX="auto">
+                  <Heading size={['sm', 'md']} color="blue.300" mb={[2, 3, 4]}>Dashboards (Web Apps)</Heading>
+                  <Table variant="simple" colorScheme="whiteAlpha" size={['sm', 'md']}>
+                    <Thead>
+                      <Tr>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Tier</Th>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Price (KES)</Th>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Offer Price (KES)</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Basic</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>45,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>35,000</Td>
+                      </Tr>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Advanced</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>65,000+</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>50,000</Td>
+                      </Tr>
+                    </Tbody>
+                  </Table>
+                </TableContainer>
+
+                {/* Tools (Web Apps) */}
+                <TableContainer width="100%" bg="gray.900" borderRadius="md" p={[2, 3, 4]} overflowX="auto">
+                  <Heading size={['sm', 'md']} color="blue.300" mb={[2, 3, 4]}>Tools (Web Apps)</Heading>
+                  <Table variant="simple" colorScheme="whiteAlpha" size={['sm', 'md']}>
+                    <Thead>
+                      <Tr>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Type</Th>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Price (KES)</Th>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Offer Price (KES)</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Functional tools</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>From 50,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>40,000</Td>
+                      </Tr>
+                    </Tbody>
+                  </Table>
+                </TableContainer>
+
+                {/* Phone Apps */}
+                <TableContainer width="100%" bg="gray.900" borderRadius="md" p={[2, 3, 4]} overflowX="auto">
+                  <Heading size={['sm', 'md']} color="blue.300" mb={[2, 3, 4]}>Phone Apps</Heading>
+                  <Table variant="simple" colorScheme="whiteAlpha" size={['sm', 'md']}>
+                    <Thead>
+                      <Tr>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Category</Th>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Price (KES)</Th>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Offer Price (KES)</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Blog apps</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>From 70,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>55,000</Td>
+                      </Tr>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>E-commerce apps</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>From 100,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>80,000</Td>
+                      </Tr>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Social platform apps</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>From 180,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>150,000</Td>
+                      </Tr>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Dashboard apps</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>From 60,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>50,000</Td>
+                      </Tr>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Tools apps</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>From 60,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>50,000</Td>
+                      </Tr>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>AI Products</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>From 60,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>50,000</Td>
+                      </Tr>
+                    </Tbody>
+                  </Table>
+                </TableContainer>
+
+                {/* AI Service */}
+                <TableContainer width="100%" bg="gray.900" borderRadius="md" p={[2, 3, 4]} overflowX="auto">
+                  <Heading size={['sm', 'md']} color="blue.300" mb={[2, 3, 4]}>AI Service</Heading>
+                  <Table variant="simple" colorScheme="whiteAlpha" size={['sm', 'md']}>
+                    <Thead>
+                      <Tr>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Type</Th>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Price (KES)</Th>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Offer Price (KES)</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>AI Chatbots</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>From 40,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>30,000</Td>
+                      </Tr>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>AI Recommendation Systems</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>From 50,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>40,000</Td>
+                      </Tr>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>AI Data Analysis Tools</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>From 70,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>55,000</Td>
+                      </Tr>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>AI Image Recognition</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>From 80,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>65,000</Td>
+                      </Tr>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>AI Voice Assistants</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>From 90,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>75,000</Td>
+                      </Tr>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Speech-to-Text AI (mobile)</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>From 60,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>50,000</Td>
+                      </Tr>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>AI-based Translation Apps (mobile)</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>From 70,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>55,000</Td>
+                      </Tr>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>AI Media Filters/Enhancers (mobile)</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>From 80,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>65,000</Td>
+                      </Tr>
+                    </Tbody>
+                  </Table>
+                </TableContainer>
+
+                {/* API Development */}
+                <TableContainer width="100%" bg="gray.900" borderRadius="md" p={[2, 3, 4]} overflowX="auto">
+                  <Heading size={['sm', 'md']} color="blue.300" mb={[2, 3, 4]}>API Development</Heading>
+                  <Table variant="simple" colorScheme="whiteAlpha" size={['sm', 'md']}>
+                    <Thead>
+                      <Tr>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Type</Th>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Price (KES)</Th>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Offer Price (KES)</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Basic REST API</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>From 20,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>15,000</Td>
+                      </Tr>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Complex API</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>From 30,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>25,000</Td>
+                      </Tr>
+                    </Tbody>
+                  </Table>
+                </TableContainer>
+
+                {/* Deployment & Hosting */}
+                <TableContainer width="100%" bg="gray.900" borderRadius="md" p={[2, 3, 4]} overflowX="auto">
+                  <Heading size={['sm', 'md']} color="blue.300" mb={[2, 3, 4]}>Deployment & Hosting</Heading>
+                  <Table variant="simple" colorScheme="whiteAlpha" size={['sm', 'md']}>
+                    <Thead>
+                      <Tr>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Service</Th>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Price (KES)</Th>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Offer Price (KES)</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Website deployment (one-time)</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>5,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>4,000</Td>
+                      </Tr>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Web app deployment (one-time)</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>8,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>6,500</Td>
+                      </Tr>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Phone app publishing (one-time)</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>10,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>8,000</Td>
+                      </Tr>
+                    </Tbody>
+                  </Table>
+                </TableContainer>
+
+                {/* Other Charges */}
+                <TableContainer width="100%" bg="gray.900" borderRadius="md" p={[2, 3, 4]} overflowX="auto">
+                  <Heading size={['sm', 'md']} color="blue.300" mb={[2, 3, 4]}>Other Charges</Heading>
+                  <Table variant="simple" colorScheme="whiteAlpha" size={['sm', 'md']}>
+                    <Thead>
+                      <Tr>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Service</Th>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Price (KES)</Th>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Recurrence</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Database</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>From 1,500</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Monthly</Td>
+                      </Tr>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Domain name (.com / .co.ke)</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>1,500–2,000</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Yearly</Td>
+                      </Tr>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Hosting</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>1,000–2,500</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Monthly</Td>
+                      </Tr>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Maintenance Basic</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>3,500</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Monthly</Td>
+                      </Tr>
+                      <Tr>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Maintenance Advanced</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>5,500–9,000</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Monthly</Td>
+                      </Tr>
+                    </Tbody>
+                  </Table>
+                </TableContainer>
+
                 <Text color="gray.400" fontSize={['xs', 'sm']} mt={[4, 6]} px={[2, 0]}>
                   * Contact us for complete pricing details of all services
                 </Text>
