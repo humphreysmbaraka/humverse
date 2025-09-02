@@ -236,16 +236,16 @@ const handlefileinput = async function(e){
   return (
 
   
-   <Motionbox    width={width} height={height} alignSelf={'center'} margin={'auto'} padding={'4px'} borderRadius={'15px'} bg={'gray.500' } 
+   <Motionbox    width={width} height={height} alignSelf={'center'} margin={'auto'} padding={'4px'} borderRadius={'15px'} bg={'gray.800' } 
    
    >
     <Tabs borderWidth={'1px'} borderColor={'white'} onChange={(index)=>{setactivetab(index)}}  width={'98%'} height={'98%'}  alignSelf={'center'}  borderRadius={'15px'}  p={'2px'} margin={'auto'}>
-      <TabList  width={'100%'} alignSelf={'center'} borderBottomWidth={'1px'} borderBottomColor={'black'} borderTopRadius={'15px'} bg={'none'} gap={'10px'} alignItems={'center'} justifyContent={'space-between'}  p={'2px'} >
+      <TabList  width={'100%'} alignSelf={'center'} borderBottomWidth={'1px'} borderBottomColor={'black'} borderTopRadius={'15px'}  gap={'10px'} alignItems={'center'} justifyContent={'space-between'}  p={'2px'} >
         <Tab width={'40%'} color={'white'} fontWeight={'bold'} >LOGIN</Tab>
         <Tab width={'40%'} color={'white'}  fontWeight={'bold'}  >CREATE ACCOUNT</Tab>
       </TabList>
 
-      <TabPanels  width={'100%'} minHeight={'90%'} borderBottomRadius={'15px'} bg={'none'} p={0} overflow={'hidden'}  >
+      <TabPanels  width={'100%'} minHeight={'90%'} borderBottomRadius={'15px'}  p={0} overflow={'hidden'}  >
       <TabPanel width={'100%'} display={'flex'} flexDirection={'column'} alignItems={'center'} gap={'20px'} >
 
       <Text  color={'red.500'}  fontWeight={'light'} width={'90%'}  >{submissionerror}</Text>
