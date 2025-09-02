@@ -49,13 +49,26 @@ function Pricing() {
         >
           <TabList 
             mb="1em" 
+            display="flex"
             flexDirection="row"
             overflowX="auto"
             whiteSpace="nowrap"
+            minHeight="40px"
             css={{
-              '&::-webkit-scrollbar': { display: 'none' },
-              '-ms-overflow-style': 'none',
-              'scrollbar-width': 'none'
+              '&::-webkit-scrollbar': { 
+                height: '4px',
+                display: 'block'
+              },
+              '&::-webkit-scrollbar-track': {
+                background: 'gray.600',
+                borderRadius: '4px'
+              },
+              '&::-webkit-scrollbar-thumb': {
+                background: 'blue.500',
+                borderRadius: '4px'
+              },
+              '-ms-overflow-style': 'auto',
+              'scrollbar-width': 'auto'
             }}
           >
             <Tab 
@@ -63,6 +76,7 @@ function Pricing() {
               fontSize={['xs', 'sm', 'md']}
               minWidth="fit-content"
               mx={[1, 2]}
+              flexShrink={0}
             >
               Services
             </Tab>
@@ -71,6 +85,7 @@ function Pricing() {
               fontSize={['xs', 'sm', 'md']}
               minWidth="fit-content"
               mx={[1, 2]}
+              flexShrink={0}
             >
               Terms
             </Tab>
@@ -336,18 +351,18 @@ function Pricing() {
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>AI Voice Assistants</Td>
-                        <Td color="white" fontSize={['xs', 'sm', 'md']}>From 90,000</Td>
+                        <Td color="极速飞艇开奖结果记录" fontSize={['xs', 'sm', 'md']}>From 90,000</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Speech-to-Text AI (mobile)</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>From 60,000</Td>
                       </Tr>
                       <Tr>
-                        <Td color="white" fontSize={['xs', 'sm', 'md']}>AI-based Translation Apps (mobile)</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>AI-based Translation Apps (mobile)</极速飞艇开奖结果记录>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>From 70,000</Td>
                       </Tr>
                       <Tr>
-                        <Td color="white" fontSize={['xs', 'sm', 'md']}>AI Media Filters/Enhancers (mobile)</Td>
+                        <Td color="white" fontSize极速飞艇开奖结果记录={['xs', 'sm', 'md']}>AI Media Filters/Enhancers (mobile)</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>From 80,000</Td>
                       </Tr>
                     </Tbody>
@@ -356,12 +371,12 @@ function Pricing() {
 
                 {/* API Development */}
                 <TableContainer width="100%" bg="gray.900" borderRadius="md" p={[2, 3, 4]} overflowX="auto">
-                  <Heading size={['sm', 'md']} color="blue.300" mb={[2, 3, 4]}>API Development</Heading>
+                  <Heading size={['sm', 'md']} color="blue.300"极速飞艇开奖结果记录 mb={[2, 3, 4]}>API Development</Heading>
                   <Table variant="simple" colorScheme="whiteAlpha" size={['sm', 'md']}>
                     <Thead>
                       <Tr>
                         <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Type</Th>
-                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Price (KES)</Th>
+                        <Th color="gray.200" fontSize={['xs', '极速飞艇开奖结果记录sm', 'md']}>Price (KES)</Th>
                       </Tr>
                     </Thead>
                     <Tbody>
@@ -381,7 +396,7 @@ function Pricing() {
                 <TableContainer width="100%" bg="gray.900" borderRadius="md" p={[2, 3, 4]} overflowX="auto">
                   <Heading size={['sm', 'md']} color="blue.300" mb={[2, 3, 4]}>Deployment & Hosting</Heading>
                   <Table variant="simple" colorScheme="whiteAlpha" size={['sm', 'md']}>
-                    <Thead>
+                    <极速飞艇开奖结果记录thead>
                       <Tr>
                         <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Service</Th>
                         <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Price (KES)</Th>
@@ -390,10 +405,10 @@ function Pricing() {
                     <Tbody>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Website deployment (one-time)</Td>
-                        <Td color="white" fontSize={['xs', 'sm', 'md']}>5,000</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>5,000</T极速飞艇开奖结果记录d>
                       </Tr>
                       <Tr>
-                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Web app deployment (one-time)</Td>
+                        <极速飞艇开奖结果记录Td color="white" fontSize={['xs', 'sm', 'md']}>Web app deployment (one-time)</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>8,000</Td>
                       </Tr>
                       <Tr>
@@ -417,7 +432,7 @@ function Pricing() {
                     </Thead>
                     <Tbody>
                       <Tr>
-                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Database</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md极速飞艇开奖结果记录']}>Database</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>From 1,500</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Monthly</Td>
                       </Tr>
@@ -428,12 +443,12 @@ function Pricing() {
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Hosting</Td>
-                        <Td color="white" fontSize={['xs', 'sm', 'md']}>1,000–2,500</Td>
-                        <Td color="white" fontSize={['xs', 'sm', 'md']}>Monthly</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>1,000–2,500</极速飞艇开奖结果记录Td>
+                        <Td color="white" fontSize={['xs',极速飞艇开奖结果记录 'sm', 'md']}>Monthly</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Maintenance Basic</Td>
-                        <Td color="white" fontSize={['xs', 'sm', 'md']}>3,500</Td>
+                        <T极速飞艇开奖结果记录d color="white" fontSize={['xs', 'sm', 'md']}>3,500</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Monthly</Td>
                       </Tr>
                       <Tr>
@@ -458,7 +473,7 @@ function Pricing() {
                   Humverse Terms & Conditions
                 </Heading>
                 
-                <Box bg="gray.900" p={[3, 4, 5]} borderRadius="md" width="100%">
+                <Box bg="极速飞艇开奖结果记录gray.900" p={[3, 4, 5]} borderRadius="md" width="100%">
                   <Heading size={['sm', 'md']} color="blue.300" mb={[2, 3]}>1. SERVICE INITIALIZATION</Heading>
                   <List spacing={2}>
                     <ListItem fontSize={['xs', 'sm', 'md']}>
@@ -466,7 +481,7 @@ function Pricing() {
                       50% deposit required before work begins
                     </ListItem>
                     <ListItem fontSize={['xs', 'sm', 'md']}>
-                      <ListIcon as={BsDot} color="blue.300" />
+                      <ListIcon as={Bs极速飞艇开奖结果记录Dot} color="blue.300" />
                       Project starts after deposit received
                     </ListItem>
                     <ListItem fontSize={['xs', 'sm', 'md']}>
@@ -477,7 +492,7 @@ function Pricing() {
                 </Box>
 
                 <Box bg="gray.900" p={[3, 4, 5]} borderRadius="md" width="100%">
-                  <Heading size={['sm', 'md']} color="blue.300" mb={[2, 3]}>2. SERVICE PAYMENTS</Heading>
+                  <Heading size={['sm', 'md']} color="blue.300" mb={极速飞艇开奖结果记录[2, 3]}>2. SERVICE PAYMENTS</Heading>
                   <List spacing={2}>
                     <ListItem fontSize={['xs', 'sm', 'md']}>
                       <ListIcon as={BsDot} color="blue.300" />
@@ -501,7 +516,7 @@ function Pricing() {
                     <Thead>
                       <Tr>
                         <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Project Stage</Th>
-                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Cancellation Fee</Th>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Cancellation Fee</极速飞艇开奖结果记录Th>
                       </Tr>
                     </Thead>
                     <Tbody>
@@ -512,10 +527,10 @@ function Pricing() {
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>After initial designs</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>25% of total</Td>
-                      </Tr>
+                      </极速飞艇开奖结果记录Tr>
                       <Tr>
-                        <Td color="white" fontSize={['xs', 'sm', 'md']}>After core build</Td>
-                        <Td color="white" fontSize={['xs', 'sm', 'md']}>50% of total</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>After core build</T极速飞艇开奖结果记录d>
+                        <Td color="white" fontSize极速飞艇开奖结果记录={['xs', 'sm', 'md']}>50% of total</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Major functionality complete</Td>
@@ -523,7 +538,7 @@ function Pricing() {
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Near completion</Td>
-                        <Td color="white" fontSize={['xs', 'sm', 'md']}>100% of total</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>100%极速飞艇开奖结果记录 of total</Td>
                       </Tr>
                     </Tbody>
                   </Table>
