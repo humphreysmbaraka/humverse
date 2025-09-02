@@ -109,8 +109,8 @@ function Pricing() {
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Extra page</Td>
-                        <Td color="white" fontSize={['xs', 'sm', 'md']}>+1,500 / page</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>+1,000 / page</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>+1,500</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>+1,000</Td>
                       </Tr>
                     </Tbody>
                   </Table>
@@ -145,8 +145,8 @@ function Pricing() {
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Extra page</Td>
-                        <Td color="white" fontSize={['xs', 'sm', 'md']}>+1,800 / page</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>+1,200 / page</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>+1,800</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>+1,200</Td>
                       </Tr>
                     </Tbody>
                   </Table>
@@ -193,7 +193,7 @@ function Pricing() {
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Blog web app</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>From 55,000</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>40,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>From 38,500</Td>
                       </Tr>
                     </Tbody>
                   </Table>
@@ -214,12 +214,12 @@ function Pricing() {
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Basic store</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>80,000</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>60,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>56,000</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Advanced store</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>120,000+</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>90,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>84,000+</Td>
                       </Tr>
                     </Tbody>
                   </Table>
@@ -240,7 +240,7 @@ function Pricing() {
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Social platform app</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>120,000+</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>90,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>84,000+</Td>
                       </Tr>
                     </Tbody>
                   </Table>
@@ -261,12 +261,12 @@ function Pricing() {
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Basic</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>45,000</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>35,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>31,500</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Advanced</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>65,000+</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>50,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>45,500+</Td>
                       </Tr>
                     </Tbody>
                   </Table>
@@ -287,7 +287,7 @@ function Pricing() {
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Functional tools</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>From 50,000</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>40,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>From 35,000</Td>
                       </Tr>
                     </Tbody>
                   </Table>
@@ -308,32 +308,32 @@ function Pricing() {
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Blog apps</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>From 70,000</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>55,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>From 49,000</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>E-commerce apps</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>From 100,000</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>80,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>From 70,000</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Social platform apps</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>From 180,000</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>150,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>From 126,000</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Dashboard apps</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>From 60,000</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>50,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>From 42,000</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Tools apps</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>From 60,000</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>50,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>From 42,000</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>AI Products</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>From 60,000</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>50,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>From 42,000</Td>
                       </Tr>
                     </Tbody>
                   </Table>
@@ -354,42 +354,42 @@ function Pricing() {
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>AI Chatbots</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>From 40,000</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>30,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>From 28,000</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>AI Recommendation Systems</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>From 50,000</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>40,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>From 35,000</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>AI Data Analysis Tools</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>From 70,000</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>55,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>From 49,000</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>AI Image Recognition</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>From 80,000</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>65,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>From 56,000</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>AI Voice Assistants</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>From 90,000</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>75,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>From 63,000</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Speech-to-Text AI (mobile)</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>From 60,000</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>50,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>From 42,000</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>AI-based Translation Apps (mobile)</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>From 70,000</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>55,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>From 49,000</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>AI Media Filters/Enhancers (mobile)</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>From 80,000</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>65,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>From 56,000</Td>
                       </Tr>
                     </Tbody>
                   </Table>
@@ -410,12 +410,12 @@ function Pricing() {
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Basic REST API</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>From 20,000</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>15,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>From 14,000</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Complex API</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>From 30,000</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>25,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>From 21,000</Td>
                       </Tr>
                     </Tbody>
                   </Table>
@@ -436,17 +436,17 @@ function Pricing() {
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Website deployment (one-time)</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>5,000</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>4,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>3,500</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Web app deployment (one-time)</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>8,000</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>6,500</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>5,600</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Phone app publishing (one-time)</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>10,000</Td>
-                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>8,000</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>7,000</Td>
                       </Tr>
                     </Tbody>
                   </Table>
@@ -461,6 +461,7 @@ function Pricing() {
                         <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Service</Th>
                         <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Price (KES)</Th>
                         <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Recurrence</Th>
+                        <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Offer Price (KES)</Th>
                       </Tr>
                     </Thead>
                     <Tbody>
@@ -468,26 +469,31 @@ function Pricing() {
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Database</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>From 1,500</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Monthly</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>From 1,050</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Domain name (.com / .co.ke)</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>1,500–2,000</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Yearly</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>1,050–1,400</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Hosting</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>1,000–2,500</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Monthly</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>700–1,750</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Maintenance Basic</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>3,500</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Monthly</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>2,450</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Maintenance Advanced</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>5,500–9,000</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Monthly</Td>
+                        <Td color="green.300" fontSize={['xs', 'sm', 'md']}>3,850–6,300</Td>
                       </Tr>
                     </Tbody>
                   </Table>
