@@ -26,13 +26,13 @@ import squares from './assets/squares.png'
 
 function App() {
 
- 
- 
+      
+      
   return (
 
     <>
 
-
+          
 <Helmet>
         {/* Basic */}
         <title>Humverse</title>

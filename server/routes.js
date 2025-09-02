@@ -181,6 +181,27 @@ const router = express.Router();
 
 
 
+
+
+
+
+// TO CHECK MULTER MIDDLEWEAR ERRORS
+
+
+app.use((err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    // Example: file too big
+    if (err.code === "LIMIT_FILE_SIZE") {
+      return res.status(400).json({ error:true , message: "File too large!" });
+    }
+    return res.status(400).json({ error:true , message: err.message });
+  }
+
+  // Any other error
+  res.status(500).json({ error:true , message: "Something went wrong" });
+});
+
+
 router.post('/sign_up' , memstorage.single('picture') ,   async function(req , res){
   try{
     console.log('signing you up' , req.body , req.file);
@@ -1613,7 +1634,7 @@ router.delete('/delete_ai_doc/:id' , async function(req , res){
 
 
 
-router.post('/upload_to_ai' , hybrid_file_uploader.fields([{name:'docs' , maxCount:20}, {name:'docs_disk' , maxCount:20}]) ,  async function (req , res){
+router.post('/upload_to_ai' , memstorage.fields([{name:'docs' , maxCount:20}, {name:'docs_disk' , maxCount:20}]) ,  async function (req , res){
   try{
     const humverseindex = await index();
     console.log('FILES.....' , req.files);
@@ -1632,11 +1653,11 @@ router.post('/upload_to_ai' , hybrid_file_uploader.fields([{name:'docs' , maxCou
         return new Promise(async function(resolve , reject){
           try{
              const name = val.originalname;
-             const path = val.path;
+            //  const path = val.path;
              const type = val.mimetype;
              const size = val.size;
 
-             const readstream = fs.createReadStream(path);
+             const readstream = Readable.from(val.buffer);
              const uploadstream = aidocsbucket.openUploadStream(name , {
               metadata:{
                 name , type , size
@@ -1648,29 +1669,29 @@ router.post('/upload_to_ai' , hybrid_file_uploader.fields([{name:'docs' , maxCou
                   resolve(uploadstream.id);
                   console.log('file uploaded to database');
 
-                  fs.unlink(path , function(err){
-                    if(err){
-                      console.log('error unlinking file');
-                    }
-                    else{
-                      console.log('file unlinked');
-                    }
-                  })
+                  // fs.unlink(path , function(err){
+                  //   if(err){
+                  //     console.log('error unlinking file');
+                  //   }
+                  //   else{
+                  //     console.log('file unlinked');
+                  //   }
+                  // })
              })
 
 
-             uploadstream.on('error' , function(){
+             uploadstream.on('error' , function(err){
                reject(err);
               console.log('file upload stream failed');
 
-              fs.unlink(path , function(err){
-                if(err){
-                  console.log('error unlinking file');
-                }
-                else{
-                  console.log('file unlinked');
-                }
-              })
+              // fs.unlink(path , function(err){
+              //   if(err){
+              //     console.log('error unlinking file');
+              //   }
+              //   else{
+              //     console.log('file unlinked');
+              //   }
+              // })
          })
 
 
@@ -1691,9 +1712,10 @@ router.post('/upload_to_ai' , hybrid_file_uploader.fields([{name:'docs' , maxCou
           return new Promise(async function(resolve , reject){
           try{
             const name = val.originalname;
-            const path = val.path;
+            // const path = val.path;
             const type = val.mimetype;
             const size = val.size;
+            const readstream = Readable.from(val.buffer);
 
             // extract text from documents
             const buffer = val.buffer;

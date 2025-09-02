@@ -5,6 +5,8 @@ import { AuthContext } from '../appcontexts/auth';
 import BASE_URL from '../constants/urls';
 import squares from '../assets/squares.png';
 import sphere from '../assets/sphere.png';
+import { socketcontext } from '../appcontexts/socket';
+
 
 function Home() {
     const [winheight, setwinheight] = useState(window.innerHeight);
@@ -15,6 +17,8 @@ function Home() {
     const {user} = useContext(AuthContext)
     const navigate = useNavigate();
     const icons = [squares, sphere];
+    const {socket} = useContext(socketcontext)
+
 
     // Get responsive values
     const isMobile = useBreakpointValue({ base: true, md: false });
@@ -26,6 +30,146 @@ function Home() {
         base: "100%", 
         md: "45%" 
     });
+
+
+
+    const fetchdata = async function(){
+        try{
+            const data = await fetch(`${BASE_URL}/fetch_homedata/${user._id}`);
+            if(data.ok){
+                console.log('user info fetched')
+                setisfetchingdata(false);
+                setfetcherror(false);
+                const receiveddata = await data.json();
+                console.log(receiveddata);
+                setinfo(receiveddata.data);
+                console.log('info', info)
+            }
+            else{
+                if(String(data.status).startsWith('4')){
+                    console.log('error fetching data');
+                    setisfetchingdata(false);
+                    const receiveddata = await data.json();
+                    setfetcherror(receiveddata.message);
+                }
+                else{
+                    console.log('user info not fetched')
+                    setisfetchingdata(false);
+                    const receiveddata = await data.json();
+                    console.log(receiveddata);
+                    setfetcherror('server error');
+                }
+            }
+        }
+        catch(err){
+            console.log('error occured while fetching data', err);
+            setisfetchingdata(false);
+            setfetcherror('error fetching data, refresh page to try again')
+        }
+    }
+
+
+
+
+    // socket events
+
+
+    socket.on('request_received' , async function(){
+        try{
+       
+        await fetchdata();
+        }
+        catch(err){
+          console.log('error handling request received event' ,err)
+        }
+      })
+
+
+      socket.on('request_editted' , async function(){
+        try{
+         
+        await fetchdata();
+        }
+        catch(err){
+          console.log('error handling request editted event' ,err)
+        }
+      })
+
+
+      socket.on('request_cancelled' , async function(){
+        try{
+        
+        await fetchdata();
+        }
+        catch(err){
+          console.log('error handling request cancelled event' ,err)
+        }
+      })
+
+
+      socket.on('request_rejected' , async function(){
+        try{
+        
+        await fetchdata();
+        }
+        catch(err){
+          console.log('error handling request rejected event' ,err)
+        }
+      })
+
+
+      socket.on('request_redeemed' , async function(){
+        try{
+        
+        await fetchdata();
+        }
+        catch(err){
+          console.log('error handling request redeemed event' ,err)
+        }
+      })
+
+
+      socket.on('request_uncancelled' , async function(){
+        try{
+       
+        await fetchdata();
+        }
+        catch(err){
+          console.log('error handling request uncancelled event' ,err)
+        }
+      })
+
+
+      socket.on('acceptance' , async function(){
+        try{
+       
+        await fetchdata();
+        }
+        catch(err){
+          console.log('error handling request accepted event' ,err)
+        }
+      })
+
+
+
+      socket.on('previews' , async function(){
+        try{
+       
+        await fetchdata();
+        }
+        catch(err){
+          console.log('error handling request previews event' ,err)
+        }
+      })
+
+
+
+      
+
+
+
+
+    
 
     useEffect(function(){
         setisfetchingdata(true);

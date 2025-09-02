@@ -236,13 +236,13 @@ const handlefileinput = async function(e){
   return (
 
   
-   <Motionbox    width={width} height={height} alignSelf={'center'} margin={'auto'} padding={'4px'} borderRadius={'15px'} bg={'none'} 
+   <Motionbox    width={width} height={height} alignSelf={'center'} margin={'auto'} padding={'4px'} borderRadius={'15px'} bg={'gray.500' } 
    
    >
-    <Tabs onChange={(index)=>{setactivetab(index)}}  width={'98%'} height={'98%'}  alignSelf={'center'} bg={'none'} borderRadius={'15px'}  p={'2px'} margin={'auto'}>
+    <Tabs borderWidth={'1px'} borderColor={'white'} onChange={(index)=>{setactivetab(index)}}  width={'98%'} height={'98%'}  alignSelf={'center'}  borderRadius={'15px'}  p={'2px'} margin={'auto'}>
       <TabList  width={'100%'} alignSelf={'center'} borderBottomWidth={'1px'} borderBottomColor={'black'} borderTopRadius={'15px'} bg={'none'} gap={'10px'} alignItems={'center'} justifyContent={'space-between'}  p={'2px'} >
-        <Tab width={'40%'} color={'gray.800'} fontWeight={'bold'} >LOGIN</Tab>
-        <Tab width={'40%'} color={'gray.800'}  fontWeight={'bold'}  >CREATE ACCOUNT</Tab>
+        <Tab width={'40%'} color={'white'} fontWeight={'bold'} >LOGIN</Tab>
+        <Tab width={'40%'} color={'white'}  fontWeight={'bold'}  >CREATE ACCOUNT</Tab>
       </TabList>
 
       <TabPanels  width={'100%'} minHeight={'90%'} borderBottomRadius={'15px'} bg={'none'} p={0} overflow={'hidden'}  >
@@ -257,7 +257,7 @@ const handlefileinput = async function(e){
 
           <HStack  width={'100%'} alignItems={'center'} justifyContent={'space-around'} gap={'40px'}  >
         <Text  color={'white'}  fontWeight={'bold'} width={'23%'}  >Password</Text>
-        <Input  onChange={(val)=>{setpassword(val.target.value)}}   width={'75%'} bg={'white'} borderRadius={'10px'}  placeholder='enter any password'></Input>
+        <Input  onChange={(val)=>{setpassword(val.target.value)}}   width={'75%'} bg={'white'} borderRadius={'10px'}  placeholder='enter your password'></Input>
           </HStack>
 
           <Box onClick={submitcredentials} as='button'  width={'40%'} p={'2px'} borderWidth={'1px'} borderRadius={'10px'} borderColor={'white'} color={'white'} fontSize={'medium'} fontWeight={'bold'}   >LOGIN</Box>
@@ -289,7 +289,7 @@ const handlefileinput = async function(e){
 
         <HStack  width={'100%'} alignItems={'center'} justifyContent={'space-around'} gap={'40px'}  >
         <Text  color={'white'}  fontWeight={'bold'} width={'25%'}  >Username</Text>
-        <Input   onChange={(val)=>{setusername(val.target.value)}}  width={'70%'} bg={'white'} borderRadius={'10px'} placeholder='enter your email'   ></Input>
+        <Input   onChange={(val)=>{setusername(val.target.value)}}  width={'70%'} bg={'white'} borderRadius={'10px'} placeholder='enter username'   ></Input>
           </HStack>
 
           <HStack  width={'100%'} alignItems={'center'} justifyContent={'space-around'} gap={'40px'}  >
