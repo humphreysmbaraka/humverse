@@ -63,7 +63,7 @@ function View_Product() {
          }
         }
         catch(err){
-            console.log('could not stream file')
+            console.log('could not stream file' , err)
         }
     }
 
