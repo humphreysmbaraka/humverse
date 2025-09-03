@@ -1971,6 +1971,7 @@ router.get('/stream_request_file/:id' , async function(req , res){
 router.get('/get_request_file_info/:id' , async function(req , res){
     try{
        const id = req.params.id;
+       console.log('getting info for ' , id);
        const files = await requestbucket.find({_id:new ObjectId(id)}).toArray();
        if(!files || files.length == 0){
         console.log('no such file exists');
