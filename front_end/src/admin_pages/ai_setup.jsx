@@ -63,6 +63,10 @@ function Ai_setup() {
 
     const deletefile = async function (i) {
         try {
+            const confirmation = confirm('do you want to drop this file');
+            if(!confirmation){
+                return;
+            }
             const remaining_files = selectedfiles.filter(function (val, index) {
                 return index !== i
             })
@@ -240,7 +244,7 @@ function Ai_setup() {
                                         alignItems={'center'}
                                     >
                                         <IoDocumentTextOutline size={window.innerWidth < 768 ? '60px' : '120px'} color='red' />
-                                        <Text color={'white'} isTruncated={true} fontSize={'small'}>{val?.metadata?.name}</Text>
+                                        <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xx-small'}>{val?.metadata?.name}</Text>
                                         <HStack
                                             width={'95%'}
                                             p={'2px'}
