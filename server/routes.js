@@ -1962,7 +1962,7 @@ router.get('/stream_request_file/:id' , async function(req , res){
         console.log('successfully streamed file')
       })
       res.set({
-        'Content-Type': file.metadata.type || 'application/octet-stream',
+        'Content-Type': file.metadata?.type || 'application/octet-stream',
         'Content-Disposition': `inline; filename="${file.filename}"`
       });
   
