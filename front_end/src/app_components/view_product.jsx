@@ -18,6 +18,8 @@ function View_Product() {
     const { socket, requestrejected, requestredeemed, requestaccepted, previewsreceived } = useContext(socketcontext);
     const product_id = location.state.request._id;
     const [product, setproduct] = useState(null);
+    const [attachments ,setattachments ] = useState(null);
+    const [attachmentinfos , setattachmentinfos] = useState(null);
     const [initiating, setinitiating] = useState(false);
     const [initiationerror, setinitiationerror] = useState(null);
     const [showpayform, setshowpayform] = useState(false);
@@ -38,6 +40,69 @@ function View_Product() {
 
     const isMobile = useBreakpointValue({ base: true, md: false });
     const isTablet = useBreakpointValue({ base: true, md: true, lg: false });
+
+
+
+
+    const getattachmentinfos = async function(val){
+        try{
+         const info = await fetch(`${Base_url}/stream_request_file/${val}` , {
+            method:'GET',
+            credentials:'include',
+            headers:{
+                'Content-Type' : 'application/json'
+            }
+         })
+
+         if(info.ok){
+           const information = await info.json();
+           return information.info;
+         }
+         else{
+            console.log('could not fetch document info for' , val)
+         }
+        }
+        catch(err){
+            console.log('could not stream file')
+        }
+    }
+
+    useEffect(function(){
+      if(!product){
+        return;
+      }
+      else{
+    if(product.attachments.length <= 0){
+        return;
+    }
+    else{
+
+         (async function(){
+            try{
+                const atts = await Promise.all(
+                    product.attachments.map(function(val , index){
+                        return   getattachmentinfos(val);
+                    })
+                 )
+
+                 setattachmentinfos(atts.filter(Boolean));
+            }
+            catch(err){
+                console.log('could not get info')
+            }
+        })();
+        
+
+
+
+    //    const atts =  prouct.attachments.map(function(val , index){
+    //          getattachmentinfos(val);
+           
+    //    })
+    //    setattachmentinfos(atts);
+    }
+      }
+    } , [product])
 
     const getrequest = async function () {
         try {
@@ -690,13 +755,13 @@ function View_Product() {
 
                             <Text color={'white'} fontSize={{ base: "md", md: "larger" }} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'}  >YOUR ATTACHMENTS</Text>
                             <HStack width={'98%'} padding={'4px'} flexWrap={'wrap'} alignItems={'center'} justifyContent={{ base: "center", md: "flex-start" }} >
-                                {product.attachments.length > 0 &&
+                                {attachmentinfos.length > 0 &&
 
-                                    product.attachments.map(function (val, index) {
+                                    attachmentinfos.map(function (val, index) {
                                         return (
-                                            <VStack key={index} as='button' width={{ base: "45%", md: "17%" }} borderRadius={'10px'} borderWidth={'1px'} borderColor={'white'} alignItems={'center'} m={"5px"} >
+                                            <VStack key={index} as='button' width={{ base: "45%", md: "17%" }} borderRadius={'10px'} borderWidth={'1px'} borderColor={'white'} alignItems={'center'} m={"5px"}  onClick={()=>{ window.open(`${BASE_URL}/stream_request_file/${val._id}`, '_blank')}}>
                                                 <PiFilePdf size={{ base: "100px", md: "150px" }} color='red' />
-                                                <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >DOC_NAME</Text>
+                                                <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{`${val.filename}`}</Text>
                                             </VStack>
                                         )
                                     })

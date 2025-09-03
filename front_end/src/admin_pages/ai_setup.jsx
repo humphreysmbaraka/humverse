@@ -63,10 +63,7 @@ function Ai_setup() {
 
     const deletefile = async function (i) {
         try {
-            const confirmation = confirm('do you want to drop this file');
-            if(!confirmation){
-                return;
-            }
+          
             const remaining_files = selectedfiles.filter(function (val, index) {
                 return index !== i
             })
@@ -135,6 +132,10 @@ function Ai_setup() {
             if (deleting) {
             }
             else {
+                const confirmation = confirm('do you want to drop this file');
+                if(!confirmation){
+                    return;
+                }
                 setdeleting(true);
                 setdeleteerror(null);
                 console.log('deleting', val);
