@@ -755,7 +755,7 @@ function View_Product() {
 
                             <Text color={'white'} fontSize={{ base: "md", md: "larger" }} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'}  >YOUR ATTACHMENTS</Text>
                             <HStack width={'98%'} padding={'4px'} flexWrap={'wrap'} alignItems={'center'} justifyContent={{ base: "center", md: "flex-start" }} >
-                                {attachmentinfos.length > 0 &&
+                                {attachmentinfos?.length > 0 &&
 
                                     attachmentinfos.map(function (val, index) {
                                         return (
