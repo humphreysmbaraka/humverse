@@ -1944,28 +1944,31 @@ await user_acc.save();
 router.get('/stream_request_file/:id' , async function(req , res){
   try{
     const id = req.params.id;
-    const files = await requestbucket.find({_id:new ObjectId(id)});
+    const files = await requestbucket.find({_id:new ObjectId(id)}).toArray();
     if(!files || files.length <= 0){
       console.log('no such file exists');
       return res.status(400).json({error:true , message:'no such file exists'});
     }
-    const  file = files[0];
-    const downloadstream = requestbucket.openDownloadStream(new ObjectId(id));
-    downloadstream.on('error' , function(err){
-          console.log('error streaming file' , err);
-          return res.status(500).json({error:true , message:'error occured when streaming file' , message:err})
-
-    })
-
-    downloadstream.on('finish' , function(){
-      console.log('successfully streamed file')
-    })
-    res.set({
-      'Content-Type': file.metadata.type || 'application/octet-stream',
-      'Content-Disposition': `inline; filename="${file.filename}"`
-    });
-
-    downloadstream.pipe(res);
+    else{
+      const  file = files[0];
+      const downloadstream = requestbucket.openDownloadStream(new ObjectId(id));
+      downloadstream.on('error' , function(err){
+            console.log('error streaming file' , err);
+            return res.status(500).json({error:true , message:'error occured when streaming file' , message:err})
+  
+      })
+  
+      downloadstream.on('finish' , function(){
+        console.log('successfully streamed file')
+      })
+      res.set({
+        'Content-Type': file.metadata.type || 'application/octet-stream',
+        'Content-Disposition': `inline; filename="${file.filename}"`
+      });
+  
+      downloadstream.pipe(res);
+    }
+  
   }
   catch(err){
     console.log('error during streaming file' , err);
