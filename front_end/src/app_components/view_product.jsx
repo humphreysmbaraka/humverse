@@ -758,7 +758,9 @@ function View_Product() {
                                 {attachmentinfos?.length > 0 &&
 
                                     attachmentinfos.map(function (val, index) {
+                                        console.log('current attachment IFO ' , val)
                                         return (
+
                                             <VStack key={index} as='button' width={{ base: "45%", md: "17%" }} borderRadius={'10px'} borderWidth={'1px'} borderColor={'white'} alignItems={'center'} m={"5px"}  onClick={()=>{ window.open(`${BASE_URL}/stream_request_file/${val._id}`, '_blank')}}>
                                                 <PiFilePdf size={{ base: "100px", md: "150px" }} color='red' />
                                                 <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{`${val.filename}`}</Text>
