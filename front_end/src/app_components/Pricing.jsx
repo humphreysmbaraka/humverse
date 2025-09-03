@@ -358,7 +358,7 @@ function Pricing() {
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>From 60,000</Td>
                       </Tr>
                       <Tr>
-                        <Td color="white" fontSize={['xs', 'sm', 'md']}>AI-based Translation Apps (mobile)</>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>AI-based Translation Apps (mobile)</Td>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>From 70,000</Td>
                       </Tr>
                       <Tr>
@@ -396,7 +396,7 @@ function Pricing() {
                 <TableContainer width="100%" bg="gray.900" borderRadius="md" p={[2, 3, 4]} overflowX="auto">
                   <Heading size={['sm', 'md']} color="blue.300" mb={[2, 3, 4]}>Deployment & Hosting</Heading>
                   <Table variant="simple" colorScheme="whiteAlpha" size={['sm', 'md']}>
-                    <thead>
+                    <Thead>
                       <Tr>
                         <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Service</Th>
                         <Th color="gray.200" fontSize={['xs', 'sm', 'md']}>Price (KES)</Th>
