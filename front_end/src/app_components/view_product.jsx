@@ -46,7 +46,7 @@ function View_Product() {
 
     const getattachmentinfos = async function(val){
         try{
-         const info = await fetch(`${BASE_URL}/stream_request_file/${val}` , {
+         const info = await fetch(`${BASE_URL}/get_request_file_info/${val}` , {
             method:'GET',
             credentials:'include',
             headers:{
