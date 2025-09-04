@@ -16,6 +16,12 @@ const index = require('./configs/pineconedb');
 const Query = require('./configs/schemas/queries');
 const Transaction = require('./configs/schemas/transaction');
 const { Readable } = require('stream');
+
+
+
+const app = express();
+app.use(express.json());
+const router = express.Router();
 // const humverseindex = require('./configs/pineconedb');
 // const  pineconedb  = require('./configs/pineconedb');
 // console.log('TYPE OF INDEX' , index , typeof(index));
@@ -53,25 +59,25 @@ const verifytoken = async function(req , res , next){
           next();
         }
         else{
-          return res.status(400).json({error:true , loggedin:false})
+          return res.status(400).json({error:true , loggedin:false , problem:'invalid token' , message:'you are not logged in'})
 
         }
       
 
       }
       else{
-        return res.status(400).json({error:true , loggedin:false})
+        return res.status(400).json({error:true , loggedin:false , problem:'could not decode token' , message:'you are logged out'})
       }
     }
     else{
-      return res.status(400).json({error:true , loggedin:false})
+      return res.status(400).json({error:true , loggedin:false , message:'you are not logged in'})
     }
    
    
   }
   catch(err){
     console.log('error verifying user token' , err);
-    return res.status(400).json({error:true , message:'error cerifying token' , error:err})
+    return res.status(400).json({error:true , message:'error verifying token' , error:err})
   }
 }
 
@@ -174,9 +180,7 @@ const ai_doc_uploader = multer({storage:ai_docs_storage});
 const memstorage = multer({storage:memstore});
 const hybrid_file_uploader = multer({storage:hhybid_multer_storage});
 
-const app = express();
-app.use(express.json());
-const router = express.Router();
+
 
 
 
@@ -367,7 +371,7 @@ router.get('/profile_pic/:pic_id' , async function(req , res){
 
 
 
-router.post('/send_request' , memstorage.array('attachments' , 20) ,  async function(req , res){
+router.post('/send_request' , verifytoken ,  memstorage.array('attachments' , 20) ,  async function(req , res){
   try{
   console.log('request received' , req.body , req.files);
   const {type , description , timeunit , timequantity , names , number , email , user} = req.body;
@@ -508,7 +512,7 @@ router.post('/check_loggedin' , async function(req , res){
 
 
 
-router.get('/platform_data' , async function(req , res){
+router.get('/platform_data' , verifytoken , async function(req , res){
   try{
     const result = {}
      const db = mongoose.connection.db;
@@ -586,7 +590,7 @@ router.post('/logout' , async function(req , res){
 
 
 
-router.get('/fetch_homedata/:id' , async function(req , res){
+router.get('/fetch_homedata/:id' , verifytoken,  async function(req , res){
     try{
       console.log('gettting user info');
       const id = req.params.id
@@ -610,7 +614,7 @@ router.get('/fetch_homedata/:id' , async function(req , res){
 
 
 
-router.get('/get_requests' , async function(req , res){
+router.get('/get_requests' ,verifytoken ,  async function(req , res){
   try{
       console.log('fetching requests...');
       const requests = await Request.find({}).populate('client');
@@ -630,7 +634,7 @@ router.get('/get_requests' , async function(req , res){
 })
 
 
-router.get('/fetch_request/:id' , async function(req , res){
+router.get('/fetch_request/:id' , verifytoken , async function(req , res){
   try{
    const id = req.params.id;
    console.log('fetching request');
@@ -651,7 +655,7 @@ router.get('/fetch_request/:id' , async function(req , res){
 })
 
 
-router.patch('/accept_request'  , async function(req , res){
+router.patch('/accept_request' , verifytoken  , async function(req , res){
     try{
       console.log('PROCESSING ACCEPTANCE........')
        const {makingcost , deploymentcost , hostingcost , currency , maintainance ,reqid , domaincost } = req.body;
@@ -691,7 +695,7 @@ router.patch('/accept_request'  , async function(req , res){
 })
 
 
-router.patch('/edit_accepted_request'  , async function(req , res){
+router.patch('/edit_accepted_request'  , verifytoken , async function(req , res){
   try{
     console.log('PROCESSING CHANGES........')
      const {makingcost , deploymentcost , hostingcost , currency , maintainance ,reqid , domaincost } = req.body;
@@ -736,7 +740,7 @@ router.patch('/edit_accepted_request'  , async function(req , res){
 })
 
 
-router.patch('/reject_request' , async function(req , res){
+router.patch('/reject_request' , verifytoken , async function(req , res){
   try{
     const {reqid} = req.body;
     console.log('rejecting' , reqid);
@@ -762,7 +766,7 @@ router.patch('/reject_request' , async function(req , res){
 
 
 
-router.patch('/redeem_request' , async function(req , res){
+router.patch('/redeem_request' , verifytoken , async function(req , res){
   try{
     const {reqid} = req.body;
     console.log('redeeming' , reqid);
@@ -787,7 +791,7 @@ router.patch('/redeem_request' , async function(req , res){
 
 
 
-router.post('/cancel_request' , async function(req , res){
+router.post('/cancel_request' , verifytoken , async function(req , res){
   try{
 
   console.log('cancelling request');
@@ -818,7 +822,7 @@ router.post('/cancel_request' , async function(req , res){
 })
 
 
-router.post('/uncancel_request' , async function(req , res){
+router.post('/uncancel_request' , verifytoken , async function(req , res){
   try{
   console.log('uncancelling request');
   const {id} = req.body;
@@ -843,7 +847,7 @@ router.post('/uncancel_request' , async function(req , res){
 
 
 
-router.post('/pay_for_product' , async function(req , res){
+router.post('/pay_for_product' , verifytoken , async function(req , res){
   const {phonenumber , amount , product_id , user_id} = req.body;
   let number;
   if(phonenumber.startsWith('07')){
@@ -1248,7 +1252,7 @@ router.post('/callback', express.json(), async function(req, res){
 
 
 
-router.patch('/edit_request' , memstorage.array('attachments' , 20) ,  async function(req , res){
+router.patch('/edit_request' , verifytoken , memstorage.array('attachments' , 20) ,  async function(req , res){
   try{
     
   console.log('EDITTING REQUEST RECEIVED' , req.body ,   'FILES' , req.files);
@@ -1360,7 +1364,7 @@ router.patch('/edit_request' , memstorage.array('attachments' , 20) ,  async fun
 
 
 
-router.patch('/view_updates/:id' , async function(){
+router.patch('/view_updates/:id'  , verifytoken , async function(){
   try{
     const id = req.params.id
     const request = await Request.findOne({_id:new ObjectId(id)});
@@ -1454,7 +1458,7 @@ router.patch('/view_updates/:id' , async function(){
 // } )
 
 
-router.get('/ai_doc_objects' , async function(req , res){
+router.get('/ai_doc_objects' , verifytoken , async function(req , res){
   try{
 
     console.log('GETTING DOCS....')
@@ -1481,7 +1485,7 @@ router.get('/ai_doc_objects' , async function(req , res){
 
 
 
-router.post('/make_ai/:name' , async function(req , res){
+router.post('/make_ai/:name' , verifytoken , async function(req , res){
      try{
       const name = req.params.name;
       const newai = new Ai({
@@ -1497,7 +1501,7 @@ router.post('/make_ai/:name' , async function(req , res){
 })
 
 
-router.get('/ai_doc/:id' , async function(req , res){
+router.get('/ai_doc/:id' , verifytoken , async function(req , res){
   try{
     console.log('fetching ai docs');
     const id = new ObjectId(req.params.id);
@@ -1557,7 +1561,7 @@ router.get('/ai_doc/:id' , async function(req , res){
 
 
 
-router.delete('/delete_ai_doc/:id' , async function(req , res){
+router.delete('/delete_ai_doc/:id' , verifytoken , async function(req , res){
   try{
     const id = new ObjectId(req.params.id);
     console.log('fetching ai doc for deletion' , id);
@@ -1634,7 +1638,7 @@ router.delete('/delete_ai_doc/:id' , async function(req , res){
 
 
 
-router.post('/upload_to_ai' , memstorage.fields([{name:'docs' , maxCount:20}, {name:'docs_disk' , maxCount:20}]) ,  async function (req , res){
+router.post('/upload_to_ai' , verifytoken,  memstorage.fields([{name:'docs' , maxCount:20}, {name:'docs_disk' , maxCount:20}]) ,  async function (req , res){
   try{
     const humverseindex = await index();
     console.log('FILES.....' , req.files);
@@ -1795,7 +1799,7 @@ router.post('/upload_to_ai' , memstorage.fields([{name:'docs' , maxCount:20}, {n
 
 
 
- router.post('/delete_index/:id' , async function(req , res){
+ router.post('/delete_index/:id' , verifytoken , async function(req , res){
              try{
 
         const id = decodeURIComponent(req.params.id);
@@ -1820,7 +1824,7 @@ router.post('/upload_to_ai' , memstorage.fields([{name:'docs' , maxCount:20}, {n
 
 
 
-router.post('/ask_assistant' , async function(req , res){
+router.post('/ask_assistant' ,verifytoken , async function(req , res){
   try{
     console.log(req.body);
    const{ question ,user} = req.body;
@@ -1941,7 +1945,7 @@ await user_acc.save();
 
 
 
-router.get('/stream_request_file/:id' , async function(req , res){
+router.get('/stream_request_file/:id' ,verifytoken ,  async function(req , res){
   try{
     const id = req.params.id;
     const files = await requestbucket.find({_id:new ObjectId(id)}).toArray();
@@ -1977,7 +1981,7 @@ router.get('/stream_request_file/:id' , async function(req , res){
 })
 
 
-router.get('/get_request_file_info/:id' , async function(req , res){
+router.get('/get_request_file_info/:id' , verifytoken , async function(req , res){
     try{
        const id = req.params.id;
        console.log('getting info for ' , id);
@@ -2002,7 +2006,7 @@ router.get('/get_request_file_info/:id' , async function(req , res){
 
 
 
-router.post('/send_preview' , async function(req , res){
+router.post('/send_preview' , verifytoken , async function(req , res){
   try{
      const {id , user_id } = req.body;
      const previews = req.files;
@@ -2084,7 +2088,7 @@ router.post('/send_preview' , async function(req , res){
 
 
 
-router.get('/stream_preview/:id' , async function(req , res){
+router.get('/stream_preview/:id' , verifytoken , async function(req , res){
         const id = req.params.id;
         const files = await previewbucket.find({_id:new ObjectId(id)}).toArray();
         if(files.length == 0 || !files){
@@ -2114,7 +2118,7 @@ router.get('/stream_preview/:id' , async function(req , res){
 })
 
 
-router.get('/get_preview_info/:id' , async function(req , res){
+router.get('/get_preview_info/:id' , verifytoken , async function(req , res){
   try{
      const id = req.params.id;
      const files = await previewbucket.find({_id:new ObjectId(id)}).toArray();
