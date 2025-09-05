@@ -16,7 +16,7 @@ const index = require('./configs/pineconedb');
 const Query = require('./configs/schemas/queries');
 const Transaction = require('./configs/schemas/transaction');
 const { Readable } = require('stream');
-
+const twilio = require('twilio')(process.env.TWILIO_SID , process.env.TWILIO_AUTH_TOKEN);
 
 
 const app = express();
@@ -27,6 +27,32 @@ const router = express.Router();
 // console.log('TYPE OF INDEX' , index , typeof(index));
 
 // user token generator;
+
+// SEND TWILIO MESSAGE FUNCTION
+
+const sendMessage = async function(receiver , message , attempts = 1){
+
+while(attempts <= 3){
+  try{
+    
+    const sms = await twilio.messages.create({
+      from:process.env.TWILIO_NUMBER,
+      to:receiver,
+      body:message
+    })
+    return sms
+      }
+      catch(err){
+      
+        console.log(`attempt ${attempts} : error sending mesage , retrying.....` , err);
+        attempts +=1
+        if(attempts >3){
+          console.log('failed to send message after retrying 3 times' , err);
+          return null
+        }
+      }
+}
+}
 
 const createusertoken = async function(id){
   try{
@@ -436,6 +462,8 @@ router.post('/send_request' ,  memstorage.array('attachments' , 20) ,  async fun
       await newrequest.save();
       await sender.requests.push(newrequest._id);
       await sender.save();
+      await sendMessage(newrequest.number , 'Your request has been sent successfully , and now is awaiting processing');
+      await sendMessage(process.env.MY_NUMBER , 'You have received a new request');
       return res.status(200).json({error:false});
   
     }
@@ -678,6 +706,8 @@ router.patch('/accept_request'  , async function(req , res){
         request.payments.amount_remaining = request.payments.total_payment_required;
         await request.save();
         console.log('reques accepted successfully' , request);
+        await sendMessage(request.number , 'Your request has been accepted. Visit humverse to see the charges');
+
         return res.status(200).json({error:false , message:'request accepted successfully' , request});
 
 
@@ -723,6 +753,8 @@ router.patch('/edit_accepted_request' , async function(req , res){
       request.payments.amount_remaining = (Number(request.payments.total_payment_required)-(Number(request.payments.total_paid)));
       await request.save();
       console.log('request editted successfully' , request);
+      await sendMessage(request.number , 'Your request has been adjusted/modified. visit to see the changes');
+
       return res.status(200).json({error:false , message:'request editted successfully' , request});
 
 
@@ -750,6 +782,8 @@ router.patch('/reject_request' , async function(req , res){
       //  request.accepted=false;
 
        await request.save();
+       await sendMessage(request.number , 'we are sorry to inform you that your request has been rejected');
+
        return res.status(200).json({error:false , message:'request rejected successfully' , request});
     }
     else{
@@ -776,6 +810,7 @@ router.patch('/redeem_request'  , async function(req , res){
       //  request.accepted=false;
 
        await request.save();
+       await sendMessage(request.number , 'Your request has been redeemed. Visit humverse web app to see the charges ad other parameters');
        return res.status(200).json({error:false , message:'request redeemed successfully' , request:request});
     }
     else{
@@ -811,6 +846,9 @@ router.post('/cancel_request'  , async function(req , res){
     request.cancelled = true;
     await request.save();
     console.log('request cancelled succesfully');
+    await sendMessage(request.number , 'You have successfully cancelled the request.Now it is under processing and any processes eg copensations , charges etc will be processed in 24 hours');
+    await sendMessage(process.env.MY_NUMBER , 'A client has cancelled a request');
+
     return res.status(200).json({error:false , message:'request cancelled successfully' , request});
   }
    
@@ -835,6 +873,9 @@ router.post('/uncancel_request'  , async function(req , res){
     request.cancelled = false;
     await request.save();
     console.log('request uncancelled succesfully');
+    await sendMessage(request.number , 'You have successfully uncancelled the request.Now it is under processing');
+    await sendMessage(process.env.MY_NUMBER , 'A cancelled request has been uncancelled');
+
     return res.status(200).json({error:false , message:'request uncancelled successfully' ,request});
   }
    
@@ -1342,6 +1383,8 @@ router.patch('/edit_request'  , memstorage.array('attachments' , 20) ,  async fu
       // await sender.requests.push(newrequest._id);
       // await sender.save();
       console.log('request upated successfully');
+      await sendMessage(request.number , 'You have successfully editted the request. Now it will be processed');
+      await sendMessage(process.env.MY_NUMBER , 'A request was editted');
       return res.status(200).json({error:false});
   
     }
@@ -1378,6 +1421,8 @@ router.patch('/view_updates/:id'   , async function(){
       await request.save();
 
       console.log('updates seen');
+      await sendMessage(request.number , 'Your updates on the request have been seen , and they are nowbeing worked on');
+
        return res.status(200).json({error:false , message:'request updates seen' , request})
     }
   }
@@ -2076,6 +2121,8 @@ router.post('/send_preview'  , async function(req , res){
       request.previews = newprevs;
       await request.save();
       console.log('previews sent successfully')
+      await sendMessage(request.number , 'new previews for your request have been sent. visit the website to view the previews of the progress being mae on your request.');
+
       return res.status(200).json({error:false , message:'previews sent successfully' , request:request});
 
      }

@@ -61,6 +61,8 @@ function App() {
   <meta name="twitter:title" content="Humverse – web , apps and AI products builder - Web App" />
   <meta name="twitter:description" content="We build websites, web apps, mobile apps, APIs, and AI-powered products — complete with hosting, deployment, and maintenance." />
   <meta name="twitter:image" content="https://humverse.dev/squares.png" />
+  <meta name="twitter:url" content="https://humverse.dev" />
+
   {/* <meta name="twitter:site" content="@HumverseAI" /> */}
   {/* <meta name="twitter:creator" content="@HumverseAI" /> */}
 
