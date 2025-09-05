@@ -451,6 +451,9 @@ router.post('/send_request' ,  memstorage.array('attachments' , 20) ,  async fun
       await newrequest.save();
       await sender.requests.push(newrequest._id);
       await sender.save();
+      // await sendMessage(newrequest.number , 'your request has been sent successfully. Now it is awaiting processing')
+      await sendMessage(newrequest.number , 'Your request has been sent successfully , and now is awaiting processing');
+      await sendMessage(process.env.MY_NUMBER , 'you have received a new request from a client');
       return res.status(200).json({error:false , request:newrequest});
       // include saving therequest's id in the user's requests
   
@@ -464,7 +467,9 @@ router.post('/send_request' ,  memstorage.array('attachments' , 20) ,  async fun
       await sender.requests.push(newrequest._id);
       await sender.save();
       await sendMessage(newrequest.number , 'Your request has been sent successfully , and now is awaiting processing');
-      await sendMessage(process.env.MY_NUMBER , 'You have received a new request');
+      await sendMessage(process.env.MY_NUMBER , 'you have received a new request from a client');
+
+      // await sendMessage(process.env.MY_NUMBER , 'You have received a new request');
       return res.status(200).json({error:false});
   
     }
