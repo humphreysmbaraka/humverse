@@ -40,6 +40,7 @@ while(attempts <= 3){
       to:receiver,
       body:message
     })
+    console.log('MESSAGE SENT SUCCESSFULLY');
     return sms
       }
       catch(err){
