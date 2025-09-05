@@ -34,7 +34,9 @@ const sendMessage = async function(receiver , message , attempts = 1){
 
 while(attempts <= 3){
   try{
-    
+     if(!receiver.startsWith('+254')){
+      receiver =  `+254${receiver.slice(1)}`
+     }
     const sms = await twilio.messages.create({
       from:process.env.TWILIO_NUMBER,
       to:receiver,
