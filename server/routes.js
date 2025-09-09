@@ -922,7 +922,7 @@ router.post('/pay_for_product' , async function(req , res){
           return res.status(400).json({error:true , message:"either request or user does not exist"});
         }
            console.log('fetching auth token');
-           const authtoken = await fetch(`${process.env.SANDBOX_AUTH_URL}` , {
+           const authtoken = await fetch(`${process.env.LIVE_AUTH_URL}` , {
             headers: {
               'Authorization' : `Basic ${authkey}`,
               'Content-Type' : 'application/json'
@@ -952,7 +952,7 @@ router.post('/pay_for_product' , async function(req , res){
     
             }
     
-            const response = await fetch(process.env.SANDBOX_LNM_URL.trim() , {
+            const response = await fetch(process.env.LIVE_LNM_URL.trim() , {
               headers:{
                 'Authorization' : `Bearer ${token}`,
                 'Content-Type': 'application/json'
@@ -1042,7 +1042,7 @@ router.post('/pay_for_product' , async function(req , res){
           return res.status(400).json({error:true , message:"either request or user does not exist"});
         }
            console.log('fetching auth token');
-           const authtoken = await fetch(`${process.env.SANDBOX_AUTH_URL.trim()}` , {
+           const authtoken = await fetch(`${process.env.LIVE_AUTH_URL.trim()}` , {
             headers: {
               'Authorization' : `Basic ${authkey}`,
               'Content-Type' : 'application/json'
@@ -1072,7 +1072,7 @@ router.post('/pay_for_product' , async function(req , res){
     
             }
     
-            const response = await fetch(process.env.SANDBOX_LNM_URL , {
+            const response = await fetch(process.env.LIVE_LNM_URL , {
               headers:{
                 'Authorization' : `Bearer ${token}`,
                 'Content-Type': 'application/json'
