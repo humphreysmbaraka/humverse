@@ -703,8 +703,10 @@ function View_Product() {
 
                                                 {/* Visa Payment Tab */}
                                                 <TabPanel>
-                                                    <VStack spacing={4} align="stretch">
-                                                        <FormControl>
+                                                    <VStack spacing={4}  alignItems={'center'} justifyContent={'center'}  align="stretch">
+
+                                                        <Text color={'black'}  fontSize={'larger'} fontWeight={'bold'}   >visa payment coming soon</Text>
+                                                        {/* <FormControl>
                                                             <FormLabel fontSize={{ base: "sm", md: "md" }}>Card Number</FormLabel>
                                                             <Input
                                                                 placeholder="1234 5678 9012 3456"
@@ -737,7 +739,7 @@ function View_Product() {
                                                         </FormControl>
                                                         <Button colorScheme="teal" width="full" size={{ base: "sm", md: "md" }}>
                                                             Pay with Visa
-                                                        </Button>
+                                                        </Button> */}
                                                     </VStack>
                                                 </TabPanel>
                                             </TabPanels>
