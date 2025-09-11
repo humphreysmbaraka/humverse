@@ -2469,7 +2469,11 @@ const rejectrequest = async function(){
                      
 
                         <HStack   width={'95%'} gap={'10px'} p={'4px'}>
-                          <Button p={'2px'} colorScheme='blue'  borderRadius={'10px'}  onClick={acceptcancel}  >ACCEPT CANCELLATION</Button>
+                          <Button gap={'10px'} p={'4px'} colorScheme='blue'  borderRadius={'10px'}  onClick={acceptcancel}  >ACCEPT CANCELLATION  
+                          {proceeding && 
+                          <Spinner      width={'30px'}  height={'30px'} color='white'          />
+                          }
+                          </Button>
                         </HStack>
 
 
