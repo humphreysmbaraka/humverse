@@ -849,7 +849,7 @@ router.patch('/accept_cancel' , async function(req , res){
       request.cancel_accepted = true;
       await request.save();
       console.log('cancel accepted successfully');
-      return res.status(200).json(request:request)
+      return res.status(200).json({request:request})
      }
   }
   catch(err){
