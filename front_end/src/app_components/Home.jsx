@@ -163,6 +163,17 @@ useEffect(function(){
         }
       })
 
+
+      socket.current.on('cancel_accepted' , async function(){
+        try{
+       
+        await fetchdata();
+        }
+        catch(err){
+          console.log('error handling cancel accepted event' ,err)
+        }
+      })
+
  } , [])
 
 
@@ -287,7 +298,9 @@ useEffect(function(){
                                                     val.accepted&&val.initiated&&!val.rejected&&!val.cancelled?'purple':
                                                     val.rejected?'red':
                                                     val.cancelled?'orange':
-                                                    val.completed?'green':'blue'
+                                                    val.completed?'green':
+                                                    (val.cancelled&&val.cancel_accepted&&val.cancelinfo.compensated  || val.cancelled&&val.cancel_accepted&&!val.cancelinfo.compensated)?'orange':
+                                                    'blue'
                                                 } 
                                                 _hover={{bg:'none'}} 
                                                 borderRadius={'10px'} 
@@ -304,7 +317,10 @@ useEffect(function(){
                                                     val.accepted&&val.initiated&&!val.rejected&&!val.cancelled?'INITIATED':
                                                     val.rejected?'REJECTED':
                                                     val.cancelled?'CANCELLED':
-                                                    val.completed?'COMPLETED':''
+                                                    val.completed?'COMPLETED':
+                                                    val.cancelled&&val.cancel_accepted&&val.cancelinfo.compensated?'COMPENSATED':
+                                                    val.cancelled&&val.cancel_accepted&&!val.cancelinfo.compensated?'AWAITING COMPENSATION':
+                                                    ''
                                                 }
                                             </Button>
                                             {val.rejected && 

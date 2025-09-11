@@ -42,8 +42,11 @@ const Requestschema = new mongoose.Schema({
      rejected: {type:Boolean , default:false},
      rejection_reason:{type:String , default:''},
      cancelled: {type:Boolean , default:false},
+     cancel_accepted:{type:Boolean , default:false},
      cancelinfo: {type: new mongoose.Schema({
-        compensated:{type:Boolean , default:false}
+        compensated:{type:Boolean , default:false},
+        compensated_amount:{type:Number , default:0},
+        charges:{type:Number , default:0}
       } , {_id:false}
         ), default:{} },
      previews: [{type:mongoose.Schema.Types.ObjectId , required:false}],

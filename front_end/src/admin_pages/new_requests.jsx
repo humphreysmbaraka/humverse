@@ -50,6 +50,7 @@ function New_Requests() {
     const [amount , setamount] = useState(null);
     const [proceeding , setproceeding]= useState(false);
     const [proceederror , setproceederror] = useState(null)
+    const [setcompensation , setsetcompensation]  = useState(false);
     // const [rejreason , setrejreason] = useState(null);
     const {socket , requestreceived , requestupdated , requestcancelled , cancelaccepted} = useContext(socketcontext);
 
@@ -58,7 +59,14 @@ function New_Requests() {
     // const location = useLocation();
     // const reqs = location.state.requests;
 
+    useEffect(function(){
+       if(selectedrequest.cancelled && selectedrequest.cancel_accepted && !selectedrequest.cancelinfo.compensated){
+        setsetcompensation(true);
 
+       }else{
+        setsetcompensation(false);
+       }
+     } , [selectedrequest])
 
     const fetchreqs = async function(){
         try{
@@ -959,7 +967,7 @@ const rejectrequest = async function(){
             }
         })
        })
-
+        
        socket.current.emit('cancel_accepted' , {data:info.request} , function(){
         console.log('cancel accepteed successfully')
     })

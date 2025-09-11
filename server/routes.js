@@ -836,6 +836,28 @@ router.patch('/redeem_request'  , async function(req , res){
 
 
 
+router.patch('/accept_cancel' , async function(req , res){
+  try{
+    console.log('accepting cancel')
+     const {id} = req.body;
+     const request = await Request.findOne({_id:new ObjectId(id)});
+     if(!request){
+      console.log('no such request found , thus cannot accept cancel');
+      return res.status(400).json({error:true , message:'no such request found'});
+     }
+     else{
+      request.cancel_accepted = true;
+      await request.save();
+      console.log('cancel accepted successfully');
+      return res.status(200).json(request:request)
+     }
+  }
+  catch(err){
+    console.log('error occured when trying to accept cancellation ' , err);
+    return res.status(500).json({error:true , problem:err})
+  }
+})
+
 router.post('/cancel_request'  , async function(req , res){
   try{
 
