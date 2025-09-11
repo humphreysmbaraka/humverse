@@ -922,7 +922,7 @@ router.patch('/initiate_compensation' , async function(req , res){
        date:${request.updatedAt},
        `);
 
-       return res.status(200).json({error:fale , request:request});
+       return res.status(200).json({error:false , request:request});
     }
   }
   catch(err){
