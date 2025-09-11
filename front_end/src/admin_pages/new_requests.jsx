@@ -2512,7 +2512,7 @@ return;
                       </>
                       }
           {/* CANCELLED REQUEST */}
-                      {selectedrequest&&selectedrequest.cancelled &&
+                      {selectedrequest&&selectedrequest.cancelled&&!selectedrequest.cancel_accepted &&
                       
                       <>
                       <Text  color={'orange.700'} fontSize={'medium'} fontWeight={'bold'} >THIS REQUEST IS CANCELLED</Text>
