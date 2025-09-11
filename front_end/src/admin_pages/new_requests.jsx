@@ -2467,7 +2467,10 @@ const rejectrequest = async function(){
                        
 
                      
+                  {proceederror  &&
+                                              <Text  width={'30%'} fontSize={'small'} color={'red'} mb={'10px'} mt={'10px'} fontWeight={'bold'}>{proceederror}</Text>
 
+                  }
                         <HStack   width={'95%'} gap={'10px'} p={'4px'}>
                           <Button gap={'10px'} p={'4px'} colorScheme='blue'  borderRadius={'10px'}  onClick={acceptcancel}  >ACCEPT CANCELLATION  
                           {proceeding && 
