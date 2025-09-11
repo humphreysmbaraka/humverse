@@ -614,7 +614,7 @@ function View_Product() {
                                         </Button>
                                     }
 
-                                    {(product.cancelled) &&
+                                    {(product.cancelled && !product.cancel_accepted) &&
                                         <Button onClick={() => { setwanttouncancel(true) }} size={{ base: "sm", md: "md" }} colorScheme='orange' >
                                             UNDO CANCEL
                                         </Button>

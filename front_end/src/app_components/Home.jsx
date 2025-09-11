@@ -316,7 +316,7 @@ useEffect(function(){
                                                     val.accepted&&!val.initiated&&!val.rejected&&!val.cancelled?'ACCEPTED':
                                                     val.accepted&&val.initiated&&!val.rejected&&!val.cancelled?'INITIATED':
                                                     val.rejected?'REJECTED':
-                                                    val.cancelled?'CANCELLED':
+                                                    (val.cancelled && !val.cancel_accepted)?'CANCELLED':
                                                     val.completed?'COMPLETED':
                                                     val.cancelled&&val.cancel_accepted&&val.cancelinfo.compensated?'COMPENSATED':
                                                     val.cancelled&&val.cancel_accepted&&!val.cancelinfo.compensated?'AWAITING COMPENSATION':
