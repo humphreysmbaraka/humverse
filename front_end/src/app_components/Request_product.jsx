@@ -306,13 +306,13 @@ function Make_request() {
         display={'flex'} flexDir={{ base: 'column', md: 'row' }} 
         alignItems={'center'} paddingBottom={'40px'} overflow={'auto'}>
        
-       <VStack width={sideWidth} height={'100%'} 
+       {/* <VStack width={sideWidth} height={'100%'} 
                borderRightWidth={'1px'} borderRightColor={'white'} 
-               display={{ base: 'none', md: 'flex' }} />
+               display={{ base: 'none', md: 'flex' }} /> */}
 
-       <VStack width={sideWidth2} height={'100%'} 
+       {/* <VStack width={sideWidth2} height={'100%'} 
                borderRightWidth={'1px'} borderRightColor={'white'} 
-               display={{ base: 'none', md: 'flex' }} />
+               display={{ base: 'none', md: 'flex' }} /> */}
  
        <VStack width={mainWidth} height={'100%'} paddingLeft={{ base: '0', md: '10px' }} 
                overflow={'auto'} css={{ '&::-webkit-scrollbar': { display: 'none' } }}>
@@ -325,26 +325,26 @@ function Make_request() {
           SELECT TYPE OF PRODUCT
         </Text>
         
-        <Select onChange={(e)=>{settype(e.target.value)}} value={type} ref={typeref} 
+        <Select onChange={(e)=>{settype(e.target.value)}} placeholder={'select type of product you want'} value={type} ref={typeref} 
                 width={inputWidth} height={'30px'} borderRadius={'5px'} color={'white'} 
-                fontSize={{ base: 'xs', md: 'small' }} placeholder='select type of product you want'>
-          <option style={{color:'black'}} value={'simple website'} >website (simple with one page for eg advertising , no user interacions , just a viewing page)</option>
-          <option style={{color:'black'}} value={'medium website'} >website (simple , with multiple functions eg registering , enrolling , etc)</option>
-          <option style={{color:'black'}} value={'web app'} >web app (a web based app , where the user can do everything in , eg register , sign up/log in , access services , products , entertainment , do business etc)</option>
-          <option style={{color:'black'}} value={'simple phone app'} >phone app (a simple one with few capabilities)</option>
-          <option style={{color:'black'}} value={'complex phone app'} >phone app (a full blown app , with full scale functionalities)</option>
-          <option style={{color:'black'}} value={'simple ai agent'}>AI agent (a simple ai agent eg a customer care service clients can interract with (ask questions and get responses))</option>
-          <option style={{color:'black'}} value={'complex ai agent'}>AI agent that can perform defined tasks , eg edit videos , ocuments , etc</option>
+                fontSize={{ base: 'xs', md: 'small' }} >
+          <option style={{color:'black'}} value={'website'} >website</option>
+          <option style={{color:'black'}} value={'web app'} >web app</option>
+          <option style={{color:'black'}} value={'API'} >API</option>
+          <option style={{color:'black'}} value={'phone app'} >phone app</option>
+          <option style={{color:'black'}} value={'AI product'} >AI product</option>
+          <option style={{color:'black'}} value={'mixed'}>a mixture of the categories</option>
+          {/* <option style={{color:'black'}} value={'complex ai agent'}>AI agent that can perform defined tasks , eg edit videos , ocuments , etc</option> */}
         </Select>
 
         <Divider width={'100%'} mt={'10px'} mb={'10px'} />
 
-        <Text textAlign={'left'} alignSelf={'flex-start'} color={'white'} 
+        <Text  textAlign={'left'} alignSelf={'flex-start'} color={'white'} 
               fontSize={{ base: 'sm', md: 'medium' }} fontWeight={'bold'}>
           DESCRIPTION
         </Text>
         
-        <Textarea value={description} onChange={(e)=>{setdescription(e.target.value)}} 
+        <Textarea  placeholder='describe what you want , eg i want a web app for doing x , where the user can do xyz and als obe able to communicate with other users .....'  value={description} onChange={(e)=>{setdescription(e.target.value)}} 
                   css={{ '&::-webkit-scrollbar': { display: 'none' }}} width={'95%'} bg={'white'} 
                   borderRadius={'15px'} resize={'none'} minH={'400px'} wordBreak={'break-word'} 
                   whiteSpace={'pre-wrap'} overflowWrap={'break-word'} />
@@ -352,7 +352,7 @@ function Make_request() {
         <Divider width={'100%'} mt={'10px'} mb={'10px'} />
 
         <Text color={'white'} fontSize={{ base: 'xs', md: 'small' }} fontWeight={'bold'} textAlign="center">
-          attach related document(s) eg logo image , terms and conditions docs , description docs  , etc
+          attach related document(s) eg logo image , terms and conditions docs , description docs , services  , etc
         </Text>
 
         <Box as={'button'} mt={'20px'} mb={'20px'} onClick={()=>{fileinputref.current.click()}} 

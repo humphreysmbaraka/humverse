@@ -782,11 +782,12 @@ router.patch('/edit_accepted_request' , async function(req , res){
 
 router.patch('/reject_request' , async function(req , res){
   try{
-    const {reqid} = req.body;
+    const {reqid , rejreason} = req.body;
     console.log('rejecting' , reqid);
     const request = await Request.findOne({_id:reqid});
     if(request){
        request.rejected=true;
+       request.rejection_reason=rejreason;
       //  request.accepted=false;
 
        await request.save();
@@ -815,6 +816,7 @@ router.patch('/redeem_request'  , async function(req , res){
     const request = await Request.findOne({_id:reqid});
     if(request){
        request.rejected=false;
+       request.rejection_reason='';
       //  request.accepted=false;
 
        await request.save();

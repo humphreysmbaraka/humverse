@@ -48,6 +48,7 @@ function New_Requests() {
     const [compensate , setcompensate] = useState(false);
     const [paynumber , setpaynumber] = useState(null);
     const [amount , setamount] = useState(null);
+    // const [rejreason , setrejreason] = useState(null);
     const {socket , requestreceived , requestupdated , requestcancelled , requestuncancelled} = useContext(socketcontext);
 
      const [redeeming , setredeeming] = useState(false);
@@ -646,6 +647,7 @@ function New_Requests() {
            if(selectedrequest){
               selectedrequest.rejected = false;
               setisrejected(selectedrequest.rejected);
+              setrejectionreason(null);
               
            }
            else{
@@ -865,13 +867,18 @@ const rejectrequest = async function(){
         }
         else{
             console.log('rejecting...');
+            if(!rejectionreason){
+                setrejectionerror('you must provide rejection reason');
+                return;
+            }
+            setrejectionerror(null)
             const reject = await fetch(`${BASE_URL}/reject_request` , {
                 method:'PATCH',
                 credentials:'include',
                 headers:{
                     'Content-Type':'application/json'
                 },
-                body:JSON.stringify({reqid:selectedrequest._id})
+                body:JSON.stringify({reqid:selectedrequest._id , rejreason:rejectionreason})
             })
     
             if(reject.ok){

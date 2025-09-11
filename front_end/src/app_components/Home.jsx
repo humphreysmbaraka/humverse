@@ -307,6 +307,9 @@ useEffect(function(){
                                                     val.completed?'COMPLETED':''
                                                 }
                                             </Button>
+                                            {val.rejected && 
+                                             <Text  fontWeight={'light'}  color={'red'} fontSize={'xx-small'} >{`reason for rejection : ${val.rejection_reason}`}</Text>
+                                            }
                                         </HStack>
                                     </VStack>
 

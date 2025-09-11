@@ -40,6 +40,7 @@ const Requestschema = new mongoose.Schema({
      accepted: {type:Boolean , default:false},
      initiated: {type:Boolean , default:false},
      rejected: {type:Boolean , default:false},
+     rejection_reason:{type:String , default:''},
      cancelled: {type:Boolean , default:false},
      cancelinfo: {type: new mongoose.Schema({
         compensated:{type:Boolean , default:false}
