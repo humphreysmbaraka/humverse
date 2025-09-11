@@ -60,12 +60,17 @@ function New_Requests() {
     // const reqs = location.state.requests;
 
     useEffect(function(){
-       if(selectedrequest.cancelled && selectedrequest.cancel_accepted && !selectedrequest.cancelinfo.compensated){
-        setsetcompensation(true);
-
-       }else{
-        setsetcompensation(false);
-       }
+        if(selectedrequest){
+            if(selectedrequest.cancelled && selectedrequest.cancel_accepted && !selectedrequest.cancelinfo.compensated){
+                setsetcompensation(true);
+        
+               }else{
+                setsetcompensation(false);
+               }
+        }
+        else{
+            return
+        }
      } , [selectedrequest])
 
     const fetchreqs = async function(){
