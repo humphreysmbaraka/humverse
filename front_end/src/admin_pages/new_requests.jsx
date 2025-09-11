@@ -1020,7 +1020,7 @@ return;
        }
        setcompensating(true);
        setcompensateerror(null);
-       const comp = await(`${BASE_URL}/initiate_compensation` , {
+       const comp = await fetch(`${BASE_URL}/initiate_compensation` , {
         method:'PATCH',
         credentials:'include',
         headers:{
