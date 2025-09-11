@@ -950,7 +950,7 @@ const rejectrequest = async function(){
           setproceederror(null);
           const accept = await fetch(`${BASE_URL}/accept_cancel`, {
             method:'PATCH',
-            credentials:'true',
+            credentials:'include',
             headers:{
                 'Content-Type':'application/json'
             },
