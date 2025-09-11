@@ -24,7 +24,7 @@ function Pricing() {
       transition={{duration: 1.5, ease: 'easeIn', delay: 0}}
       exit={{x: -3000, transition: {duration: 0.5, ease: 'easeIn'}}}
     >
-      <VStack spacing={[4, 6]} width="100%" maxW="1200px" mx="auto" py={[2, 4]}>
+      <VStack spacing={[4, 6]} width="100%" maxW="1200px" mx="auto" py={[2, 4]}  overflow={'auto'} >
         <Heading 
           color="blue.400" 
           fontSize={['lg', 'xl', '2xl']} 
