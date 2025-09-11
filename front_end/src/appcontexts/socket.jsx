@@ -23,6 +23,7 @@ function Socket_provider({children}) {
     const [requestaccepted , setrequestaccepted] =  useState(false);
     const [previewsreceived , setpreviewsreceived] = useState(false);
     const [cancelaccepted , setcancelaccepted] = useState(false);
+    const [compensationevent , setcompensationevent] = useState(null)
 
 
 
@@ -227,6 +228,21 @@ function Socket_provider({children}) {
             })
 
 
+            socket.on('compensation' , async function(){
+              try{
+                trigger_notification('COMPENSATION INITIATION' , 'compensation for your cancelled request has been initiated' , squares , `https://humverce.vercel.app/main`  )
+
+              setcompensationevent(true);
+               setTimeout(() => {
+                 setcompensationevent(false);
+               }, 3000);     
+              }
+              catch(err){
+                console.log('error handling compensation event' ,err)
+              }
+            })
+
+
 
 
 
@@ -276,7 +292,7 @@ function Socket_provider({children}) {
 
 
   return (
-   <socketcontext.Provider  value={{socket:socketref , socketconnected , requestreceived , requestupdated , requestcancelled , requestrejected , requestredeemed , requestuncancelled ,requestaccepted , previewsreceived ,cancelaccepted}}>
+   <socketcontext.Provider  value={{socket:socketref , socketconnected , requestreceived , requestupdated , requestcancelled , requestrejected , requestredeemed , requestuncancelled ,requestaccepted , previewsreceived ,cancelaccepted , compensationevent}}>
    {children}
    </socketcontext.Provider>
   )

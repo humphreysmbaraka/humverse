@@ -174,6 +174,18 @@ useEffect(function(){
         }
       })
 
+
+
+      socket.current.on('compensation' , async function(){
+        try{
+       
+        await fetchdata();
+        }
+        catch(err){
+          console.log('error handling  compensation event' ,err);
+        }
+      })
+
  } , [])
 
 

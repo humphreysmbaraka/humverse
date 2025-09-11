@@ -1001,7 +1001,7 @@ const rejectrequest = async function(){
       }
   }
 
-
+  
 
   const initiatecompensation = async function(){
      try{
@@ -1043,6 +1043,10 @@ return;
                     return val;
                 }
             })
+        })
+
+        socket.current.emit('compensation' , {data:info.request} , function(){
+            console.log('compensation initiated')
         })
        }
        else{
@@ -2549,45 +2553,51 @@ return;
                        }
                        </Button>
                      </HStack>
+
+
+
+                     {setcompensation  &&     
+
+
+
+<>
+
+<Text  width={'90%'} isTruncated={true} fontSize={'small'} color={'white'} >SET COMPENSATION PARAMETERS</Text>
+
+   <HStack   width={'95%'} gap={'10px'} p={'4px'}>
+               <Text  width={'30%'} fontSize={'x-small'} color={'white'} fontWeight={'light'}>TIME COMPENSATION</Text>
+               <Input value={timecompensation}   width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
+           </HStack> 
+
+
+           <HStack   width={'95%'} gap={'10px'} p={'4px'}>
+               <Text  width={'30%'} fontSize={'x-small'} color={'white'} fontWeight={'light'}>AMOUNT TO BE RETURNED</Text>
+               <Input width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
+           </HStack>
+
+
+          
+
+           <HStack   width={'95%'} gap={'10px'} p={'4px'}>
+
+           {compensateerror && 
+               <Text mt={'5px'} mb={'5px'} color={'red'} fontSize={'x-small'} fontWeight={'light'} >{compensateerror}</Text>
+               }
+             
+           <Button p={'2px'} colorScheme='blue'  borderRadius={'10px'} onClick={initiatecompensation}   >COMPENSATE 
+           {compensating &&  
+             <Spinner        width={'20px'} height={'20px'} color='white'    />
+           }
+           </Button>
+         </HStack>
+         </>
+
+}
 </>
                        }
 
 
-             {setcompensation  &&   
-
-
-
-             <>
-
-<Text  width={'90%'} isTruncated={true} fontSize={'small'} color={'white'} >SET COMPENSATION PARAMETERS</Text>
-
-                <HStack   width={'95%'} gap={'10px'} p={'4px'}>
-                            <Text  width={'30%'} fontSize={'x-small'} color={'white'} fontWeight={'light'}>TIME COMPENSATION</Text>
-                            <Input value={timecompensation}   width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
-                        </HStack> 
-
-
-                        <HStack   width={'95%'} gap={'10px'} p={'4px'}>
-                            <Text  width={'30%'} fontSize={'x-small'} color={'white'} fontWeight={'light'}>AMOUNT TO BE RETURNED</Text>
-                            <Input width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
-                        </HStack>
-
-
-                        {compensateerror && 
-                            <Text mt={'5px'} mb={'5px'} color={'red'} fontSize={'x-small'} fontWeight={'light'} >{compensateerror}}</Text>
-                            }
-
-                        <HStack   width={'95%'} gap={'10px'} p={'4px'}>
-                          
-                        <Button p={'2px'} colorScheme='blue'  borderRadius={'10px'} onClick={initiatecompensation}   >COMPENSATE 
-                        {compensating &&  
-                          <Spinner        width={'20px'} height={'20px'} color='white'    />
-                        }
-                        </Button>
-                      </HStack>
-                      </>
-             
-             }
+        
 
                        
                          
@@ -2684,6 +2694,16 @@ return;
 
 
                       </>
+                      
+                      }
+
+
+
+                      {/* COMPENSATED REQUESTS */}
+
+                      {(selectedrequest.cancelled&&selectedrequest.cancel_accepted&&selectedrequest.cancelinfo.compensated) && 
+                      
+                        <Text alignSelf={'center'} mt={'20px'}  mb={'20px'} color={'white'} fontWeight={'light'} >THSIS REQUEST HAS BEEN COMPENSATED !</Text>
                       
                       }
 

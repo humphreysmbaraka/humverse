@@ -135,6 +135,14 @@ io.on('connection' , function(socket){
   })
 
  
+
+  socket.on('compensation' , function(data , callback){
+    console.log('compensation initiated...' , data);
+    socket.to(`${data.client}`).emit('compensation');
+    callback();
+  })
+
+
   socket.on('sent_previews' , function(data , callback){
     console.log('previews incoming...' , data);
     socket.to(`${data.client}`).emit('previews');

@@ -14,7 +14,7 @@ function View_Product() {
     const { winwidth, winheight } = useContext(dimensions);
     const location = useLocation();
     const { loggedin, admin, user } = useContext(AuthContext);
-    const { socket, requestrejected, requestredeemed, requestaccepted, previewsreceived , cancelaccepted } = useContext(socketcontext);
+    const { socket, requestrejected, requestredeemed, requestaccepted, previewsreceived , cancelaccepted , compensationevent } = useContext(socketcontext);
     const product_id = location.state.request._id;
     const [product, setproduct] = useState(null);
     const [attachments ,setattachments ] = useState(null);
@@ -217,6 +217,28 @@ function View_Product() {
 
         return () => clearTimeout(timer);
     }, [cancelaccepted]);
+
+
+
+    useEffect(function () {
+        let timer;
+        if (compensationevent) {
+            timer = setTimeout(function () {
+                getrequest();
+
+            }, 1000)
+        }
+        else {
+
+        }
+
+        return () => clearTimeout(timer);
+    }, [compensationevent]);
+
+
+
+
+   
 
     // the poling is set when the component mounts
     useEffect(function () {
