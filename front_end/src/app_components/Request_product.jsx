@@ -220,6 +220,10 @@ function Make_request() {
         if(submitting){
         }
         else{
+          const agree = await confirm('this means you have agreed to the terms and conditions of humverse.dev.you can see them at the services page')
+          if (!agree){
+            return;
+          }
           setsubmitting(true);
           if(attachedfiles.length > 0){
             const body = new FormData();

@@ -22,6 +22,7 @@ function Socket_provider({children}) {
     const [requestuncancelled , setrequestuncancelled] = useState(false);
     const [requestaccepted , setrequestaccepted] =  useState(false);
     const [previewsreceived , setpreviewsreceived] = useState(false);
+    const [cancelaccepted , setcancelaccepted] = useState(false);
 
 
 
@@ -211,6 +212,21 @@ function Socket_provider({children}) {
             })
 
 
+            socket.on('cancel_accepted' , async function(){
+              try{
+                trigger_notification('CANCEL PROCESSED' , 'your request cancellation request has been received' , squares , `https://humverce.vercel.app/main`  )
+
+              setcancelaccepted(true);
+               setTimeout(() => {
+                 setcancelaccepted(false);
+               }, 3000);     
+              }
+              catch(err){
+                console.log('error handling cancel acceptance event' ,err)
+              }
+            })
+
+
 
 
 
@@ -260,7 +276,7 @@ function Socket_provider({children}) {
 
 
   return (
-   <socketcontext.Provider  value={{socket:socketref , socketconnected , requestreceived , requestupdated , requestcancelled , requestrejected , requestredeemed , requestuncancelled ,requestaccepted , previewsreceived}}>
+   <socketcontext.Provider  value={{socket:socketref , socketconnected , requestreceived , requestupdated , requestcancelled , requestrejected , requestredeemed , requestuncancelled ,requestaccepted , previewsreceived ,cancelaccepted}}>
    {children}
    </socketcontext.Provider>
   )

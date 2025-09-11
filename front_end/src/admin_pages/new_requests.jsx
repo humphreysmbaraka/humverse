@@ -48,6 +48,8 @@ function New_Requests() {
     const [compensate , setcompensate] = useState(false);
     const [paynumber , setpaynumber] = useState(null);
     const [amount , setamount] = useState(null);
+    const [proceeding , setproceeding]= useState(false);
+    const [proceederror , setproceederror] = useState(null)
     // const [rejreason , setrejreason] = useState(null);
     const {socket , requestreceived , requestupdated , requestcancelled , requestuncancelled} = useContext(socketcontext);
 
@@ -920,6 +922,68 @@ const rejectrequest = async function(){
     }
 }
 
+
+  const proceed = async function(){
+      try{
+        if(proceeding){
+
+        }
+        else{
+            const go = confirm('accept cancel');
+            if(!go){
+                return;
+            }
+          setproceeding(true);
+          setproceederror(null);
+          const accept = await fetch(`${BASE_URL}/accept_cancel`, {
+            method:'PATCH',
+            credentials:'true',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({id:selectedrequest._id})
+          })
+
+          if(accept.ok){
+       const info = await accept.json();
+       setproceeding(false);
+       setproceederror(null);
+       setselectedrequest(info.request);
+       setallreqs(function(prev){
+       return  prev.map(function(val , index){
+            if(val._id == (info.request)._id){
+                return info.request
+            }
+            else{
+                return val;
+            }
+        })
+       })
+
+       socket.current.emit('cancel_accepted' , {data:info.request} , function(){
+        console.log('cancel accepteed successfully')
+    })
+
+          }
+          else{
+            const info = await accept.json()
+            if(String(accept.status).startsWith('4')){
+                   setproceederror(info.message);
+            }
+            else{
+                setproceederror('server error'); 
+            }
+          }
+
+        }
+      }
+      catch(err){
+        setproceeding(false);
+        console.log('could not accept cancel' , err);
+        setproceederror('could not accept cancel');
+      }
+  }
+
   return (
    <Box width={winwidth} height={winheight}  bg={'gray.800'} padding={'4px'}   >
     <HStack  width={'90%'} height={'100%'} gap={'40px'} alignItems={'center'}  justifyContent={'space-between'} >
@@ -1775,7 +1839,7 @@ const rejectrequest = async function(){
                      <>
                      <VStack  width={'98%'}  p={'4px'}  alignItems={'center'} >
                        
-                        <Text  textAlign={'left'} alignSelf={'flex-start'} color={'white'} >COSTS OF HOSTING</Text>
+                        {/* <Text  textAlign={'left'} alignSelf={'flex-start'} color={'white'} >COSTS OF HOSTING</Text> */}
                         <HStack   width={'95%'} gap={'10px'} p={'4px'}>
                             <Text width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'}  >reason of rejection</Text>
                             <Input  value={rejectionreason} onChange={(e)=>{setrejectionreason(e.target.value)}}  width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
@@ -1948,10 +2012,10 @@ const rejectrequest = async function(){
                 
                         <HStack width={'95%'} gap={'10px'} p={'4px'} >
                             <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'} >currency</Text>
-                            <Select readOnly={true}  value={selectedrequest.payments.currency} width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}        >
+                            <Input readOnly={true}  color={'black'}  value={selectedrequest.payments.currency} width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}        >
                                 {/* <option value='KSH' >KSH</option>
                                 <option value='USD' >USD</option> */}
-                            </Select>
+                            </Input>
                         </HStack>
 
 
@@ -2372,25 +2436,39 @@ const rejectrequest = async function(){
 
                       <HStack   width={'95%'} gap={'10px'} p={'4px'}>
                             <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'}>TOTAL PAY REQUIRED</Text>
-                            <Input value={selectedrequest.payments.total_payment_required}   width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
+                            <Input  readOnly={true}   value={selectedrequest.payments.total_payment_required}   width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
                         </HStack>
 
                         <HStack   width={'95%'} gap={'10px'} p={'4px'}>
                             <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'}>AMOUNT PAID SO FAR</Text>
-                            <Input value={selectedrequest.payments.payments_required.total_paid}   width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
+                            <Input readOnly={true} value={selectedrequest.payments.total_paid}   width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
                         </HStack>
 
 
                         <HStack   width={'95%'} gap={'10px'} p={'4px'}>
                             <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'}>AMOUNT REMAINING</Text>
-                            <Input value={selectedrequest.payments.amount_remaining}   width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
+                            <Input    readOnly={true}   value={selectedrequest.payments.amount_remaining}   width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
                         </HStack>
 
+
+                       
+
+                     
 
                         <HStack   width={'95%'} gap={'10px'} p={'4px'}>
+                          <Button p={'2px'} colorScheme='blue'  borderRadius={'10px'}  onClick={acceptcancel}  >ACCEPT CANCELLATION</Button>
+                        </HStack>
+
+
+             {setcompensation  &&   
+             <>
+
+<Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'}>SET COMPENSATION PARAMETERS</Text>
+
+                <HStack   width={'95%'} gap={'10px'} p={'4px'}>
                             <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'}>TIME COMPENSATION</Text>
                             <Input value={timecompensation}   width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
-                        </HStack>
+                        </HStack> 
 
 
                         <HStack   width={'95%'} gap={'10px'} p={'4px'}>
@@ -2398,11 +2476,15 @@ const rejectrequest = async function(){
                             <Input width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
                         </HStack>
 
-                     
 
                         <HStack   width={'95%'} gap={'10px'} p={'4px'}>
-                          <Button p={'2px'} colorScheme='blue'  borderRadius={'10px'}  >PROCEED</Button>
-                        </HStack>
+                        <Button p={'2px'} colorScheme='blue'  borderRadius={'10px'}  onClick={acceptcancel}  >ACCEPT CANCELLATION</Button>
+                      </HStack>
+                      </>
+             
+             }
+
+                       
                          
                         {compensate &&   
                         

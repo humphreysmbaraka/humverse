@@ -128,6 +128,12 @@ io.on('connection' , function(socket){
 
 
 
+  socket.on('cancel_accepted' , function(data , callback){
+    console.log('cancel accepted...' , data);
+    socket.to(`${data.client}`).emit('cancel_accepted');
+    callback();
+  })
+
  
   socket.on('sent_previews' , function(data , callback){
     console.log('previews incoming...' , data);

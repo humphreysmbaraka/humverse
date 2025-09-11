@@ -11,11 +11,10 @@ import { socketcontext } from '../appcontexts/socket';
 function View_Product() {
     const [fetchingproduct, setfetchingproduct] = useState(false);
     const [fetcherror, setfetcherror] = useState(null);
-
     const { winwidth, winheight } = useContext(dimensions);
     const location = useLocation();
     const { loggedin, admin, user } = useContext(AuthContext);
-    const { socket, requestrejected, requestredeemed, requestaccepted, previewsreceived } = useContext(socketcontext);
+    const { socket, requestrejected, requestredeemed, requestaccepted, previewsreceived , cancelaccepted } = useContext(socketcontext);
     const product_id = location.state.request._id;
     const [product, setproduct] = useState(null);
     const [attachments ,setattachments ] = useState(null);
@@ -201,6 +200,23 @@ function View_Product() {
 
         return () => clearTimeout(timer);
     }, [previewsreceived]);
+
+
+
+    useEffect(function () {
+        let timer;
+        if (cancelaccepted) {
+            timer = setTimeout(function () {
+                getrequest();
+
+            }, 1000)
+        }
+        else {
+
+        }
+
+        return () => clearTimeout(timer);
+    }, [cancelaccepted]);
 
     // the poling is set when the component mounts
     useEffect(function () {
@@ -583,6 +599,7 @@ function View_Product() {
                                     </HStack>
                                 </Stack>
                                 <Text fontSize={{ base: "sm", md: "medium" }} color={'black'} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'}  >status :{(!product.accepted && !product.initiated && !product.cancelled && !product.rejected) ? 'not yet accepted' : (product.accepted && !product.initiated && !product.cancelled && !product.rejected) ? 'accepted' : (product.rejected) ? 'rejected' : (product.cancelled) ? 'cancelled' : (product.accepted && product.initiated && !product.cancelled && !product.rejected) ? 'initiated' : ''}</Text>
+                                <Text fontSize={{ base: "sm", md: "medium" }} color={'black'} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'}  >currency :{product.payments.currency}</Text>
 
                                 <HStack width={'98%'} p={'3px'} flexWrap={"wrap"} gap={"10px"} >
                                     {(product.accepted && !product.initiated && !product.rejected && !product.cancelled) &&
@@ -624,6 +641,23 @@ function View_Product() {
                                         <Button disabled={true} size={{ base: "sm", md: "md" }} colorScheme={'red'} >
                                             THIS REQUEST WAS REJECTED
                                         </Button>
+                                    }
+
+                                    {
+                                        (product.cancelled && product.cancel_accepted && !product.cancelinfo.compensated)&&
+
+                                        <Button disabled={true}  size={{ base: "sm", md: "md" }} colorScheme={'gray'} >
+                                        awaiting compensation
+                                    </Button>
+                                    }
+
+
+                       {
+                                        (product.cancelled && product.cancel_accepted && product.cancelinfo.compensated)&&
+
+                                        <Button disabled={true}  size={{ base: "sm", md: "md" }} colorScheme={'green'} >
+                                     compensated
+                                    </Button>
                                     }
                                 </HStack>
 
