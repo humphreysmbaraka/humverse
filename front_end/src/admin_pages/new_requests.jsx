@@ -51,7 +51,7 @@ function New_Requests() {
     const [proceeding , setproceeding]= useState(false);
     const [proceederror , setproceederror] = useState(null)
     // const [rejreason , setrejreason] = useState(null);
-    const {socket , requestreceived , requestupdated , requestcancelled , requestuncancelled} = useContext(socketcontext);
+    const {socket , requestreceived , requestupdated , requestcancelled , cancelaccepted} = useContext(socketcontext);
 
      const [redeeming , setredeeming] = useState(false);
      const [redeemerror , setredeemerror] = useState(null);
@@ -184,7 +184,7 @@ function New_Requests() {
 
     useEffect(function(){
         let timer;
-        if(requestuncancelled){
+        if(cancelaccepted){
            timer = setTimeout(function(){
             fetchreqs();
             
@@ -195,7 +195,7 @@ function New_Requests() {
         }
 
         return () => clearTimeout(timer);
-    }  ,[requestuncancelled])
+    }  ,[cancelaccepted])
 
 
 
