@@ -2695,13 +2695,13 @@ return;
     
        <HStack   width={'95%'} gap={'10px'} p={'4px'}>
                    <Text  width={'30%'} fontSize={'x-small'} color={'white'} fontWeight={'light'}>TIME COMPENSATION</Text>
-                   <Input value={timecompensation}   width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
+                   <Input value = {cancelcharge} onChange={(e)=>{setcancelcharge(e.target.value)}}    width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
                </HStack> 
     
     
                <HStack   width={'95%'} gap={'10px'} p={'4px'}>
                    <Text  width={'30%'} fontSize={'x-small'} color={'white'} fontWeight={'light'}>AMOUNT TO BE RETURNED</Text>
-                   <Input width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
+                   <Input  value = {compensationamount} onChange={(e)=>{setcompensationamount(e.target.value)}}  width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
                </HStack>
     
                {compensateerror && 
