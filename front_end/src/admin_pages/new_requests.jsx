@@ -976,6 +976,7 @@ const rejectrequest = async function(){
             }
         })
        })
+       
         
        socket.current.emit('cancel_accepted' , {data:info.request} , function(){
         console.log('cancel accepteed successfully')
@@ -2556,43 +2557,7 @@ return;
 
 
 
-                     {setcompensation  &&     
-
-
-
-<>
-
-<Text  width={'90%'} isTruncated={true} fontSize={'small'} color={'white'} >SET COMPENSATION PARAMETERS</Text>
-
-   <HStack   width={'95%'} gap={'10px'} p={'4px'}>
-               <Text  width={'30%'} fontSize={'x-small'} color={'white'} fontWeight={'light'}>TIME COMPENSATION</Text>
-               <Input value={timecompensation}   width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
-           </HStack> 
-
-
-           <HStack   width={'95%'} gap={'10px'} p={'4px'}>
-               <Text  width={'30%'} fontSize={'x-small'} color={'white'} fontWeight={'light'}>AMOUNT TO BE RETURNED</Text>
-               <Input width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
-           </HStack>
-
-
-          
-
-           <HStack   width={'95%'} gap={'10px'} p={'4px'}>
-
-           {compensateerror && 
-               <Text mt={'5px'} mb={'5px'} color={'red'} fontSize={'x-small'} fontWeight={'light'} >{compensateerror}</Text>
-               }
-             
-           <Button p={'2px'} colorScheme='blue'  borderRadius={'10px'} onClick={initiatecompensation}   >COMPENSATE 
-           {compensating &&  
-             <Spinner        width={'20px'} height={'20px'} color='white'    />
-           }
-           </Button>
-         </HStack>
-         </>
-
-}
+                    
 </>
                        }
 
@@ -2699,13 +2664,75 @@ return;
 
 
 
+{/* CANCEL ACCEPTED REQUESTS */}
+   {(selectedrequest && selectedrequest.cancelled && selectedrequest.cancel_accepted)  && 
+   
+        
+
+
+
+    <>
+
+
+    <HStack   width={'95%'} gap={'10px'} p={'4px'}>
+    <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'}>TOTAL PAY REQUIRED</Text>
+    <Input  readOnly={true}   value={selectedrequest.payments.total_payment_required}   width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
+</HStack>
+
+<HStack   width={'95%'} gap={'10px'} p={'4px'}>
+    <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'}>AMOUNT PAID SO FAR</Text>
+    <Input readOnly={true} value={selectedrequest.payments.total_paid}   width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
+</HStack>
+
+
+<HStack   width={'95%'} gap={'10px'} p={'4px'}>
+    <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'}>AMOUNT REMAINING</Text>
+    <Input    readOnly={true}   value={selectedrequest.payments.amount_remaining}   width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
+</HStack>
+
+    
+    <Text  width={'90%'} isTruncated={true} fontSize={'small'} color={'white'} >SET COMPENSATION PARAMETERS</Text>
+    
+       <HStack   width={'95%'} gap={'10px'} p={'4px'}>
+                   <Text  width={'30%'} fontSize={'x-small'} color={'white'} fontWeight={'light'}>TIME COMPENSATION</Text>
+                   <Input value={timecompensation}   width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
+               </HStack> 
+    
+    
+               <HStack   width={'95%'} gap={'10px'} p={'4px'}>
+                   <Text  width={'30%'} fontSize={'x-small'} color={'white'} fontWeight={'light'}>AMOUNT TO BE RETURNED</Text>
+                   <Input width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
+               </HStack>
+    
+               {compensateerror && 
+                   <Text mt={'5px'} mb={'5px'} color={'red'} fontSize={'x-small'} fontWeight={'light'} >{compensateerror}</Text>
+                   }
+              
+    
+               <HStack   width={'95%'} gap={'10px'} p={'4px'}>
+    
+             
+                 
+               <Button p={'2px'} colorScheme='blue'  borderRadius={'10px'} onClick={initiatecompensation}   >COMPENSATE 
+               {compensating &&  
+                 <Spinner        width={'20px'} height={'20px'} color='white'    />
+               }
+               </Button>
+             </HStack>
+             </>
+    
+    
+   
+   
+   }
+
                       {/* COMPENSATED REQUESTS */}
 
-                      {/* {(selectedrequest.cancelled&&selectedrequest.cancel_accepted&&selectedrequest.cancelinfo.compensated) && 
+                      {(selectedrequest && selectedrequest.cancelled&&selectedrequest.cancel_accepted&&selectedrequest.cancelinfo.compensated) && 
                       
                         <Text alignSelf={'center'} mt={'20px'}  mb={'20px'} color={'white'} fontWeight={'light'} >THSIS REQUEST HAS BEEN COMPENSATED !</Text>
                       
-                      } */}
+                      }
 
          {/* REJECTED REQUEST */}
 {selectedrequest&&selectedrequest.rejected &&
