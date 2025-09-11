@@ -2701,11 +2701,11 @@ return;
 
                       {/* COMPENSATED REQUESTS */}
 
-                      {(selectedrequest.cancelled&&selectedrequest.cancel_accepted&&selectedrequest.cancelinfo.compensated) && 
+                      {/* {(selectedrequest.cancelled&&selectedrequest.cancel_accepted&&selectedrequest.cancelinfo.compensated) && 
                       
                         <Text alignSelf={'center'} mt={'20px'}  mb={'20px'} color={'white'} fontWeight={'light'} >THSIS REQUEST HAS BEEN COMPENSATED !</Text>
                       
-                      }
+                      } */}
 
          {/* REJECTED REQUEST */}
 {selectedrequest&&selectedrequest.rejected &&
