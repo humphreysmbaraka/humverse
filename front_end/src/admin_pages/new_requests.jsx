@@ -51,6 +51,10 @@ function New_Requests() {
     const [proceeding , setproceeding]= useState(false);
     const [proceederror , setproceederror] = useState(null)
     const [setcompensation , setsetcompensation]  = useState(false);
+    const [compensating , setcompensating] = useState(false);
+    const [compensateerror , setcompensateerror] =useState(null);
+    const [cancelcharge , setcancelcharge] = useState(null);
+    const [compensationamount , setcompensationamount] = useState(null);
     // const [rejreason , setrejreason] = useState(null);
     const {socket , requestreceived , requestupdated , requestcancelled , cancelaccepted} = useContext(socketcontext);
 
@@ -997,6 +1001,67 @@ const rejectrequest = async function(){
       }
   }
 
+
+
+  const initiatecompensation = async function(){
+     try{
+        if(compensating){
+
+        }
+
+       const go = confirm('initiate compensation');
+       if(!go){
+        return;
+       }
+
+       if(!cancelcharge || cancelcharge.trim()=='' || isNaN(cancelcharge)  || !compensationamount || compensationamount.trim()==''  || isNaN(compensationamount)){
+return;
+       }
+
+       const comp = await(`${BASE_URL}/initiate_compensation` , {
+        method:'PATCH',
+        credentials:'include',
+        headers:{
+            'Content-Type' : 'application/json'
+        },
+        body:JSON.stringify({id:selectedrequest._id ,compensationamount , cancelcharge })
+       })
+
+
+       if(comp.ok){
+        const info = await comp.json();
+        setcompensating(false);
+        setcompensateerror(null)
+        setselectedrequest(info.request);
+        setallreqs(function(prev){
+            return prev.map(function(val , ind){
+                if(val._id ==(info.request)._id){
+                    return info.request;
+                }
+                else{
+                    return val;
+                }
+            })
+        })
+       }
+       else{
+        setcompensating(false);
+        const info = await comp.json();
+        if(String(comp.status).startsWith('4')){
+            setcompensateerror(info.message);
+        }
+        else{
+            setcompensateerror('server error')
+        }
+       }
+
+     }
+     catch(err){
+        console.log('coul not initiate compensation' , err);
+        setcompensateerror('could not initiate compensation');
+        setcompensating(false);
+     }
+  }
   return (
    <Box width={winwidth} height={winheight}  bg={'gray.800'} padding={'4px'}   >
     <HStack  width={'90%'} height={'100%'} gap={'40px'} alignItems={'center'}  justifyContent={'space-between'} >
@@ -2467,38 +2532,52 @@ const rejectrequest = async function(){
                        
 
                      
-                  {proceederror  &&
-                                              <Text  width={'30%'} fontSize={'small'} color={'red'} mb={'10px'} mt={'10px'} fontWeight={'bold'}>{proceederror}</Text>
+                
+                       
+                       {(selectedrequest.cancelled && !selectedrequest.cancel_accepted) &&
+                       
+<>
+                       {proceederror  &&
+                        <Text  width={'30%'} fontSize={'x-small'} color={'red'} mb={'10px'} mt={'10px'} fontWeight={'bold'}>{proceederror}</Text>
 
-                  }
-                        <HStack   width={'95%'} gap={'10px'} p={'4px'}>
-                          <Button gap={'10px'} p={'4px'} colorScheme='blue'  borderRadius={'10px'}  onClick={acceptcancel}  >ACCEPT CANCELLATION  
-                          {proceeding && 
-                          <Spinner      width={'30px'}  height={'30px'} color='white'          />
-                          }
-                          </Button>
-                        </HStack>
+}
+                       <HStack   width={'95%'} gap={'10px'} p={'4px'}>
+                       <Button gap={'10px'} p={'4px'} colorScheme='blue'  borderRadius={'10px'}  onClick={acceptcancel}  >ACCEPT CANCELLATION  
+                       {proceeding && 
+                       <Spinner      width={'30px'}  height={'30px'} color='white'          />
+                       }
+                       </Button>
+                     </HStack>
+</>
+                       }
 
 
              {setcompensation  &&   
+
+
+
              <>
 
 <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'}>SET COMPENSATION PARAMETERS</Text>
 
                 <HStack   width={'95%'} gap={'10px'} p={'4px'}>
-                            <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'}>TIME COMPENSATION</Text>
+                            <Text  width={'30%'} fontSize={'x-small'} color={'white'} fontWeight={'bold'}>TIME COMPENSATION</Text>
                             <Input value={timecompensation}   width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
                         </HStack> 
 
 
                         <HStack   width={'95%'} gap={'10px'} p={'4px'}>
-                            <Text  width={'30%'} fontSize={'small'} color={'white'} fontWeight={'bold'}>AMOUNT TO BE RETURNED</Text>
+                            <Text  width={'30%'} fontSize={'x-small'} color={'white'} fontWeight={'bold'}>AMOUNT TO BE RETURNED</Text>
                             <Input width={'60%'} height={'30px'} p={'2px'} borderRadius={'10px'} bg={'white'}           />
                         </HStack>
 
 
                         <HStack   width={'95%'} gap={'10px'} p={'4px'}>
-                        <Button p={'2px'} colorScheme='blue'  borderRadius={'10px'}    >COMPENSATE</Button>
+                        <Button p={'2px'} colorScheme='blue'  borderRadius={'10px'} onClick={initiatecompensation}   >COMPENSATE 
+                        {compensating &&  
+                          <Spinner        width={'20px'} height={'20px'} color='white'    />
+                        }
+                        </Button>
                       </HStack>
                       </>
              

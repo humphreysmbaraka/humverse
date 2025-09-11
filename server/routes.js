@@ -454,8 +454,20 @@ router.post('/send_request' ,  memstorage.array('attachments' , 20) ,  async fun
       await sender.requests.push(newrequest._id);
       await sender.save();
       // await sendMessage(newrequest.number , 'your request has been sent successfully. Now it is awaiting processing')
-      await sendMessage(newrequest.number , 'Your request has been sent successfully , and now is awaiting processing');
-      await sendMessage(process.env.MY_NUMBER , 'you have received a new request from a client');
+      await sendMessage(newrequest.number , `Your request has been sent successfully , and now is awaiting processing
+       request ID${request._id},
+       date:${request.date},
+       type : ${request.type},
+       desctiption : ${request.description}
+      
+      `);
+      await sendMessage(process.env.MY_NUMBER , `you have received a new request from a client
+      request ID${request._id},
+      date:${request.date},
+      type : ${request.type},
+      desctiption : ${request.description}
+      
+      `);
       return res.status(200).json({error:false , request:newrequest});
       // include saving therequest's id in the user's requests
   
@@ -468,8 +480,18 @@ router.post('/send_request' ,  memstorage.array('attachments' , 20) ,  async fun
       await newrequest.save();
       await sender.requests.push(newrequest._id);
       await sender.save();
-      await sendMessage(newrequest.number , 'Your request has been sent successfully , and now is awaiting processing');
-      await sendMessage(process.env.MY_NUMBER , 'you have received a new request from a client');
+      await sendMessage(newrequest.number , `Your request has been sent successfully , and now is awaiting processing
+      request ID${request._id},
+      date:${request.date},
+      type : ${request.type},
+      desctiption : ${request.description}
+      `);
+      await sendMessage(process.env.MY_NUMBER , `you have received a new request from a client
+      request ID${request._id},
+      date:${request.date},
+      type : ${request.type},
+      desctiption : ${request.description}
+      `);
 
       // await sendMessage(process.env.MY_NUMBER , 'You have received a new request');
       return res.status(200).json({error:false});
@@ -714,7 +736,10 @@ router.patch('/accept_request'  , async function(req , res){
         request.payments.amount_remaining = request.payments.total_payment_required;
         await request.save();
         console.log('reques accepted successfully' , request);
-        await sendMessage(request.number , 'Your request has been accepted. Visit humverse to see the charges');
+        await sendMessage(request.number , `Your request has been accepted. Visit humverse to see the charges
+        request ID${request._id},
+        
+        `);
 
         return res.status(200).json({error:false , message:'request accepted successfully' , request});
 
@@ -761,7 +786,12 @@ router.patch('/edit_accepted_request' , async function(req , res){
       request.payments.amount_remaining = (Number(request.payments.total_payment_required)-(Number(request.payments.total_paid)));
       await request.save();
       console.log('request editted successfully' , request);
-      await sendMessage(request.number , 'Your request has been adjusted/modified. visit to see the changes');
+      await sendMessage(request.number , `Your request has been adjusted/modified. visit to see the changes
+      request ID${request._id},
+      update date:${request.updatedAt},
+      type : ${request.type},
+      desctiption : ${request.description}
+      `);
 
       return res.status(200).json({error:false , message:'request editted successfully' , request});
 
@@ -791,7 +821,12 @@ router.patch('/reject_request' , async function(req , res){
       //  request.accepted=false;
 
        await request.save();
-       await sendMessage(request.number , 'we are sorry to inform you that your request has been rejected');
+       await sendMessage(request.number , `we are sorry to inform you that your request has been rejected
+       request ID${request._id},
+       date of rejection:${request.updatedAt},
+       reason for rejection : ${request.rejection_reason},
+       
+       `);
 
        return res.status(200).json({error:false , message:'request rejected successfully' , request});
     }
@@ -820,7 +855,10 @@ router.patch('/redeem_request'  , async function(req , res){
       //  request.accepted=false;
 
        await request.save();
-       await sendMessage(request.number , 'Your request has been redeemed. Visit humverse web app to see the charges ad other parameters');
+       await sendMessage(request.number , `Your request has been redeemed. Visit humverse web app to see the charges ad other parameters
+       request ID${request._id},
+       date of redemption:${request.updatedAt},
+       `);
        return res.status(200).json({error:false , message:'request redeemed successfully' , request:request});
     }
     else{
@@ -849,12 +887,47 @@ router.patch('/accept_cancel' , async function(req , res){
       request.cancel_accepted = true;
       await request.save();
       console.log('cancel accepted successfully');
-      return res.status(200).json({request:request})
+      await sendMessage(request.number , `Your cancellation request has been received
+      request ID${request._id},
+      date:${request.updatedAt},
+      
+      `);
+      return res.status(200).json({error:false , request:request})
      }
   }
   catch(err){
     console.log('error occured when trying to accept cancellation ' , err);
     return res.status(500).json({error:true , problem:err})
+  }
+})
+
+
+router.patch('/initiate_compensation' , async function(req , res){
+  try{
+    const {id , compensationamount , cancelcharge} = req.body;
+    const request = await Request.findOne({_id:new ObjectId(id)});
+    if(!request){
+      console.log('no such request found');
+      return res.status(400).json({error:true , message:'no such request found'});
+    }
+    else{
+       request.cancelinfo.compensated_amount = compensationamount;
+       request.cancelinfo.charges = cancelcharge;
+       request.cancelinfo.compensated = true;
+
+       await request.save();
+       console.log('compensation was done successfully');
+       await sendMessage(request.number , `Your compensation for the cancelled request has been processed  
+       request ID${request._id},
+       date:${request.updatedAt},
+       `);
+
+       return res.status(200).json({error:fale , request:request});
+    }
+  }
+  catch(err){
+    console.log('could not initiate compensation' , err);
+    return res.status(500).json({error:true , problem:'server error'});
   }
 })
 
@@ -878,8 +951,17 @@ router.post('/cancel_request'  , async function(req , res){
     request.cancelled = true;
     await request.save();
     console.log('request cancelled succesfully');
-    await sendMessage(request.number , 'You have successfully cancelled the request.Now it is under processing and any processes eg copensations , charges etc will be processed in 24 hours');
-    await sendMessage(process.env.MY_NUMBER , 'A client has cancelled a request');
+    await sendMessage(request.number , `You have successfully cancelled the request.Now it is under processing and any processes eg copensations , charges etc will be processed in 24 hours
+    request ID${request._id},
+    date:${request.updatedAt},
+    
+    
+    `);
+    await sendMessage(process.env.MY_NUMBER , `A client has cancelled a Request
+    request ID${request._id},
+    date:${request.updatedAt},
+    
+    `);
 
     return res.status(200).json({error:false , message:'request cancelled successfully' , request});
   }
@@ -905,8 +987,17 @@ router.post('/uncancel_request'  , async function(req , res){
     request.cancelled = false;
     await request.save();
     console.log('request uncancelled succesfully');
-    await sendMessage(request.number , 'You have successfully uncancelled the request.Now it is under processing');
-    await sendMessage(process.env.MY_NUMBER , 'A cancelled request has been uncancelled');
+    await sendMessage(request.number , `You have successfully uncancelled the request.Now it is under processing
+    request ID${request._id},
+    date:${request.updatedAt},
+    
+    `);
+    await sendMessage(process.env.MY_NUMBER , `A cancelled request has been uncancelled
+    
+    request ID${request._id},
+    date:${request.updatedAt},
+   
+    `);
 
     return res.status(200).json({error:false , message:'request uncancelled successfully' ,request});
   }
@@ -1415,8 +1506,17 @@ router.patch('/edit_request'  , memstorage.array('attachments' , 20) ,  async fu
       // await sender.requests.push(newrequest._id);
       // await sender.save();
       console.log('request upated successfully');
-      await sendMessage(request.number , 'You have successfully editted the request. Now it will be processed');
-      await sendMessage(process.env.MY_NUMBER , 'A request was editted');
+      await sendMessage(request.number , `You have successfully editted the request. Now it will be processed
+      request ID${request._id},
+      date:${request.updatedAt},
+      type : ${request.type},
+      desctiption : ${request.description}
+      `);
+      await sendMessage(process.env.MY_NUMBER , `A request was editted
+      request ID${request._id},
+      date:${request.updatedAt},
+     
+      `);
       return res.status(200).json({error:false});
   
     }
@@ -1453,7 +1553,11 @@ router.patch('/view_updates/:id'   , async function(){
       await request.save();
 
       console.log('updates seen');
-      await sendMessage(request.number , 'Your updates on the request have been seen , and they are nowbeing worked on');
+      await sendMessage(request.number , `Your updates on the request have been seen , and they are nowbeing worked on
+      request ID${request._id},
+      date:${request.updatedAt},
+     
+      `);
 
        return res.status(200).json({error:false , message:'request updates seen' , request})
     }
@@ -2153,7 +2257,12 @@ router.post('/send_preview'  , async function(req , res){
       request.previews = newprevs;
       await request.save();
       console.log('previews sent successfully')
-      await sendMessage(request.number , 'new previews for your request have been sent. visit the website to view the previews of the progress being mae on your request.');
+      await sendMessage(request.number , `new previews for your request have been sent. visit the website to view the previews of the progress being mae on your request.
+      request ID${request._id},
+      date:${request.updatedAt},
+     
+      
+      `);
 
       return res.status(200).json({error:false , message:'previews sent successfully' , request:request});
 
