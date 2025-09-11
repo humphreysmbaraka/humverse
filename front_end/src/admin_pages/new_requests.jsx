@@ -1045,6 +1045,8 @@ return;
                 }
             })
         })
+        setcancelcharge(null);
+        setcompensationamount(null);
 
         socket.current.emit('compensation' , {data:info.request} , function(){
             console.log('compensation initiated')
@@ -1120,8 +1122,8 @@ return;
                             <Text color={'white'}   >{val.client.username}</Text>
                             <Text color={'white'}   >{val.createdAt.slice(0 , 10)}</Text>
                             <Text color={'white'}   >{val.createdAt.slice(11 , 16)}</Text>
-                            <Text color={'green'} p={'2px'} borderRadius={'10px'} borderWidth={'1px'} borderColor={'white'}  >{val.updated?'UPDATED':''}</Text>
-                            <Text color={val.accepted&&!val.initiated&&!val.cancelled&&!val.rejected?'green':val.accepted&&val.initiated&&!val.cancelled&&!val.rejected?'purple':val.rejected?'red':val.cancelled?'orange':'green'}   >{val.accepted&&!val.initiated&&!val.cancelled&&!val.rejected?'ACCEPTED':val.accepted&&val.initiated&&!val.cancelled&&!val.rejected?'INITIATED':val.rejected?'REJECTED':val.cancelled?'CANCELLED':'NEW'}</Text>
+                            <Text color={'green'} p={'2px'}  >{val.updated?'UPDATED':''}</Text>
+                            <Text color={val.accepted&&!val.initiated&&!val.cancelled&&!val.rejected?'green':val.accepted&&val.initiated&&!val.cancelled&&!val.rejected?'purple':val.rejected?'red':val.cancelled?'orange':'green'}   >{val.accepted&&!val.initiated&&!val.cancelled&&!val.rejected?'ACCEPTED':val.accepted&&val.initiated&&!val.cancelled&&!val.rejected?'INITIATED':val.rejected?'REJECTED':(val.cancelled && !val.cancelinfo.compensated)?'CANCELLED':(val.cancelled && val.cancelinfo.compensated)?'compensated':'NEW'}</Text>
                             {/* <Text color={val.received?'green':'orange'} >{val.received?'Received':'not yet received'}</Text>
                             <Text color={val.initiated?'green.500':'orange'} >{val.initiated?'Initiated':'not yet initiated'}</Text>
                             <Text color={val.rejected?'red':'green'}  >{val.rejected?'rejected':'not rejected'}</Text>
@@ -1152,7 +1154,7 @@ return;
                                     })
                                 })
                                 setselectedrequest(val);
-                            }} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'whire'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
+                            }} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
                             <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
                             <Text>{val.client.username}</Text>
                             <Text>{val.createdAt.slice(0 , 10)}</Text>
@@ -1190,7 +1192,7 @@ return;
                                     })
                                 })
                                 setselectedrequest(val);
-                            }} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'whire'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
+                            }} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
                                 <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
                                 <Text>{val.client.username}</Text>
                                 <Text>{val.createdAt.slice(0 , 10)}</Text>
@@ -1232,7 +1234,7 @@ return;
                                     })
                                 })
                                 setselectedrequest(val);
-                            }} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'whire'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
+                            }} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
                                 <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
                                 <Text>{val.client.username}</Text>
                                 <Text>{val.createdAt.slice(0 , 10)}</Text>
@@ -1271,11 +1273,12 @@ return;
                                     })
                                 })
                                 setselectedrequest(val);
-                            }} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'whire'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
+                            }} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
                                 <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
                                 <Text>{val.client.username}</Text>
                                 <Text>{val.createdAt.slice(0 , 10)}</Text>
                                 <Text>{val.createdAt.slice(11 , 16)}</Text>
+                                <Text>{(val.cancelled && val.cancelinfo.compensated)?'compensated':'...'}</Text>
                                 {/* <Text>{val.accepted?'Accepted':'not yet accepted'}</Text> */}
                                 {/* <Text>{val.received?'Received':'not yet received'}</Text> */}
                                 {/* <Text color={'white'} >{val.initiated?'Initiated':'not yet initiated'}</Text> */}
@@ -1311,7 +1314,7 @@ return;
                                     })
                                 })
                                 setselectedrequest(val);
-                            }} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'whire'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
+                            }} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
                                 <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
                                 <Text>{val.client.username}</Text>
                                 <Text>{val.createdAt.slice(0 , 10)}</Text>
@@ -1367,7 +1370,7 @@ return;
                  {allreqs?.length > 0 && 
                   allreqs.map(function(val , index){
                     return(
-                        <HStack width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'whire'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
+                        <HStack width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
                             <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
                             <Text>{val.client.username}</Text>
                             <Text>{val.createdAt.slice(0 , 10)}</Text>
@@ -2665,7 +2668,7 @@ return;
 
 
 {/* CANCEL ACCEPTED REQUESTS */}
-   {(selectedrequest && selectedrequest.cancelled && selectedrequest.cancel_accepted)  && 
+   {(selectedrequest && selectedrequest.cancelled && selectedrequest.cancel_accepted &&!selectedrequest.cancelinfo.compensated)  && 
    
         
 
