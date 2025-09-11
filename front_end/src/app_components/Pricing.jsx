@@ -14,8 +14,9 @@ function Pricing() {
   return (
     <Motionbox 
       width={['100vw', '100%']}  
-      minHeight={['100vh', winheight]}
-      height={['auto', winheight]}
+      // minHeight={['100vh', winheight]}
+      // height={['auto', winheight]}
+      height={['100vh , 100vh']}
       p={['10px', '15px', '20px']} 
       bg={'gray.800'} 
       overflow={'auto'}
