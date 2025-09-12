@@ -364,9 +364,9 @@ function Assistant() {
         return (
             <Box width="100%" height="100vh" display="flex" flexDirection="column" alignItems="center" justifyContent="center" bg="gray.800">
                 <Text color="white" fontSize={{ base: "xl", md: "xxx-large" }} fontWeight="bold" mb={4}>
-                    HAVE ANY QUERRIES ABOUT THE PLATFORM , SERVICES OR TERMS AND CONDITIONS?
+                    HAVE ANY QUERRIES?
                 </Text>
-                <Text color="white" fontSize={{ base: "sm", md: "md" }} fontWeight="bold" textAlign="center" px={4}>
+                <Text color="white" fontSize={{ base: "sm", md: "sm" }} fontWeight="bold" textAlign="center" px={4}>
                     AI ASSISTANT COMING SOON!
                 </Text>
             </Box>

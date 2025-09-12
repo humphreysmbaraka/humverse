@@ -37,10 +37,14 @@ function Contacts() {
 
        <Box  mt={'10px'} mb={'10px'} h={'200px'}  bg={'gray.800'}  borderRadius={'15px'} display={'flex'} flexDirection={'column'} gap={'10px'} p={'5px'} >
         <Text fontSize={'medium'} color={'white'}  >E-Mail</Text>
-         <Text fontSize={'large'} color={'white'} fontWeight={'bold'} >humphreyshazam66@gmail.com</Text>
+         <Text fontSize={'large'} color={'white'} fontWeight={'bold'} >humversedevs@gmail.com</Text>
 
-        <Text fontSize={'medium'} color={'white'}  >E-Mail 2</Text> 
-        <Text fontSize={'large'} color={'white'} fontWeight={'bold'} >humphreycasual@gmail.com</Text>
+        <Text fontSize={'medium'} color={'white'}  >X</Text> 
+        <Text fontSize={'large'} color={'white'} fontWeight={'bold'} >@humversedevs</Text>
+
+
+        <Text fontSize={'medium'} color={'white'}  >instagram</Text> 
+        <Text fontSize={'large'} color={'white'} fontWeight={'bold'} >humversedevs</Text>
        </Box>
        {/* <Box  mt={'10px'} mb={'10px'} h={'200px'}  bg={'gray.800'}  borderRadius={'15px'}  ></Box>
        <Box  mt={'10px'} mb={'10px'} h={'200px'}  bg={'gray.800'}  borderRadius={'15px'}  ></Box> */}

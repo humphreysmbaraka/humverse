@@ -251,12 +251,12 @@ const handlefileinput = async function(e){
       <Text  color={'red.500'}  fontWeight={'light'} width={'90%'}  >{submissionerror}</Text>
 
           <HStack  width={'100%'} alignItems={'center'} justifyContent={'space-around'} gap={'40px'}  >
-        <Text  width={'20%'} color={'white'}  fontWeight={'bold'} >E-Mail</Text>
+        <Text  width={'20%'} color={'white'}  fontWeight={'light'} fontSize={'small'} >E-Mail</Text>
         <Input  onChange={(val)=>{setemail(val.target.value)}}  width={'75%'} bg={'white'} borderRadius={'10px'} placeholder='enter email'   ></Input>
           </HStack>
 
           <HStack  width={'100%'} alignItems={'center'} justifyContent={'space-around'} gap={'40px'}  >
-        <Text  color={'white'}  fontWeight={'bold'} width={'23%'}  >Password</Text>
+        <Text  color={'white'}  fontWeight={'light'} fontSize={'small'} width={'23%'}  >Password</Text>
         <Input  onChange={(val)=>{setpassword(val.target.value)}}   width={'75%'} bg={'white'} borderRadius={'10px'}  placeholder='enter your password'></Input>
           </HStack>
 

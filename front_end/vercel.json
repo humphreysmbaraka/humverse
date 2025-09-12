@@ -1,6 +1,11 @@
 {
-    "rewrites": [
-      { "source": "/(.*)", "destination": "/" }
-    ]
-  }
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "destination": "https://humverse.dev/$1",
+      "permanent": true
+    }
+  ]
+}
+
   
