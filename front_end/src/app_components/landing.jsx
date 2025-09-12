@@ -158,7 +158,7 @@ function Landing() {
             p="2px" 
             display="flex" 
             alignItems="center" 
-            justifyContent="center" 
+            justifyContent='right' 
             fontSize={fontSizeSmall}
             color="white" 
             fontWeight="bold"
