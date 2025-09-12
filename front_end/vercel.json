@@ -2,10 +2,14 @@
   "redirects": [
     {
       "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "humverse.vercel.app"
+        }
+      ],
       "destination": "https://humverse.dev/$1",
       "permanent": true
     }
   ]
 }
-
-  
