@@ -16,27 +16,14 @@ function Landing() {
   const [form, setform] = useCycle('hide', 'show');
 
   const authformvariants = {
-    initial: {
-      x: 1500,
-      transition: { duration: 1, ease: 'easeInOut' }
-    },
-    show: {
-      x: 0,
-      transition: { duration: 1, ease: 'easeInOut' }
-    },
-    hide: {
-      x: 1500,
-      transition: { duration: 1, ease: 'easeInOut' }
-    }
+    initial: { x: 1500, transition: { duration: 1, ease: 'easeInOut' } },
+    show: { x: 0, transition: { duration: 1, ease: 'easeInOut' } },
+    hide: { x: 1500, transition: { duration: 1, ease: 'easeInOut' } }
   }
 
   const buttonspositionvariant = {
-    initial: {
-      y: 0, transition: { duration: 0.5, ease: 'easeInOut' }
-    },
-    then: {
-      y: 50, transition: { duration: 0.5, ease: 'easeInOut' }
-    }
+    initial: { y: 0, transition: { duration: 0.5, ease: 'easeInOut' } },
+    then: { y: 50, transition: { duration: 0.5, ease: 'easeInOut' } }
   }
 
   // Responsive values
@@ -55,6 +42,10 @@ function Landing() {
   const vh = useBreakpointValue({ base: "100vh", md: "100vh" });
   const vw = useBreakpointValue({ base: "100vw", md: "100vw" });
 
+  // Responsive initial X for slide-in
+  const initialX = useBreakpointValue({ base: 500, md: 1500 }); // mobile slides in less distance
+  const finalX = useBreakpointValue({ base: 0, md: 0 }); // center for mobile, default for desktop
+
   const textboxref = useRef(null);
 
   return (
@@ -64,22 +55,11 @@ function Landing() {
       height={vh} 
       overflow="hidden" 
       bg="gray.800"
-      bgGradient="linear(to-br, gray.800, gray.700)" // subtle abstract gradient
-      exit={{ 
-        x: -3000, 
-        transition: { duration: 0.5, ease: 'easeIn' } 
-      }}
+      bgGradient="linear(to-br, gray.800, gray.700)"
+      exit={{ x: -3000, transition: { duration: 0.5, ease: 'easeIn' } }}
     >
-      {/* Optional subtle animated circles in the background for extra abstraction */}
-      <Box
-        position="absolute"
-        top="0"
-        left="0"
-        width="100%"
-        height="100%"
-        zIndex={0}
-        overflow="hidden"
-      >
+      {/* Background floating circles */}
+      <Box position="absolute" top="0" left="0" width="100%" height="100%" zIndex={0} overflow="hidden">
         {[...Array(5)].map((_, i) => (
           <Box
             key={i}
@@ -93,36 +73,39 @@ function Landing() {
             animation={`float 15s linear infinite`}
           />
         ))}
-
-        <style>
-          {`
-            @keyframes float {
-              0% { transform: translateY(0px); }
-              50% { transform: translateY(-30px); }
-              100% { transform: translateY(0px); }
-            }
-          `}
-        </style>
+        <style>{`
+          @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-30px); }
+            100% { transform: translateY(0px); }
+          }
+        `}</style>
       </Box>
 
       <Motionhstack 
         zIndex={1} 
         opacity={1} 
-        ml={{ base: "10px", md: "20px" }}
+        ml={{ base: "0", md: "20px" }}
         position="absolute"
-        top={{ base: "30%", md: "50%" }}
-        transform={{ base: "translateY(-30%)", md: "translateY(-50%)" }}
+        top={{ base: "50%", md: "50%" }}
+        left={{ base: "50%", md: "unset" }}
+        transform={{ base: "translate(-50%, -50%)", md: "translateY(-50%)" }}
         p={{ base: "10px", md: "15px" }}
         flexDirection={{ base: "column", md: "row" }}
         alignItems={{ base: "center", md: "flex-start" }}
-        initial={{ opacity: 0, x: 1500 }}
-        animate={{ opacity: 1, x: 0 }}
+        initial={{ opacity: 0, x: initialX }}
+        animate={{ opacity: 1, x: finalX }}
         transition={{ delay: 1, duration: 2.5 }}
-        borderColor={'white'}
-        borderWidth={'1px'}
-        alignSelf={'center'}
       >
-        <VStack alignSelf={'center'}  borderColor={'white'} borderWidth={'1px'} width={textWidth} p={{ base: "10px", md: "15px" }} justifyContent={'center'}  alignItems={{ base: "center", md: "flex-start" }}>
+        <VStack 
+          alignSelf={'center'}  
+          borderColor={'white'} 
+          borderWidth={'1px'} 
+          width={textWidth} 
+          p={{ base: "10px", md: "15px" }} 
+          justifyContent={'center'}  
+          alignItems={{ base: "center", md: "flex-start" }}
+        >
           <Text fontSize={fontSizeLarge} alignSelf={'center'} color="white" textAlign={{ base: "center", md: "left" }}>
             WELCOME TO HUMVERSE
           </Text>
