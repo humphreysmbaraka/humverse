@@ -70,6 +70,23 @@ function App() {
   {/* <meta name="twitter:creator" content="@HumverseAI" /> */}
 
 
+
+  <script type="application/ld+json">
+    {`
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "url": "https://humverse.dev",
+        "logo": "https://humverse.dev/squares.png",
+        "name": "Humverse"
+      }
+    `}
+  </script>
+
+
+
+
+
       </Helmet>
 
     <Auth_Provider>
