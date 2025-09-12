@@ -41,7 +41,10 @@ function App() {
         <meta name="keywords" content="website makers , website , web app ,  web app makers , app makers , app ,  phone app makers , API makers , software makers , software , API ,  API makers" />
         <meta name="author" content="Humphrey Mbaraka" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="icon" type="image/png" href="/squares.png" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:locale" content="en_US" />
+
+        <link rel="icon" type="image/png" href="https://humverse.dev/squares.png" />
 <link rel="canonical" href="https://humverse.dev" />
 <meta name="theme-color" content="#000000" />
 
