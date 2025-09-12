@@ -141,6 +141,7 @@ function Landing() {
           animate={showauthform ? 'then' : 'initial'}
           borderWidth={'1px'}
           borderColor={'white'}
+          alignSelf={'center'}
         >
           <Motionbutton 
             _hover={{ bg: 'none' }} 
