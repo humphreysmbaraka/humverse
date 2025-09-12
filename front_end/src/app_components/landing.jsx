@@ -119,7 +119,7 @@ function Landing() {
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 1, duration: 2.5 }}
       >
-        <VStack width={textWidth} p={{ base: "10px", md: "15px" }} justifyContent={'center'}  alignItems={{ base: "center", md: "flex-start" }}>
+        <VStack  borderColor={'white'} borderWidth={'1px'} width={textWidth} p={{ base: "10px", md: "15px" }} justifyContent={'center'}  alignItems={{ base: "center", md: "flex-start" }}>
           <Text fontSize={fontSizeLarge} alignSelf={'center'} color="white" textAlign={{ base: "center", md: "left" }}>
             WELCOME TO HUMVERSE
           </Text>
