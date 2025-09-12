@@ -348,7 +348,9 @@ function Make_request() {
           DESCRIPTION
         </Text>
         
-        <Textarea  placeholder='describe what you want , eg i want a web app for doing x , where the user can do xyz and als obe able to communicate with other users .....'  value={description} onChange={(e)=>{setdescription(e.target.value)}} 
+        <Textarea  placeholder='describe what you want , eg 
+        
+        I want a social media web app that allows users to create profiles, post text, images, and videos, and interact with other users through likes, comments, and shares. It should have a news feed that shows updates from friends and followed pages, and support notifications for messages, mentions, and activity. Users should be able to follow each other, join groups, and search for content easily. The app should also include privacy settings, user authentication, and responsive design so it works smoothly on web and  mobile devices.'  value={description} onChange={(e)=>{setdescription(e.target.value)}} 
                   css={{ '&::-webkit-scrollbar': { display: 'none' }}} width={'95%'} bg={'white'} 
                   borderRadius={'15px'} resize={'none'} minH={'400px'} wordBreak={'break-word'} 
                   whiteSpace={'pre-wrap'} overflowWrap={'break-word'} />
