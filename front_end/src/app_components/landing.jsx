@@ -124,7 +124,7 @@ function Landing() {
             WELCOME TO HUMVERSE
           </Text>
           <Text fontSize={fontSizeMedium} color="white" textAlign={{ base: "center", md: "left" }}>
-            JUST DESCRIBE YOUR PRODUCT, AND WE WILL MAKE IT A REALITY
+            WE MAKE WHAT YOU WANT
           </Text>
         </VStack>
 

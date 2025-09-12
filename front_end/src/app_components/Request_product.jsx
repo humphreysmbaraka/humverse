@@ -308,7 +308,7 @@ function Make_request() {
   return (
    <Box width={winwidth} height={winheight} padding={'2px'} bg={'gray.800'} 
         display={'flex'} flexDir={{ base: 'column', md: 'row' }} 
-        alignItems={'center'} paddingBottom={'40px'} overflow={'auto'}>
+        alignItems={'center'} justifyContent={'center'} paddingBottom={'40px'} overflow={'auto'}>
        
        {/* <VStack width={sideWidth} height={'100%'} 
                borderRightWidth={'1px'} borderRightColor={'white'} 
@@ -318,7 +318,7 @@ function Make_request() {
                borderRightWidth={'1px'} borderRightColor={'white'} 
                display={{ base: 'none', md: 'flex' }} /> */}
  
-       <VStack width={mainWidth} height={'100%'} paddingLeft={{ base: '0', md: '10px' }} 
+       <VStack width={'90%'} height={'100%'} paddingLeft={{ base: '0', md: '10px' }} 
                overflow={'auto'} css={{ '&::-webkit-scrollbar': { display: 'none' } }}>
         
         <Text color={'white'} fontSize={{ base: 'sm', md: 'md' }}>DESCRIBE YOUR PRODUCT</Text>
