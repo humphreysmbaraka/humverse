@@ -210,7 +210,7 @@ function Landing() {
             animate="show"
             exit="hide"
           >
-            <Signup_prompt />
+            <Signup_prompt  closure={()=>{setshowauthform(false)}} />
           </Motionbox>
         }
       </AnimatePresence>
