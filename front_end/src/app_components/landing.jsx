@@ -111,7 +111,7 @@ function Landing() {
         ml={{ base: "10px", md: "20px" }}
         position="absolute"
         top={{ base: "30%", md: "50%" }}
-        transform={{ base: "translateY(-30%)", md: "translateY(-50%)" }}
+        transform={{ base: "translateY(-30%)", md: "translateY(-0%)" }}
         p={{ base: "10px", md: "15px" }}
         flexDirection={{ base: "column", md: "row" }}
         alignItems={{ base: "center", md: "flex-start" }}
