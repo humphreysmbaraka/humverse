@@ -24,7 +24,7 @@ function Socket_provider({children}) {
     const [previewsreceived , setpreviewsreceived] = useState(false);
     const [cancelaccepted , setcancelaccepted] = useState(false);
     const [compensationevent , setcompensationevent] = useState(null)
-
+    
 
 
 
@@ -89,7 +89,7 @@ function Socket_provider({children}) {
 
             socket.on('request_received' , async function(){
               try{
-                trigger_notification('NEW REQUEST' , 'a client just made a request' , squares , `https://humverce.vercel.app/main/view_requests`  )
+                trigger_notification('NEW REQUEST' , 'a client just made a request' , squares , `https://humverse.dev/view_requests`  )
                setrequestreceived(true);
                setTimeout(() => {
                  setrequestreceived(false);
@@ -103,7 +103,7 @@ function Socket_provider({children}) {
 
               socket.on('request_editted' , async function(){
               try{
-                trigger_notification('REQUEST HAS BEEN EDITTED' , 'a client just editted request' , squares , `https://humverce.vercel.app/main/view_requests`  )
+                trigger_notification('REQUEST HAS BEEN EDITTED' , 'a client just editted request' , squares , `https://humverse.dev/view_requests`  )
 
                setrequestupdated(true);
                setTimeout(() => {
@@ -119,7 +119,7 @@ function Socket_provider({children}) {
 
             socket.on('request_cancelled' , async function(){
               try{
-                trigger_notification('REQUEST CANCELLED' , 'a client just cancelled a request' , squares , `https://humverce.vercel.app/main/view_requests`  )
+                trigger_notification('REQUEST CANCELLED' , 'a client just cancelled a request' , squares , `https://humverse.dev/view_requests`  )
 
                setrequestcancelled(true);
                setTimeout(() => {
@@ -135,7 +135,7 @@ function Socket_provider({children}) {
 
             socket.on('request_rejected' , async function(){
               try{
-                trigger_notification('REQUEST REJECTED' , 'sorry , your request was rejected' , squares , `https://humverce.vercel.app/main`  )
+                trigger_notification('REQUEST REJECTED' , 'sorry , your request was rejected' , squares , `https://humverse.dev`  )
 
                setrequestrejected(true);
                setTimeout(() => {
@@ -150,7 +150,7 @@ function Socket_provider({children}) {
 
             socket.on('request_redeemed' , async function(){
               try{
-                trigger_notification('REQUEST REDEEMED' , 'your request got redeemed' , squares , `https://humverce.vercel.app/main`  )
+                trigger_notification('REQUEST REDEEMED' , 'your request got redeemed' , squares , `https://humverse.dev`  )
 
                setrequestredeemed(true);
                setTimeout(() => {
@@ -166,7 +166,7 @@ function Socket_provider({children}) {
 
             socket.on('request_uncancelled' , async function(){
               try{
-                trigger_notification('REQUEST GOT UNCANCELLED' , 'a client just uncancelled' , squares , `https://humverce.vercel.app/main/view_requests`  )
+                trigger_notification('REQUEST GOT UNCANCELLED' , 'a client just uncancelled' , squares , `https://humverse.dev/view_requests`  )
 
               setrequestuncancelled(true);
                setTimeout(() => {
@@ -181,7 +181,7 @@ function Socket_provider({children}) {
 
             socket.on('acceptance' , async function(){
               try{
-                trigger_notification('REQUEST ACCEPTED' , 'your request was accepted' , squares , `https://humverce.vercel.app/main`  )
+                trigger_notification('REQUEST ACCEPTED' , 'your request was accepted' , squares , `https://humverse.dev`  )
 
               setrequestaccepted(true);
                setTimeout(() => {
@@ -200,7 +200,7 @@ function Socket_provider({children}) {
 
             socket.on('previews' , async function(){
               try{
-                trigger_notification('REQUST PROGRESS' , 'see the progress made in your request' , squares , `https://humverce.vercel.app/main`  )
+                trigger_notification('REQUST PROGRESS' , 'see the progress made in your request' , squares , `https://humverse.dev`  )
 
               setpreviewsreceived(true);
                setTimeout(() => {
@@ -215,7 +215,7 @@ function Socket_provider({children}) {
 
             socket.on('cancel_accepted' , async function(){
               try{
-                trigger_notification('CANCEL PROCESSED' , 'your request cancellation request has been received' , squares , `https://humverce.vercel.app/main`  )
+                trigger_notification('CANCEL PROCESSED' , 'your request cancellation request has been received' , squares , `https://humverse.dev`  )
 
               setcancelaccepted(true);
                setTimeout(() => {
@@ -230,7 +230,7 @@ function Socket_provider({children}) {
 
             socket.on('compensation' , async function(){
               try{
-                trigger_notification('COMPENSATION INITIATION' , 'compensation for your cancelled request has been initiated' , squares , `https://humverce.vercel.app/main`  )
+                trigger_notification('COMPENSATION INITIATION' , 'compensation for your cancelled request has been initiated' , squares , `https://humverse.dev`  )
 
               setcompensationevent(true);
                setTimeout(() => {
