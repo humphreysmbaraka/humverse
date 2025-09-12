@@ -64,13 +64,13 @@ function Landing() {
       height={vh} 
       overflow="hidden" 
       bg="gray.800"
-      bgGradient="linear(to-br, gray.800, gray.700)" // subtle abstract gradient
+      bgGradient="linear(to-br, gray.800, gray.700)" 
       exit={{ 
         x: -3000, 
         transition: { duration: 0.5, ease: 'easeIn' } 
       }}
     >
-      {/* Optional subtle animated circles in the background for extra abstraction */}
+      {/* Background floating circles */}
       <Box
         position="absolute"
         top="0"
@@ -108,29 +108,29 @@ function Landing() {
       <Motionhstack 
         zIndex={1} 
         opacity={1} 
+        ml={{ base: "0", md: "20px" }}
         position="absolute"
         top={{ base: "50%", md: "50%" }}
-        left={{ base: "50%", md: "20px" }}
+        left={{ base: "50%", md: "unset" }}
         transform={{ base: "translate(-50%, -50%)", md: "translateY(-50%)" }}
         p={{ base: "10px", md: "15px" }}
         flexDirection={{ base: "column", md: "row" }}
         alignItems={{ base: "center", md: "flex-start" }}
-        initial={{ 
-          opacity: 0, 
-          x: { base: "100%", md: 1500 } 
-        }}
-        animate={{ 
-          opacity: 1, 
-          x: 0 
-        }}
+        initial={{ opacity: 0, x: 1500 }}
+        animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 1, duration: 2.5 }}
         borderColor={'white'}
         borderWidth={'1px'}
-        alignSelf={'center'}
-        width={{ base: "90%", md: "auto" }}
-        maxWidth={{ base: "400px", md: "none" }}
       >
-        <VStack alignSelf={'center'}  borderColor={'white'} borderWidth={'1px'} width={textWidth} p={{ base: "10px", md: "15px" }} justifyContent={'center'}  alignItems={{ base: "center", md: "flex-start" }}>
+        <VStack 
+          alignSelf={'center'}  
+          borderColor={'white'} 
+          borderWidth={'1px'} 
+          width={textWidth} 
+          p={{ base: "10px", md: "15px" }} 
+          justifyContent={'center'}  
+          alignItems={{ base: "center", md: "flex-start" }}
+        >
           <Text fontSize={fontSizeLarge} alignSelf={'center'} color="white" textAlign={{ base: "center", md: "left" }}>
             WELCOME TO HUMVERSE
           </Text>
