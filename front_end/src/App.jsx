@@ -45,7 +45,7 @@ function App() {
         <meta property="og:locale" content="en_US" />
 
         <link rel="icon" type="image/png" href="https://humverse.dev/squares.png" />
-<link rel="canonical" href="https://humverse.dev" />
+<link rel="canonical" href="https://humverse.dev/" />
 <meta name="theme-color" content="#000000" />
 
 
