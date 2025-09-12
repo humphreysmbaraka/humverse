@@ -55,13 +55,8 @@ function Landing() {
   const vh = useBreakpointValue({ base: "100vh", md: "100vh" });
   const vw = useBreakpointValue({ base: "100vw", md: "100vw" });
 
-  // New responsive values for centering on mobile
-  const motionHStackLeft = useBreakpointValue({ base: "50%", md: "20px" });
-  const motionHStackTop = useBreakpointValue({ base: "50%", md: "50%" });
-  const motionHStackTransform = useBreakpointValue({ 
-    base: "translate(-50%, -50%)", 
-    md: "translateY(-50%)" 
-  });
+  // Get screen size to adjust animation
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   const textboxref = useRef(null);
 
@@ -117,19 +112,26 @@ function Landing() {
         zIndex={1} 
         opacity={1} 
         position="absolute"
-        left={motionHStackLeft}
-        top={motionHStackTop}
-        transform={motionHStackTransform}
+        top={{ base: "50%", md: "50%" }}
+        left={{ base: "50%", md: "20px" }}
+        transform={{ base: "translate(-50%, -50%)", md: "translateY(-50%)" }}
         p={{ base: "10px", md: "15px" }}
         flexDirection={{ base: "column", md: "row" }}
         alignItems={{ base: "center", md: "flex-start" }}
-        initial={{ opacity: 0, x: 1500 }}
-        animate={{ opacity: 1, x: 0 }}
+        initial={{ 
+          opacity: 0, 
+          x: isMobile ? "100vw" : 1500 
+        }}
+        animate={{ 
+          opacity: 1, 
+          x: 0 
+        }}
         transition={{ delay: 1, duration: 2.5 }}
         borderColor={'white'}
         borderWidth={'1px'}
         alignSelf={'center'}
         width={{ base: "90%", md: "auto" }}
+        maxWidth={{ base: "400px", md: "none" }}
       >
         <VStack alignSelf={'center'}  borderColor={'white'} borderWidth={'1px'} width={textWidth} p={{ base: "10px", md: "15px" }} justifyContent={'center'}  alignItems={{ base: "center", md: "flex-start" }}>
           <Text fontSize={fontSizeLarge} alignSelf={'center'} color="white" textAlign={{ base: "center", md: "left" }}>
