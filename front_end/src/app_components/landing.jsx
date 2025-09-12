@@ -116,7 +116,7 @@ function Landing() {
         flexDirection={{ base: "column", md: "row" }}
         alignItems={{ base: "center", md: "flex-start" }}
         initial={{ opacity: 0, x: 1500 }}
-        animate={{ opacity: 1, x: 0 }}
+        animate={{ opacity: 1, x: 50 }}
         transition={{ delay: 1, duration: 2.5 }}
         // borderColor={'white'}
         // borderWidth={'1px'}
