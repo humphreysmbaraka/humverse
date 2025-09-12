@@ -3,17 +3,16 @@ import React, { useRef, useState } from 'react'
 import Signup_prompt from './signup_prompt';
 import { useNavigate } from 'react-router-dom';
 import { Motionbox, Motionbutton, Motionhstack } from '../motion_components';
-import { AnimatePresence, useCycle } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 
 function Landing() {
   const variants = {
     enlarged: { scale: 1.1, transition: { duration: 1, delay: 2, repeat: 10, ease: 'easeIn', repeatType: "reverse" } },
     shrunk: { scale: 1, transition: { duration: 1, delay: 2, repeat: 10, ease: 'easeIn', repeatType: "reverse" } },
   };
-  
+
   const [showauthform, setshowauthform] = useState(false);
   const navigate = useNavigate();
-  const [form, setform] = useCycle('hide', 'show');
 
   const authformvariants = {
     initial: { x: 1500, transition: { duration: 1, ease: 'easeInOut' } },
@@ -27,6 +26,7 @@ function Landing() {
   }
 
   // Responsive values
+  const isMobile = useBreakpointValue({ base: true, md: false });
   const textWidth = useBreakpointValue({ base: "90%", md: "400px" });
   const buttonStackWidth = useBreakpointValue({ base: "100%", md: "60%" });
   const buttonWidth = useBreakpointValue({ base: "45%", md: "40%" });
@@ -41,10 +41,6 @@ function Landing() {
 
   const vh = useBreakpointValue({ base: "100vh", md: "100vh" });
   const vw = useBreakpointValue({ base: "100vw", md: "100vw" });
-
-  // Responsive initial X for slide-in
-  const initialX = useBreakpointValue({ base: 500, md: 1500 }); // mobile slides in less distance
-  const finalX = useBreakpointValue({ base: 0, md: 0 }); // center for mobile, default for desktop
 
   const textboxref = useRef(null);
 
@@ -82,100 +78,101 @@ function Landing() {
         `}</style>
       </Box>
 
-      <Motionhstack 
-        zIndex={1} 
-        opacity={1} 
-        ml={{ base: "0", md: "20px" }}
-        position="absolute"
-        top={{ base: "50%", md: "50%" }}
-        left={{ base: "50%", md: "unset" }}
-        transform={{ base: "translate(-50%, -50%)", md: "translateY(-50%)" }}
-        p={{ base: "10px", md: "15px" }}
-        flexDirection={{ base: "column", md: "row" }}
-        alignItems={{ base: "center", md: "flex-start" }}
-        initial={{ opacity: 0, x: initialX }}
-        animate={{ opacity: 1, x: finalX }}
-        transition={{ delay: 1, duration: 2.5 }}
-      >
-        <VStack 
-          alignSelf={'center'}  
-          borderColor={'white'} 
-          borderWidth={'1px'} 
-          width={textWidth} 
-          p={{ base: "10px", md: "15px" }} 
-          justifyContent={'center'}  
-          alignItems={{ base: "center", md: "flex-start" }}
-        >
-          <Text fontSize={fontSizeLarge} alignSelf={'center'} color="white" textAlign={{ base: "center", md: "left" }}>
-            WELCOME TO HUMVERSE
-          </Text>
-          <Text fontSize={fontSizeMedium} color="white"  alignSelf={'center'} textAlign={{ base: "center", md: "left" }}>
-            WE MAKE WHAT YOU WANT
-          </Text>
-        </VStack>
-
+      {/* Text + Buttons */}
+      {!showauthform && (
         <Motionhstack 
-          width={buttonStackWidth}
-          p="2px" 
-          alignItems="center" 
-          justifyContent="space-around"
-          mt={{ base: "20px", md: "0" }}
+          zIndex={1} 
+          opacity={1} 
+          ml={{ base: "0", md: "20px" }}
+          position="absolute"
+          top={{ base: "50%", md: "50%" }}
+          left={{ base: "50%", md: "unset" }}
+          transform={{ base: "translate(-50%, -50%)", md: "translateY(-50%)" }}
+          p={{ base: "10px", md: "15px" }}
           flexDirection={{ base: "column", md: "row" }}
-          spacing={{ base: 4, md: 0 }}
-          variants={showauthform ? buttonspositionvariant : undefined}
-          initial="initial"
-          animate={showauthform ? 'then' : 'initial'}
-          borderWidth={'1px'}
-          borderColor={'white'}
-          alignSelf={'center'}
+          alignItems={{ base: "center", md: "flex-start" }}
+          initial={isMobile ? {} : { opacity: 0, x: 1500 }}
+          animate={isMobile ? {} : { opacity: 1, x: 0 }}
+          transition={{ delay: 1, duration: 2.5 }}
         >
-          <Motionbutton 
-            _hover={{ bg: 'none' }} 
-            onClick={() => { setshowauthform(!showauthform) }} 
-            bg="none" 
-            width={buttonWidth}
-            height={buttonHeight}
-            borderRadius="15px" 
-            borderColor="white" 
-            borderWidth="1px" 
+          <VStack 
+            alignSelf={'center'}  
+            borderColor={'white'} 
+            borderWidth={'1px'} 
+            width={textWidth} 
+            p={{ base: "10px", md: "15px" }} 
+            justifyContent={'center'}  
+            alignItems={{ base: "center", md: "flex-start" }}
+          >
+            <Text fontSize={fontSizeLarge} alignSelf={'center'} color="white" textAlign={{ base: "center", md: "left" }}>
+              WELCOME TO HUMVERSE
+            </Text>
+            <Text fontSize={fontSizeMedium} color="white"  alignSelf={'center'} textAlign={{ base: "center", md: "left" }}>
+              WE MAKE WHAT YOU WANT
+            </Text>
+          </VStack>
+
+          <Motionhstack 
+            width={buttonStackWidth}
             p="2px" 
-            display="flex" 
             alignItems="center" 
-            justifyContent="center" 
-            fontSize={fontSizeSmall}
-            color="white" 
-            fontWeight="bold"
-            variants={variants}
-            initial="enlarged"
-            animate="shrunk"
+            justifyContent="space-around"
+            mt={{ base: "20px", md: "0" }}
+            flexDirection={{ base: "column", md: "row" }}
+            spacing={{ base: 4, md: 0 }}
+            borderWidth={'1px'}
+            borderColor={'white'}
+            alignSelf={'center'}
           >
-            LOG IN / SIGN UP
-          </Motionbutton>
+            <Motionbutton 
+              _hover={{ bg: 'none' }} 
+              onClick={() => { setshowauthform(true) }} 
+              bg="none" 
+              width={buttonWidth}
+              height={buttonHeight}
+              borderRadius="15px" 
+              borderColor="white" 
+              borderWidth="1px" 
+              p="2px" 
+              display="flex" 
+              alignItems="center" 
+              justifyContent="center" 
+              fontSize={fontSizeSmall}
+              color="white" 
+              fontWeight="bold"
+              variants={variants}
+              initial="enlarged"
+              animate="shrunk"
+            >
+              LOG IN / SIGN UP
+            </Motionbutton>
 
-          <Motionbutton 
-            _hover={{ bg: 'none' }} 
-            onClick={() => navigate('/main')} 
-            bg="none" 
-            width={buttonWidth}
-            height={buttonHeight}
-            borderRadius="15px" 
-            borderColor="white" 
-            borderWidth="1px" 
-            p="4px" 
-            display="flex" 
-            alignItems="center" 
-            justifyContent="center" 
-            fontSize={fontSizeSmall}
-            color="white"
-            variants={variants}
-            initial="shrunk"
-            animate="enlarged"
-          >
-            PREVIEW PLATFORM
-          </Motionbutton>
+            <Motionbutton 
+              _hover={{ bg: 'none' }} 
+              onClick={() => navigate('/main')} 
+              bg="none" 
+              width={buttonWidth}
+              height={buttonHeight}
+              borderRadius="15px" 
+              borderColor="white" 
+              borderWidth="1px" 
+              p="4px" 
+              display="flex" 
+              alignItems="center" 
+              justifyContent="center" 
+              fontSize={fontSizeSmall}
+              color="white"
+              variants={variants}
+              initial="shrunk"
+              animate="enlarged"
+            >
+              PREVIEW PLATFORM
+            </Motionbutton>
+          </Motionhstack>
         </Motionhstack>
-      </Motionhstack>
+      )}
 
+      {/* Signup Prompt */}
       <AnimatePresence mode='wait'>
         {showauthform && 
           <Motionbox
@@ -193,7 +190,23 @@ function Landing() {
             animate="show"
             exit="hide"
           >
-            <Signup_prompt />
+            <Box position="relative">
+              <Motionbutton
+                position="absolute"
+                top="5px"
+                right="5px"
+                width="30px"
+                height="30px"
+                borderRadius="50%"
+                bg="whiteAlpha.300"
+                color="white"
+                fontWeight="bold"
+                onClick={() => setshowauthform(false)}
+              >
+                X
+              </Motionbutton>
+              <Signup_prompt />
+            </Box>
           </Motionbox>
         }
       </AnimatePresence>
