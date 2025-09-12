@@ -10,7 +10,7 @@ import { socketcontext } from '../appcontexts/socket';
 import { AuthContext } from '../appcontexts/auth';
 
 
-function Signup_prompt({width  , height}) {
+function Signup_prompt({width  , height ,closure}) {
  const navigate = useNavigate()
  const [username , setusername] = useState(null);
  const [password , setpassword] = useState(null);
@@ -261,6 +261,8 @@ const handlefileinput = async function(e){
           </HStack>
 
           <Box onClick={submitcredentials} as='button'  width={'40%'} p={'2px'} borderWidth={'1px'} borderRadius={'10px'} borderColor={'white'} color={'white'} fontSize={'medium'} fontWeight={'bold'}   >LOGIN</Box>
+          <Box as='button' mt={'5px'} mb={'5px'} onClick={closure}  width={'40%'} p={'2px'} borderWidth={'1px'} borderRadius={'10px'} borderColor={'white'}  color={'white'}     >CANCEL</Box>
+
 
           {submitting  && 
             <Spinner  width={'20px'} height={'20px'} color='white'  />
@@ -303,6 +305,8 @@ const handlefileinput = async function(e){
           </HStack>
             <HStack width={'75%'} justifyContent={'center'} >
             <Box as='button' onClick={submitcredentials}  width={'40%'} p={'2px'} borderWidth={'1px'} borderRadius={'10px'} borderColor={'white'}  color={'white'}     >SUBMIT</Box>
+            <Box as='button' mt={'5px'} mb={'5px'} onClick={closure}  width={'40%'} p={'2px'} borderWidth={'1px'} borderRadius={'10px'} borderColor={'white'}  color={'white'}     >CANCEL</Box>
+
  {submitting  && 
  <Spinner  width={'20px'} height={'20px'} color='white'  />
            } 
