@@ -150,7 +150,7 @@ const logout = async function(){
        initial={'initial'}
        animate={showsidebar?'show':'hide'}
       >
-          <Box  alignSelf={'flex-start'} as='button'  onClick={()=>{setshowsidebar(!showsidebar)}} bg={'gray.800'} width={'30px'} height={'30px'} borderRadius={'50%'} mt={'20px'}  >   
+          {/* <Box  alignSelf={'flex-start'} as='button'  onClick={()=>{setshowsidebar(!showsidebar)}} bg={'gray.800'} width={'30px'} height={'30px'} borderRadius={'50%'} mt={'20px'}  >   
                   {showsidebar  &&  
                   <GoSidebarExpand  color='white' size={'20px'}  />
                   }
@@ -161,7 +161,7 @@ const logout = async function(){
 
                   }
                  
-          </Box>
+          </Box> */}
 
 
 {showsidebar  &&   

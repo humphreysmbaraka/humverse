@@ -455,17 +455,17 @@ router.post('/send_request' ,  memstorage.array('attachments' , 20) ,  async fun
       await sender.save();
       // await sendMessage(newrequest.number , 'your request has been sent successfully. Now it is awaiting processing')
       await sendMessage(newrequest.number , `Your request has been sent successfully , and now is awaiting processing
-       request ID${request._id},
-       date:${request.date},
-       type : ${request.type},
-       desctiption : ${request.description}
+       request ID${newrequest._id},
+       date:${newrequest.date},
+       type : ${newrequest.type},
+       desctiption : ${newrequest.description}
       
       `);
       await sendMessage(process.env.MY_NUMBER , `you have received a new request from a client
-      request ID${request._id},
-      date:${request.date},
-      type : ${request.type},
-      desctiption : ${request.description}
+      request ID${newrequest._id},
+      date:${newrequest.date},
+      type : ${newrequest.type},
+      desctiption : ${newrequest.description}
       
       `);
       return res.status(200).json({error:false , request:newrequest});
@@ -481,16 +481,16 @@ router.post('/send_request' ,  memstorage.array('attachments' , 20) ,  async fun
       await sender.requests.push(newrequest._id);
       await sender.save();
       await sendMessage(newrequest.number , `Your request has been sent successfully , and now is awaiting processing
-      request ID${request._id},
-      date:${request.date},
-      type : ${request.type},
-      desctiption : ${request.description}
+      request ID${newrequest._id},
+      date:${newrequest.date},
+      type : ${newrequest.type},
+      desctiption : ${newrequest.description}
       `);
       await sendMessage(process.env.MY_NUMBER , `you have received a new request from a client
-      request ID${request._id},
-      date:${request.date},
-      type : ${request.type},
-      desctiption : ${request.description}
+      request ID${newrequest._id},
+      date:${newrequest.date},
+      type : ${newrequest.type},
+      desctiption : ${newrequest.description}
       `);
 
       // await sendMessage(process.env.MY_NUMBER , 'You have received a new request');
