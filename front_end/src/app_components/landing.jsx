@@ -55,9 +55,6 @@ function Landing() {
   const vh = useBreakpointValue({ base: "100vh", md: "100vh" });
   const vw = useBreakpointValue({ base: "100vw", md: "100vw" });
 
-  // Get screen size to adjust animation
-  const isMobile = useBreakpointValue({ base: true, md: false });
-
   const textboxref = useRef(null);
 
   return (
@@ -120,7 +117,7 @@ function Landing() {
         alignItems={{ base: "center", md: "flex-start" }}
         initial={{ 
           opacity: 0, 
-          x: isMobile ? "100vw" : 1500 
+          x: { base: "100%", md: 1500 } 
         }}
         animate={{ 
           opacity: 1, 
