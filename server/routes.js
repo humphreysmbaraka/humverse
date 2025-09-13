@@ -2214,7 +2214,7 @@ router.post('/send_preview' , memstorage.array('files' ,20 )  ,    async functio
     return res.status(400).json({error:true , message:'no such request was found'});
      }
 
-     if(!files || files.length ===0){
+     if(!previews || previews.length ===0){
       console.log('no files attached to the request');
       return res.status(400).json({error:true , message:'no files attached to the request'});
 
@@ -2222,7 +2222,7 @@ router.post('/send_preview' , memstorage.array('files' ,20 )  ,    async functio
 
      else{
       console.log('uploading previews...')
-      const uploads = files.map(function(val , index){
+      const uploads = previews.map(function(val , index){
         return new Promise(async function(resolve , reject){
               const name = val.originalname;
               // const path = val.path;
