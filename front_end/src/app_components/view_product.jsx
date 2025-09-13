@@ -73,7 +73,7 @@ function View_Product() {
             })
 
             const informations = await Promise.all(prevs);
-            
+            console.log('neeewwww infooooooosssssss' , informations);
             setpreviewinfos(informations);
 
           }
@@ -924,8 +924,9 @@ function View_Product() {
                  
                  <HStack  borderWidth={'1px'} borderColor={'white'}  width={'98%'} minHeight={'450px'} padding={'4px'} flexWrap={'wrap'} alignItems={'center'} gap={'20px'} justifyContent={{ base: "center", md: "flex-start" }} >
 
-                           {(previewinfos.length > 0)  &&  
-                            previewinfos.map(function(val , ind){
+                           {(previewinfos.length > 0)  && 
+
+                          previewinfos.map(function(val , ind){
                                      return(
                             <VStack    onClick={()=>{window.open(`${BASE_URL}/stream_preview/${val._id}` ,  '_blank')}}   width={{ base: "45%", md: "23%" }} p={'4px'} borderRadius={'10px'} height={'225px'}  >
                                 {/* <Image width={'99%'} height={'200px'} /> */}
@@ -937,6 +938,7 @@ function View_Product() {
                                 
                                       
                             })
+                        
                           
                            }
                             </HStack>
