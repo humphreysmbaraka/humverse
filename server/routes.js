@@ -731,7 +731,7 @@ router.patch('/accept_request'  , async function(req , res){
         request.payments.payments_required.maintainance_cost = Number(maintainance);
         request.payments.currency = currency;
         request.payments.total_payment_required = (Number(makingcost)+Number(deploymentcost) + Number(domaincost) +Number(hostingcost)+Number(maintainance));
-        request.payments.deposit_required =  Math.ceil(( (Number(makingcost)+Number(deploymentcost) + Number(domaincost) +Number(hostingcost)+Number(maintainance))/3));
+        request.payments.deposit_required =  Math.ceil(( (Number(makingcost)+Number(deploymentcost) + Number(domaincost) +Number(hostingcost)+Number(maintainance))/2));
         request.payments.total_paid = 0;
         request.payments.amount_remaining = request.payments.total_payment_required;
         await request.save();
@@ -781,7 +781,7 @@ router.patch('/edit_accepted_request' , async function(req , res){
       request.payments.payments_required.maintainance_cost = Number(maintainance);
       request.payments.currency = currency;
       request.payments.total_payment_required = (Number(makingcost)+Number(deploymentcost) + Number(domaincost) +Number(hostingcost)+Number(maintainance));
-      request.payments.deposit_required =  Math.ceil(( (Number(makingcost)+Number(deploymentcost) + Number(domaincost) +Number(hostingcost)+Number(maintainance))/3));
+      request.payments.deposit_required =  Math.ceil(( (Number(makingcost)+Number(deploymentcost) + Number(domaincost) +Number(hostingcost)+Number(maintainance))/2));
       request.payments.total_paid =request.payments.total_paid ;
       request.payments.amount_remaining = (Number(request.payments.total_payment_required)-(Number(request.payments.total_paid)));
       await request.save();
@@ -1036,6 +1036,13 @@ router.post('/pay_for_product' , async function(req , res){
           console.log('could not find such request/user in database');
           return res.status(400).json({error:true , message:"either request or user does not exist"});
         }
+        if(request.payments.total_paid == 0){
+          if(amount < Math.ceil(request.payments.deposit_required)/2){
+            console.log('deposit should be atleast half the service price');
+            return res.status(400).json({error:true , message:'deposit should be at least half the service price'});
+          }
+        }
+        
            console.log('fetching auth token');
            const authtoken = await fetch(`${process.env.LIVE_AUTH_URL}` , {
             headers: {
