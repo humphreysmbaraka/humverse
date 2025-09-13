@@ -2230,7 +2230,7 @@ router.post('/send_preview' , memstorage.array('files' ,20 )  ,    async functio
               const size = val.size;
               const type = val.mimetype;
 
-              const readstream = fs.createReadStream(val.buffer);
+              const readstream = Readable.from(val.buffer);
               const uploadstream = previewbucket.openUploadStream(name , {
                 metadata:{
                   name , size , type
