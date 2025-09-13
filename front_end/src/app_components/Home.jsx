@@ -41,9 +41,9 @@ function Home() {
                 setisfetchingdata(false);
                 setfetcherror(false);
                 const receiveddata = await data.json();
-                console.log(receiveddata);
+                // console.log(receiveddata);
                 setinfo(receiveddata.data);
-                console.log('info', info)
+                // console.log('info', info)
             }
             else{
                 if(String(data.status).startsWith('4')){
@@ -221,7 +221,7 @@ useEffect(function(){
                         console.log('user info not fetched')
                         setisfetchingdata(false);
                         const receiveddata = await data.json();
-                        console.log(receiveddata);
+                        // console.log(receiveddata);
                         setfetcherror('server error');
                     }
                 }
