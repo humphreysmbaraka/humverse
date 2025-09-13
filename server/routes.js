@@ -2329,13 +2329,18 @@ router.get('/stream_preview/:id'  , async function(req , res){
 
 router.get('/get_preview_info/:id' , async function(req , res){
   try{
+
+    
      const id = req.params.id;
+     console.log('GETTING PREVIEEEW INFOOOOOO' , id);
      const files = await previewbucket.find({_id:new ObjectId(id)}).toArray();
      if(files.length == 0 || !files){
       console.log('no such file found');
       return res.status(400).json({error:true , message:'file does not exist'});
      }
+     console.log('FILEEEESSSSS' , files);
      const file = files[0];
+     console.log('FILEEEEeee' , file);
      return res.status(200).json({error:false , file:file});
   }
   catch(err){
