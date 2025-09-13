@@ -2299,6 +2299,7 @@ router.post('/send_preview' , memstorage.array('files' ,20 )  ,    async functio
 
 router.get('/stream_preview/:id'  , async function(req , res){
         const id = req.params.id;
+        console.log('IDDDDD' , id);
         const files = await previewbucket.find({_id:new ObjectId(id)}).toArray();
         if(files.length == 0 || !files){
           console.log('no such file exists');
