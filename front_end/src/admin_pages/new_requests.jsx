@@ -394,7 +394,7 @@ function New_Requests() {
                         })
                         if(fileinfo.ok){
                           const details = await fileinfo.json();
-                          info = details.info
+                          info = details.file
                           msg = null;
                           resolve(info);
                         }
@@ -423,6 +423,7 @@ function New_Requests() {
                }
                else{
                    console.log('no previews in request');
+                   return;
                }
 
               
