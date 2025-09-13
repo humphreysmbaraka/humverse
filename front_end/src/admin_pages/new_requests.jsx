@@ -245,9 +245,12 @@ function New_Requests() {
 
              setselectedrequest(function(prev){
                 if(prev && (prev._id !== obj._id)){
-                    prev = {...prev , selected:false};
+                    // prev = {...prev , selected:false};
                     const current = {...seen , selected:true};
                     return current;
+                }
+                else if(prev && (prev._id == obj._id)){
+                    return prev;
                 }
                 else if(!prev){
                     // prev = {...prev , selected:false};
@@ -1109,6 +1112,7 @@ return;
                                 return prev.map(function(req , ind){
                                     if(req._id === val._id){
                                         const obj = {...req , selected:true};
+                                        val = obj;
                                         // return {...req , selected:true}
                                         setselectedrequest(obj);
                                         return obj;
@@ -1151,6 +1155,7 @@ return;
                                     return prev.map(function(req , ind){
                                         if(req._id === val._id){
                                             const obj = {...req , selected:true};
+                                            val = obj;
                                             // return {...req , selected:true}
                                             setselectedrequest(obj);
                                             return obj;
