@@ -356,7 +356,7 @@ function New_Requests() {
                  })
 
                  const reqinfos = await  Promise.all(infos);
-                 console.log('attachment infos' , reqinfos);
+                 console.log('ATTACHMENT INFOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOS' , reqinfos);
                  setattachmentinfos(reqinfos);
               //    return Promise.all(infos);
   
@@ -416,7 +416,7 @@ function New_Requests() {
                  })
 
                  const reqinfos = await  Promise.all(infos);
-                 console.log('preview  infos' , reqinfos)
+                 console.log('PREVIEW INFOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO' , reqinfos)
                  setpreviewsinfos(reqinfos);
               //    return Promise.all(infos);
   
@@ -2540,7 +2540,7 @@ return;
                        <HStack  width={'98%'} p={'5px'} gap={'10px'} borderRadius={'10px'} >
                          <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_preview/${val._id}` ,  '_blank')}} key={index} as='button' height={'100px'} width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
                         <PiFilePdf    size={'80px'} borderRadius={'10px'}  color='red'    />
-                        <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.name}</Text>
+                        <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.metadata?.name}</Text>
                         </VStack>
                        </HStack>
                   
