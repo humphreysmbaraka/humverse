@@ -1108,7 +1108,10 @@ return;
                             setallreqs(function(prev){
                                 return prev.map(function(req , ind){
                                     if(req._id === val._id){
-                                        return {...req , selected:true}
+                                        const obj = {...req , selected:true};
+                                        // return {...req , selected:true}
+                                        return obj;
+                                        setselectedrequest(obj);
                                     }
                                     else{
                                         return {...req , selected:false}
@@ -1116,7 +1119,7 @@ return;
                                 })
                                 
                             })
-                            setselectedrequest(val);
+                            // setselectedrequest(val);
                         }}  width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} overflow={'auto'} css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}}  backgroundColor={val.selected?'gray.800':'transparent'} >
                             <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
                             <Text color={'white'}   >{val.client.username}</Text>
