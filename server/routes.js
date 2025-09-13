@@ -654,7 +654,7 @@ router.get('/fetch_homedata/:id' ,  async function(req , res){
       const id = req.params.id
        const user = await User.findOne({_id:id}).populate('requests');
        if(user){
-          console.log(user);
+          // console.log(user);
           return res.status(200).json({error:false , message:'user_found' , data:user})
        }
        else{

@@ -2518,7 +2518,7 @@ return;
                        </VStack>
                        {sendpreverror && 
                        
-                       <Text>{sendpreverror}</Text>}
+                       <Text color={'white'} fontSize={'small'} fontWeight={'light'} >{sendpreverror}</Text>}
                        <Button   mt={'10px'} onClick={send_previews} padding={'5px'} colorScheme='purple' borderRadius={'10px'} >send preview(s) 
                        {sendingpreviews  
                        
