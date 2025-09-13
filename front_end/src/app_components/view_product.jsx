@@ -916,19 +916,22 @@ function View_Product() {
 
                             <Text color={'white'} fontSize={{ base: "md", md: "larger" }} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'}  >PREVIEWS</Text>
                             {/* <Text color={'white'} fontSize={'xs'} alignSelf={'flex-start'} textAlign={'left'}  >DATE</Text> */}
-                           {(product.previews?.length > 0)  &&  
-                           
-                            product.previews.map(function(val , indd){
-                                <VStack width={{ base: "45%", md: "23%" }} borderRadius={'10px'}   >
+                           {(previewinfos.length > 0)  &&  
+                                                       <HStack width={'98%'} padding={'4px'} flexWrap={'wrap'} alignItems={'center'} gap={'20px'} justifyContent={{ base: "center", md: "flex-start" }} >
+                            previewinfos.map(function(val , indd){
+                                <VStack    onClick={()=>{window.open(`${BASE_URL}/stream_preview/${val._id}` ,  '_blank')}}   width={{ base: "45%", md: "23%" }} borderRadius={'10px'}   >
                                 {/* <Image width={'99%'} height={'200px'} /> */}
                                 <Image    width={'100%'}  height={'200px'}    src={`${BASE_URL}/stream_preview/${product.previews[ind]}`}     />
 
-                                <Text fontSize={'xx-small'} color={'white'} width={'90%'} isTruncated={true} textAlign={'center'}   >{previewinfos[ind].metadata.name}</Text>
+                                <Text fontSize={'xx-small'} color={'white'} width={'90%'} isTruncated={true} textAlign={'center'}   >{val.metadata?.name}</Text>
                             </VStack>
+                                      
                             })
-                           
+                           </HStack>
                            }
-                            <HStack width={'98%'} padding={'4px'} flexWrap={'wrap'} alignItems={'center'} gap={'20px'} justifyContent={{ base: "center", md: "flex-start" }} >
+
+
+                            {/* <HStack width={'98%'} padding={'4px'} flexWrap={'wrap'} alignItems={'center'} gap={'20px'} justifyContent={{ base: "center", md: "flex-start" }} >
                                 <VStack width={{ base: "45%", md: "23%" }} borderRadius={'10px'}   >
                                     <Image width={'99%'} height={'200px'} />
                                     <Text fontSize={'xx-small'} color={'white'} width={'90%'} isTruncated={true} textAlign={'center'}   >preview name</Text>
@@ -953,7 +956,7 @@ function View_Product() {
                                     <Image width={'99%'} height={'200px'} />
                                     <Text fontSize={'xx-small'} color={'white'} width={'90%'} isTruncated={true} textAlign={'center'} >preview name</Text>
                                 </VStack>
-                            </HStack>
+                            </HStack> */}
                         </VStack>
                     </Stack>
                 ) :
