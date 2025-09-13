@@ -605,7 +605,7 @@ function New_Requests() {
         catch(err){
             console.log('could not send files' , err);
             setsendingpreviews(false);
-            setsendpreverror(null);
+            setsendpreverror('could not send previews');
         }
       }
     
@@ -2519,7 +2519,7 @@ return;
                        {sendpreverror && 
                        
                        <Text>{sendpreverror}</Text>}
-                       <Button   mt={'10px'} onClick={send_previews} padding={'5px'} colorScheme='purple' borderRadius={'10px'} >SELECT FILE(S) 
+                       <Button   mt={'10px'} onClick={send_previews} padding={'5px'} colorScheme='purple' borderRadius={'10px'} >send preview(s) 
                        {sendingpreviews  
                        
                        && <Spinner       width={'20px'} height={'20px'} color='white'          />
