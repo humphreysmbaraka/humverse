@@ -436,7 +436,7 @@ function View_Product() {
                         }
                         else {
                             setispaying(false);
-                            setpayerror('payment unsuccessful');
+                            setpayerror('server error');
                             setpaynumber('');
                             setamount('');
                         }

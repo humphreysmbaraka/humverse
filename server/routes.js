@@ -1078,10 +1078,11 @@ router.post('/pay_for_product' , async function(req , res){
             });
     
             console.log('sending payload' , JSON.stringify(stkpayload));
-            
+          
             if(response.ok){
               console.log('stk pushed successfully');
               const responseinfo = await response.json();
+              console.log('TOKEN PUSH INFO' , responseinfo);
               // const request = await Request.findOne({_id:product_id});
               // if(request){
                 // const newtransaction = new Transaction({
@@ -1089,6 +1090,7 @@ router.post('/pay_for_product' , async function(req , res){
                 // })
                 // await newtransaction.save();
                 // request.payments.payment_info.transaction = newtransaction._id;
+              
                 request.payments.payment_info.merchantrequest_ids.push(responseinfo.MerchantRequestID);
                 request.payments.payment_info.checkoutrequest_ids.push(responseinfo.CheckoutRequestID);
                 // request.payments.total_paid = request.payments.total_paid + Number(amount);
@@ -1116,7 +1118,7 @@ router.post('/pay_for_product' , async function(req , res){
               console.log(response , responseinfo);
               return res.status(500).json({error:true , message:'error pushing stk' })
             }
-    
+            
            }
            else{
             console.log('error getting auth token (from auth URL)');
@@ -1202,6 +1204,7 @@ router.post('/pay_for_product' , async function(req , res){
             if(response.ok){
               console.log('stk pushed successfully');
               const responseinfo = await response.json();
+              console.log('TOKEN PUSH INFO' , responseinfo)
               // const request = await Request.findOne({_id:product_id});
               // if(request){
                 // const newtransaction = new Transaction({
