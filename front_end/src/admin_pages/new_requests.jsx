@@ -14,6 +14,7 @@ import { socketcontext } from '../appcontexts/socket';
 
 
 
+
 function New_Requests() {
     const {winwidth , winheight} = useContext(dimensions);
     const [clients , setclients] = useState(null);
@@ -416,7 +417,7 @@ function New_Requests() {
 
                  const reqinfos = await  Promise.all(infos);
                  console.log('preview  infos' , reqinfos)
-                 setattachmentinfos(reqinfos);
+                 setpreviewsinfos(reqinfos);
               //    return Promise.all(infos);
   
                }
