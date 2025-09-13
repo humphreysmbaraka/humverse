@@ -1098,7 +1098,7 @@ return;
 
                
             </TabList>
-            <TabPanels   width={'100%'} height={'99%'} p={'2px'}  mt={'10px'}  >
+            <TabPanels   width={'100%'} height={'99%'} p={'2px'}  mt={'10px'}  overflow={'auto'} >
              <TabPanel   width={'100%'} height={'99%'} p={'2px'}  overflow={'auto'}  >
              <VStack bg={'black'}  width={'98%'} maxHeight={'90%'} borderRadius={'10px'}  gap={'10px'} alignItems={'center'} overflow={'auto'}  css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}}   >
                  {allreqs?.length > 0 && 
@@ -1136,7 +1136,7 @@ return;
              </TabPanel>
 
 
-             <TabPanel   width={'100%'} height={'99%'} p={'2px'}  >
+             <TabPanel   width={'100%'} height={'99%'} p={'2px'} overflow={'auto'} >
              <VStack bg={'black'}  width={'98%'} height={'90%'} borderRadius={'10px'}  gap={'20px'} alignItems={'center'} overflow={'auto'}  css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}}   >
                  {allreqs?.length > 0 && 
                    allreqs.map(function(val , index){
@@ -1174,7 +1174,7 @@ return;
              </TabPanel>
 
 
-             <TabPanel   width={'100%'} height={'99%'} p={'2px'}  >
+             <TabPanel overflow={'auto'}  width={'100%'} height={'99%'} p={'2px'}  >
              <VStack bg={'black'}  width={'98%'} height={'90%'} borderRadius={'10px'}  gap={'20px'} alignItems={'center'} overflow={'auto'}  css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}}   >
                  {allreqs?.length > 0 && 
                   allreqs.map(function(val , index){
@@ -1216,7 +1216,7 @@ return;
              
 
 
-             <TabPanel   width={'100%'} height={'99%'} p={'2px'}  >
+             <TabPanel overflow={'auto'}  width={'100%'} height={'99%'} p={'2px'}  >
              <VStack bg={'black'}  width={'98%'} height={'90%'} borderRadius={'10px'}  gap={'20px'} alignItems={'center'} overflow={'auto'}  css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}}   >
                  {allreqs?.length > 0 && 
                   allreqs.map(function(val , index){
@@ -1254,7 +1254,7 @@ return;
              </TabPanel>
 
 
-             <TabPanel   width={'100%'} height={'99%'} p={'2px'}  >
+             <TabPanel   width={'100%'} height={'99%'} p={'2px'}   overflow={'auto'} >
              <VStack bg={'black'}  width={'98%'} height={'90%'} borderRadius={'10px'}  gap={'20px'} alignItems={'center'} overflow={'auto'}  css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}}   >
                  {allreqs?.length > 0 && 
                   allreqs.map(function(val , index){
@@ -1296,7 +1296,7 @@ return;
 
 
 
-             <TabPanel   width={'100%'} height={'99%'} p={'2px'}  >
+             <TabPanel   overflow={'auto'} width={'100%'} height={'99%'} p={'2px'}  >
              <VStack bg={'black'}  width={'98%'} height={'90%'} borderRadius={'10px'}  gap={'20px'} alignItems={'center'} overflow={'auto'}  css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}}   >
                  {allreqs?.length > 0 && 
                   allreqs.map(function(val , index){
