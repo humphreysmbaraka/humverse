@@ -304,13 +304,24 @@ function New_Requests() {
         }
     } , [selectedrequest])
 
-
+  
 
     useEffect(function(){
 
         if(!selectedrequest){
             return;
         }
+
+        // if(selectedrequest.previews.length <=0){
+        //     setpreviewsinfos([]);
+        //     return;
+        // }
+
+
+        // if(selectedrequest.attachments.length <= 0){
+        //     setattachmentinfos([]);
+        //     return;
+        // }
         const fetchattachmentsinfo = async function(){
             console.log('fetching attachments');
 
@@ -363,6 +374,8 @@ function New_Requests() {
                }
                else{
                  console.log('no attachments in the request');
+                 setattachmentinfos([]);
+                 return
                }
 
               
@@ -423,6 +436,7 @@ function New_Requests() {
                }
                else{
                    console.log('no previews in request');
+                   setpreviewsinfos([]);
                    return;
                }
 

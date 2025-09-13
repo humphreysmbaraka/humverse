@@ -930,6 +930,10 @@ function View_Product() {
                            </HStack>
                            }
 
+                           {(product.previews.length = 0)&& 
+                           <Text color={'white'} fontSize={'small'} fontWeight={'light'}  ></Text>
+                           }
+
 
                             {/* <HStack width={'98%'} padding={'4px'} flexWrap={'wrap'} alignItems={'center'} gap={'20px'} justifyContent={{ base: "center", md: "flex-start" }} >
                                 <VStack width={{ base: "45%", md: "23%" }} borderRadius={'10px'}   >
