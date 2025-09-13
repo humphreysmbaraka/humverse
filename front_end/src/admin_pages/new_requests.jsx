@@ -12,7 +12,7 @@ import { error } from 'console';
 import { AuthContext } from '../appcontexts/auth';
 import { socketcontext } from '../appcontexts/socket';
 
-
+metadata
 
 function New_Requests() {
     const {winwidth , winheight} = useContext(dimensions);
@@ -1487,7 +1487,7 @@ return;
                          return(
                              <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_request_file/${val._id}` ,  '_blank')}} key={index} as='button' height={'100px'} width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
                              <PiFilePdf    size={'80px'} borderRadius={'10px'}  color='red'    />
-                             <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.metadata.name}</Text>
+                             <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.metadata?.name}</Text>
                           </VStack>
                          )
                      })
@@ -1544,7 +1544,7 @@ return;
                          return(
                              <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_request_file/${val._id}` ,  '_blank')}} key={index} as='button' height={'100px'} width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
                              <PiFilePdf    size={'80px'} borderRadius={'10px'}  color='red'    />
-                             <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.metadata.name}</Text>
+                             <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.metadata?.name}</Text>
                           </VStack>
                          )
                      })
@@ -1648,7 +1648,7 @@ return;
                          return(
                              <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_request_file/${val._id}` ,  '_blank')}} key={index} as='button' height={'100px'} width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
                              <PiFilePdf    size={'80px'} borderRadius={'10px'}  color='red'    />
-                             <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.metadata.name}</Text>
+                             <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.metadata?.name}</Text>
                           </VStack>
                          )
                      })
@@ -1752,7 +1752,7 @@ return;
                          return(
                              <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_request_file/${val._id}` ,  '_blank')}} key={index} as='button' height={'100px'} width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
                              <PiFilePdf    size={'80px'} borderRadius={'10px'}  color='red'    />
-                             <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.metadata.name}</Text>
+                             <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.metadata?.name}</Text>
                           </VStack>
                          )
                      })
@@ -1858,7 +1858,7 @@ return;
                          return(
                              <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_request_file/${val._id}` ,  '_blank')}} key={index} as='button' height={'100px'} width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
                              <PiFilePdf    size={'80px'} borderRadius={'10px'}  color='red'    />
-                             <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.metadata.name}</Text>
+                             <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.metadata?.name}</Text>
                           </VStack>
                          )
                      })
