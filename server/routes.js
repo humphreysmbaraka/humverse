@@ -2286,7 +2286,7 @@ router.post('/send_preview'  , async function(req , res){
      }
   }
   catch(err){
-    console.lod('error sending previews' , err);
+    console.log('error sending previews' , err);
     return res.status(500).json({error:true , error:err});
   }
 } )
