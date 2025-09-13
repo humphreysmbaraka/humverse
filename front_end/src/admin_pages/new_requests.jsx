@@ -1074,7 +1074,7 @@ return;
      }
   }
   return (
-   <Box width={winwidth} height={winheight}  bg={'gray.800'} padding={'4px'}   >
+   <Box width={winwidth} height={winheight}  bg={'gray.800'} padding={'4px'} overflow={'auto'}  >
     <HStack  width={'90%'} height={'100%'} gap={'40px'} alignItems={'center'}  justifyContent={'space-between'} >
         <VStack width={'45%'} height={'100%'}  gap={'20px'} alignItems={'center'} position={'relative'}   >
             <HStack  mt={'20px'} mb={'5px'} width={'60%'} padding={'2px'}  justifyContent={'space-between'} >
