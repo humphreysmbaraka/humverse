@@ -2538,7 +2538,7 @@ return;
                     
                 return(
                     
-                       <HStack  width={'98%'} p={'5px'} gap={'10px'} borderRadius={'10px'} >
+                       <HStack borderColor={'white'} borderWidth={'1px'}  width={'98%'} p={'5px'} gap={'10px'} borderRadius={'10px'} >
                          <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_preview/${val._id}` ,  '_blank')}} key={index} as='button' height={'300px'} width={'23%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'} p={'2px'}  >
                         {/* <PiFilePdf    size={'80px'} borderRadius={'10px'}  color='red'    /> */}
                         <Image  src={`${BASE_URL}/stream_preview/${val._id}`}    width={'95%'} height={'95%'} mb={'5px'}         />
