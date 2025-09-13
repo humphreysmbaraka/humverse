@@ -1103,7 +1103,7 @@ return;
             </TabList>
             <TabPanels   width={'100%'} height={'99%'} p={'2px'}  mt={'10px'}  overflow={'auto'} >
              <TabPanel   width={'100%'} height={'99%'} p={'2px'}  overflow={'auto'}  >
-             <VStack bg={'black'}  width={'98%'} maxHeight={'90%'} borderRadius={'10px'}  gap={'10px'} alignItems={'center'} overflow={'auto'}  css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}}   >
+             <VStack bg={'black'}  width={'98%'} height={'90%'} borderRadius={'10px'}  gap={'10px'} alignItems={'center'} overflow={'auto'}  css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}}   >
                  {allreqs?.length > 0 && 
                   allreqs.map(function(val , index){
                     return(
@@ -1112,7 +1112,7 @@ return;
                                 return prev.map(function(req , ind){
                                     if(req._id === val._id){
                                         const obj = {...req , selected:true};
-                                        val = obj;
+                                        
                                         // return {...req , selected:true}
                                         setselectedrequest(obj);
                                         return obj;
@@ -1155,7 +1155,7 @@ return;
                                     return prev.map(function(req , ind){
                                         if(req._id === val._id){
                                             const obj = {...req , selected:true};
-                                            val = obj;
+                                            
                                             // return {...req , selected:true}
                                             setselectedrequest(obj);
                                             return obj;
