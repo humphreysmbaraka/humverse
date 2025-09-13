@@ -1109,10 +1109,10 @@ return;
                     return(
                         <HStack mt={'10px'} onClick={()=>{
                             setallreqs(function(prev){
-                                let obj;
+                                
                                 return prev.map(function(req , ind){
                                     if(req._id === val._id){
-                                         obj = {...req , selected:true};
+                                        const  obj = {...req , selected:true};
                                          setselectedrequest(obj);
                                         // return {...req , selected:true}
                                         
