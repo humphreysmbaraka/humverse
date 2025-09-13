@@ -1103,7 +1103,7 @@ return;
             </TabList>
             <TabPanels   width={'100%'} height={'99%'} p={'2px'}  mt={'10px'}  overflow={'auto'} >
              <TabPanel   width={'100%'} height={'99%'} p={'2px'}  overflow={'auto'}  >
-             <VStack bg={'black'}  width={'98%'}  borderRadius={'10px'}  gap={'10px'} alignItems={'center'} overflow={'auto'}  css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}}   >
+             <VStack bg={'black'}  width={'98%'}  borderRadius={'10px'}  gap={'2px'} alignItems={'center'} overflow={'auto'}  css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}}   >
                  {allreqs?.length > 0 && 
                   allreqs.map(function(val , index){
                     return(
@@ -1127,7 +1127,7 @@ return;
                             })
                             // setselectedrequest(val);
                             // setselectedrequest(obj);
-                        }}  width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} overflow={'auto'} css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}}  backgroundColor={val.selected?'gray.800':'transparent'} >
+                        }}  width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} overflowx={'auto'} css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}}  backgroundColor={val.selected?'gray.800':'transparent'} >
                             <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
                             <Text color={'white'}   >{val.client.username}</Text>
                             <Text color={'white'}   >{val.createdAt.slice(0 , 10)}</Text>
@@ -1170,9 +1170,9 @@ return;
                                 // setselectedrequest(val);
                             }} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
                             <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
-                            <Text>{val.client.username}</Text>
-                            <Text>{val.createdAt.slice(0 , 10)}</Text>
-                            <Text>{val.createdAt.slice(11 , 16)}</Text>
+                            <Text  color={'white'} fontSize={'x-small'} fontWeight={'light'} >{val.client.username}</Text>
+                            <Text  color={'white'} fontSize={'x-small'} fontWeight={'light'} >{val.createdAt.slice(0 , 10)}</Text>
+                            <Text   color={'white'} fontSize={'x-small'} fontWeight={'light'}>{val.createdAt.slice(11 , 16)}</Text>
                             {/* <Text>{val.accepted?'Accepted':'not yet accepted'}</Text> */}
                             {/* <Text>{val.received?'Received':'not yet received'}</Text> */}
                             {/* <Text color={'white'} >{val.initiated?'Initiated':'not yet initiated'}</Text> */}
@@ -1212,9 +1212,9 @@ return;
                                 // setselectedrequest(val);
                             }} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
                                 <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
-                                <Text>{val.client.username}</Text>
-                                <Text>{val.createdAt.slice(0 , 10)}</Text>
-                                <Text>{val.createdAt.slice(11 , 16)}</Text>
+                                <Text   color={'white'} fontSize={'x-small'} fontWeight={'light'}>{val.client.username}</Text>
+                                <Text   color={'white'} fontSize={'x-small'} fontWeight={'light'}>{val.createdAt.slice(0 , 10)}</Text>
+                                <Text   color={'white'} fontSize={'x-small'} fontWeight={'light'}>{val.createdAt.slice(11 , 16)}</Text>
                                 {/* <Text>{val.accepted?'Accepted':'not yet accepted'}</Text> */}
                                 {/* <Text>{val.received?'Received':'not yet received'}</Text> */}
                                 {/* <Text color={'white'} >{val.initiated?'Initiated':'not yet initiated'}</Text> */}
@@ -1257,9 +1257,9 @@ return;
                                 // setselectedrequest(val);
                             }} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
                                 <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
-                                <Text>{val.client.username}</Text>
-                                <Text>{val.createdAt.slice(0 , 10)}</Text>
-                                <Text>{val.createdAt.slice(11 , 16)}</Text>
+                                <Text   color={'white'} fontSize={'x-small'} fontWeight={'light'}>{val.client.username}</Text>
+                                <Text   color={'white'} fontSize={'x-small'} fontWeight={'light'}>{val.createdAt.slice(0 , 10)}</Text>
+                                <Text   color={'white'} fontSize={'x-small'} fontWeight={'light'}>{val.createdAt.slice(11 , 16)}</Text>
                                 {/* <Text>{val.accepted?'Accepted':'not yet accepted'}</Text> */}
                                 {/* <Text>{val.received?'Received':'not yet received'}</Text> */}
                                 {/* <Text color={'white'} >{val.initiated?'Initiated':'not yet initiated'}</Text> */}
@@ -1299,10 +1299,10 @@ return;
                                 // setselectedrequest(val);
                             }} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
                                 <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
-                                <Text>{val.client.username}</Text>
-                                <Text>{val.createdAt.slice(0 , 10)}</Text>
-                                <Text>{val.createdAt.slice(11 , 16)}</Text>
-                                <Text>{(val.cancelled && val.cancelinfo.compensated)?'compensated':'...'}</Text>
+                                <Text     color={'white'} fontSize={'x-small'} fontWeight={'light'}>{val.client.username}</Text>
+                                <Text   color={'white'} fontSize={'x-small'} fontWeight={'light'}>{val.createdAt.slice(0 , 10)}</Text>
+                                <Text   color={'white'} fontSize={'x-small'} fontWeight={'light'}>{val.createdAt.slice(11 , 16)}</Text>
+                                <Text   color={'white'} fontSize={'x-small'} fontWeight={'light'}>{(val.cancelled && val.cancelinfo.compensated)?'compensated':'...'}</Text>
                                 {/* <Text>{val.accepted?'Accepted':'not yet accepted'}</Text> */}
                                 {/* <Text>{val.received?'Received':'not yet received'}</Text> */}
                                 {/* <Text color={'white'} >{val.initiated?'Initiated':'not yet initiated'}</Text> */}
@@ -1343,9 +1343,9 @@ return;
                                 // setselectedrequest(val);
                             }} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
                                 <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
-                                <Text>{val.client.username}</Text>
-                                <Text>{val.createdAt.slice(0 , 10)}</Text>
-                                <Text>{val.createdAt.slice(11 , 16)}</Text>
+                                <Text   color={'white'} fontSize={'x-small'} fontWeight={'light'}>{val.client.username}</Text>
+                                <Text   color={'white'} fontSize={'x-small'} fontWeight={'light'}>{val.createdAt.slice(0 , 10)}</Text>
+                                <Text   color={'white'} fontSize={'x-small'} fontWeight={'light'}>{val.createdAt.slice(11 , 16)}</Text>
                                 {/* <Text>{val.accepted?'Accepted':'not yet accepted'}</Text> */}
                                 {/* <Text>{val.received?'Received':'not yet received'}</Text> */}
                                 {/* <Text color={'white'} >{val.initiated?'Initiated':'not yet initiated'}</Text> */}
@@ -1373,9 +1373,9 @@ return;
                             
                             >
                                 <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
-                                <Text color={'white'}   >{val.client.username}</Text>
-                                <Text color={'white'}   >{val.createdAt.slice(0 , 10)}</Text>
-                                <Text color={'white'}   >{val.createdAt.slice(11 , 16)}</Text>
+                                <Text  color={'white'} fontSize={'x-small'} fontWeight={'light'}   >{val.client.username}</Text>
+                                <Text  color={'white'} fontSize={'x-small'} fontWeight={'light'}   >{val.createdAt.slice(0 , 10)}</Text>
+                                <Text  color={'white'} fontSize={'x-small'} fontWeight={'light'}   >{val.createdAt.slice(11 , 16)}</Text>
                                 <Text color={val.accepted&&!val.initiated&&!val.cancelled&&!val.rejected?'green':val.accepted&&val.initiated&&!val.cancelled&&!val.rejected?'purple':val.rejected?'red':val.cancelled?'orange':'green'}   >{val.accepted&&!val.initiated&&!val.cancelled&&!val.rejected?'ACCEPTED':val.accepted&&val.initiated&&!val.cancelled&&!val.rejected?'INITIATED':val.rejected?'REJECTED':val.cancelled?'CANCELLED':'NEW'}</Text>
                                 {/* <Text color={val.received?'green':'orange'} >{val.received?'Received':'not yet received'}</Text>
                                 <Text color={val.initiated?'green.500':'orange'} >{val.initiated?'Initiated':'not yet initiated'}</Text>
