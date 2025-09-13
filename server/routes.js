@@ -2204,7 +2204,7 @@ router.get('/get_request_file_info/:id' , async function(req , res){
 
 
 
-router.post('/send_preview'  , async function(req , res){
+router.post('/send_preview' , memstorage.array('files' ,20 )  ,    async function(req , res){
   try{
      const {id , user_id } = req.body;
      const previews = req.files;
