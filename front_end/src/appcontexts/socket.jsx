@@ -89,7 +89,7 @@ function Socket_provider({children}) {
 
             socket.on('request_received' , async function(){
               try{
-                trigger_notification('NEW REQUEST' , 'a client just made a request' , squares , `https://humverse.dev/view_requests`  )
+                trigger_notification('NEW REQUEST' , 'a client just made a request' , squares , `https://humverse.dev`  )
                setrequestreceived(true);
                setTimeout(() => {
                  setrequestreceived(false);
@@ -103,7 +103,7 @@ function Socket_provider({children}) {
 
               socket.on('request_editted' , async function(){
               try{
-                trigger_notification('REQUEST HAS BEEN EDITTED' , 'a client just editted request' , squares , `https://humverse.dev/view_requests`  )
+                trigger_notification('REQUEST HAS BEEN EDITTED' , 'a client just editted request' , squares , `https://humverse.dev`  )
 
                setrequestupdated(true);
                setTimeout(() => {
@@ -119,7 +119,7 @@ function Socket_provider({children}) {
 
             socket.on('request_cancelled' , async function(){
               try{
-                trigger_notification('REQUEST CANCELLED' , 'a client just cancelled a request' , squares , `https://humverse.dev/view_requests`  )
+                trigger_notification('REQUEST CANCELLED' , 'a client just cancelled a request' , squares , `https://humverse.dev`  )
 
                setrequestcancelled(true);
                setTimeout(() => {
@@ -166,7 +166,7 @@ function Socket_provider({children}) {
 
             socket.on('request_uncancelled' , async function(){
               try{
-                trigger_notification('REQUEST GOT UNCANCELLED' , 'a client just uncancelled' , squares , `https://humverse.dev/view_requests`  )
+                trigger_notification('REQUEST GOT UNCANCELLED' , 'a client just uncancelled' , squares , `https://humverse.dev`  )
 
               setrequestuncancelled(true);
                setTimeout(() => {

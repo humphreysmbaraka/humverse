@@ -94,7 +94,7 @@ function Make_request() {
               setsubmittingerror(false);
               console.log('request sent successfully');
               const data = await upload.json();
-              socket.current.emit('editt_request' , data , function(){
+              socket.current.emit('editt_request' , data.request , function(){
                 console.log('edit request has been received');
               })
               navigate('/main');
