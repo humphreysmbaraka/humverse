@@ -1107,7 +1107,7 @@ return;
                  {allreqs?.length > 0 && 
                   allreqs.map(function(val , index){
                     return(
-                        <HStack mt={'10px'} onClick={()=>{
+                        <HStack  onClick={()=>{
                             setallreqs(function(prev){
                                 
                                 return prev.map(function(req , ind){
@@ -1168,7 +1168,7 @@ return;
                                     })
                                 })
                                 // setselectedrequest(val);
-                            }} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
+                            }} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'}   backgroundColor={val.selected?'gray.800':'transparent'}>
                             <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
                             <Text  color={'white'} fontSize={'x-small'} fontWeight={'light'} >{val.client.username}</Text>
                             <Text  color={'white'} fontSize={'x-small'} fontWeight={'light'} >{val.createdAt.slice(0 , 10)}</Text>
@@ -1210,7 +1210,7 @@ return;
                                     })
                                 })
                                 // setselectedrequest(val);
-                            }} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
+                            }} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} backgroundColor={val.selected?'gray.800':'transparent'} >
                                 <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
                                 <Text   color={'white'} fontSize={'x-small'} fontWeight={'light'}>{val.client.username}</Text>
                                 <Text   color={'white'} fontSize={'x-small'} fontWeight={'light'}>{val.createdAt.slice(0 , 10)}</Text>
@@ -1255,7 +1255,7 @@ return;
                                     })
                                 })
                                 // setselectedrequest(val);
-                            }} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
+                            }} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} backgroundColor={val.selected?'gray.800':'transparent'} >
                                 <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
                                 <Text   color={'white'} fontSize={'x-small'} fontWeight={'light'}>{val.client.username}</Text>
                                 <Text   color={'white'} fontSize={'x-small'} fontWeight={'light'}>{val.createdAt.slice(0 , 10)}</Text>
@@ -1297,7 +1297,7 @@ return;
                                     })
                                 })
                                 // setselectedrequest(val);
-                            }} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
+                            }} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'}  backgroundColor={val.selected?'gray.800':'transparent'} >
                                 <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
                                 <Text     color={'white'} fontSize={'x-small'} fontWeight={'light'}>{val.client.username}</Text>
                                 <Text   color={'white'} fontSize={'x-small'} fontWeight={'light'}>{val.createdAt.slice(0 , 10)}</Text>
@@ -1341,7 +1341,7 @@ return;
                                     })
                                 })
                                 // setselectedrequest(val);
-                            }} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} >
+                            }} width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} backgroundColor={val.selected?'gray.800':'transparent'} >
                                 <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
                                 <Text   color={'white'} fontSize={'x-small'} fontWeight={'light'}>{val.client.username}</Text>
                                 <Text   color={'white'} fontSize={'x-small'} fontWeight={'light'}>{val.createdAt.slice(0 , 10)}</Text>
