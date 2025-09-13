@@ -19,6 +19,8 @@ const { Readable } = require('stream');
 const twilio = require('twilio')(process.env.TWILIO_SID , process.env.TWILIO_AUTH_TOKEN);
 
 
+
+
 const app = express();
 app.use(express.json());
 const router = express.Router();
@@ -677,11 +679,11 @@ router.get('/get_requests' ,  async function(req , res){
       console.log('fetching requests...');
       const requests = await Request.find({}).populate('client');
       if(requests.length > 0){
-        console.log('found requests' , requests);
+        // console.log('found requests' , requests);
         return res.status(200).json({error:false , requests:requests , message:'fetched requests'});
       }
       else{
-        console.log('no requests found' , requests);
+        console.log('no requests found');
         return res.status(200).json({error:false , requests:requests , message:'no requests found'});
       }
   }
