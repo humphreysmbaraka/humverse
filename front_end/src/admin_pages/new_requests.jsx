@@ -540,15 +540,15 @@ function New_Requests() {
             setsendingpreviews(true);
           // CHECK FILE TYPES TO ENSURE THEY ARE ALL IMAGES USING FOR OF
           for await(let file of previews){
-           
-            const extentionstart = file.filename.lastIndexOf('.' , (filename.length));
-            const ext = file.filename.substring(extentionstart , file.filename.length);
-            if(ext !== '.png'){
-                setsendingpreviews(false);
-                // setpreviews([]);
-                setsendpreverror('files must be images');
-                throw new Error('file must be an image');
-            }
+            // console.log('file..', file)
+            // const extentionstart = file.filename.lastIndexOf('.' , (filename.length));
+            // const ext = file.filename.substring(extentionstart , file.filename.length);
+            // if(ext !== '.png'){
+            //     setsendingpreviews(false);
+            //     // setpreviews([]);
+            //     setsendpreverror('files must be images');
+            //     throw new Error('file must be an image');
+            // }
             
             const items = new FormData();
             items.append('id' , selectedrequest._id);
