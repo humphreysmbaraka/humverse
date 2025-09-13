@@ -917,7 +917,7 @@ function View_Product() {
 
                             <Text color={'white'} fontSize={{ base: "md", md: "larger" }} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'}  >PREVIEWS</Text>
                             {/* <Text color={'white'} fontSize={'xs'} alignSelf={'flex-start'} textAlign={'left'}  >DATE</Text> */}
-                            <HStack  borderWidth={'1px'} borderColor={'white'}  width={'98%'} padding={'4px'} flexWrap={'wrap'} alignItems={'center'} gap={'20px'} justifyContent={{ base: "center", md: "flex-start" }} >
+                            <HStack  borderWidth={'1px'} borderColor={'white'}  width={'98%'} minHeight={'450px'} padding={'4px'} flexWrap={'wrap'} alignItems={'center'} gap={'20px'} justifyContent={{ base: "center", md: "flex-start" }} >
 
                            {(previewinfos.length > 0)  &&  
                             previewinfos.map(function(val , ind){
