@@ -2298,6 +2298,7 @@ router.post('/send_preview' , memstorage.array('files' ,20 )  ,    async functio
 
 
 router.get('/stream_preview/:id'  , async function(req , res){
+      try{
         const id = req.params.id;
         console.log('IDDDDD' , id);
         const files = await previewbucket.find({_id:new ObjectId(id)}).toArray();
@@ -2325,6 +2326,11 @@ router.get('/stream_preview/:id'  , async function(req , res){
          console.log('✅ Successfully streamed file:', file.filename);
        });
         downstream.pipe(res);
+      }
+      catch(err){
+        console.log('server error during streaming' , err);
+        return res.status(500).json({error:true , problem:err});
+      }
 })
 
 
