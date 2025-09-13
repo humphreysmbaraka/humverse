@@ -73,6 +73,7 @@ function View_Product() {
             })
 
             const informations = await Promise.all(prevs);
+            
             setpreviewinfos(informations);
 
           }
@@ -930,8 +931,8 @@ function View_Product() {
                            </HStack>
                            }
 
-                           {(product.previews.length = 0)&& 
-                           <Text color={'white'} fontSize={'small'} fontWeight={'light'}  ></Text>
+                           {(product.previews.length == 0)&& 
+                           <Text color={'white'} fontSize={'small'} fontWeight={'light'}  >NO PREVIEWS SENT YET</Text>
                            }
 
 
