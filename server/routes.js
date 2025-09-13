@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 const jwt  = require('jsonwebtoken');
 const fs = require('fs')
 const  pdfParse = require('pdf-parse')
-get_request_file_info
+
 const User = require('./configs/schemas/user');
 const Request = require('./configs/schemas/request');
 const Ai = require('./configs/schemas/AI');
