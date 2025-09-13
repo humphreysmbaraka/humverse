@@ -922,7 +922,7 @@ function View_Product() {
                            {(previewinfos.length > 0)  &&  
                             previewinfos.map(function(val , ind){
                                      return(
-                            <VStack    onClick={()=>{window.open(`${BASE_URL}/stream_preview/${val._id}` ,  '_blank')}}   width={{ base: "45%", md: "23%" }} borderRadius={'10px'}   >
+                            <VStack    onClick={()=>{window.open(`${BASE_URL}/stream_preview/${val._id}` ,  '_blank')}}   width={{ base: "45%", md: "23%" }} p={'4px'} borderRadius={'10px'} height={'auto'}  >
                                 {/* <Image width={'99%'} height={'200px'} /> */}
                                 <Image    width={'100%'}  height={'200px'}    src={`${BASE_URL}/stream_preview/${val._id}`}     />
 
