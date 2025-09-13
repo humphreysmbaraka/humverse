@@ -57,7 +57,7 @@ function New_Requests() {
     const [compensationamount , setcompensationamount] = useState(null);
     // const [rejreason , setrejreason] = useState(null);
     const {socket , requestreceived , requestupdated , requestcancelled , cancelaccepted} = useContext(socketcontext);
-
+   
      const [redeeming , setredeeming] = useState(false);
      const [redeemerror , setredeemerror] = useState(null);
     // const location = useLocation();
@@ -537,6 +537,7 @@ function New_Requests() {
           return;
         }
         else{
+            setsendingpreviews(true);
           // CHECK FILE TYPES TO ENSURE THEY ARE ALL IMAGES USING FOR OF
           for await(let file of previews){
            
@@ -544,6 +545,7 @@ function New_Requests() {
             const ext = file.filename.substring(extentionstart , file.filename.length);
             if(ext !== '.png'){
                 setsendingpreviews(false);
+                // setpreviews([]);
                 setsendpreverror('files must be images');
                 throw new Error('file must be an image');
             }
@@ -563,6 +565,7 @@ function New_Requests() {
             if(send.ok){
                 setsendingpreviews(false);
                 setsendpreverror(null);
+                setpreviews([]);
                 const info = await send.json();
                 setselectedrequest(info.request);
                 setallreqs(function(prev){
@@ -582,6 +585,7 @@ function New_Requests() {
             }
             else{
                 const info = await send.json();
+                setpreviews([]);
                 setsendingpreviews(false);
                 if(String(send.status).startsWith('4')){
                     setsendpreverror(info.message);
@@ -2493,7 +2497,7 @@ return;
                        <Input multiple={true} type='file'  ref={previewref} onChange={(e)=>{handlefileinput(e.target)}} display={'none'}      />
                         
 
-                        <Button  onClick={()=>{previewref.current.click()}} padding={'5px'} colorScheme='purple' borderRadius={'10px'} >SELECT FILE(S)</Button>
+                        <Button  onClick={()=>{previewref.current.click()}} padding={'5px'} colorScheme='purple' borderRadius={'10px'} mb={'10pxs'} >SELECT FILE(S)</Button>
 
                        <VStack  width={'98%'}  bg={'gray.500'} borderRadius={'10px'} p={'4px'} maxH={'200px'} >
                              {previews.length > 0    &&  
@@ -2512,8 +2516,12 @@ return;
                              
                              }
                        </VStack>
-
-                       <Button  onClick={send_previews} padding={'5px'} colorScheme='purple' borderRadius={'10px'} >SELECT FILE(S)</Button>
+                       {sendpreverror && 
+                       
+                       <Text>{sendpreverror}</Text>}
+                       <Button   mt={'10px'} onClick={send_previews} padding={'5px'} colorScheme='purple' borderRadius={'10px'} >SELECT FILE(S) 
+                       {sendingpreviews}&& <Spinner       width={'20px'} height={'20px'} color='white'          />
+                        </Button>
 
 
             <Text fontSize={'x-large'} color={'white'} fontWeight={'bold'} >SHARED PREVIEWS</Text>
