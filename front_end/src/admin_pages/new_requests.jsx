@@ -1113,7 +1113,7 @@ return;
                                 return prev.map(function(req , ind){
                                     if(req._id === val._id){
                                          obj = {...req , selected:true};
-                                        
+                                         setselectedrequest(obj);
                                         // return {...req , selected:true}
                                         
                                         return obj;
@@ -1126,7 +1126,7 @@ return;
                                 
                             })
                             // setselectedrequest(val);
-                            setselectedrequest(obj);
+                            // setselectedrequest(obj);
                         }}  width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} overflow={'auto'} css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}}  backgroundColor={val.selected?'gray.800':'transparent'} >
                             <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
                             <Text color={'white'}   >{val.client.username}</Text>
