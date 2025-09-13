@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { dimensions } from '../appcontexts/dimensions'
-import { Avatar, Box, Button, HStack, Input, Select, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, Text, Textarea, VStack } from '@chakra-ui/react';
+import { Avatar, Box, Button, HStack, Image, Input, Select, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, Text, Textarea, VStack } from '@chakra-ui/react';
 import { IoChevronBackOutline } from "react-icons/io5";
 import { GrNext } from "react-icons/gr";
 import { FaRegUser } from "react-icons/fa";
@@ -2539,8 +2539,9 @@ return;
                 return(
                     
                        <HStack  width={'98%'} p={'5px'} gap={'10px'} borderRadius={'10px'} >
-                         <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_preview/${val._id}` ,  '_blank')}} key={index} as='button' height={'100px'} width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'}   >
-                        <PiFilePdf    size={'80px'} borderRadius={'10px'}  color='red'    />
+                         <VStack  onClick={()=>{window.open(`${BASE_URL}/stream_preview/${val._id}` ,  '_blank')}} key={index} as='button' height={'100px'} width={'17%'} borderRadius={'10px'} borderWidth={'1px'}  borderColor={'white'}  alignItems={'center'} p={'2px'}  >
+                        {/* <PiFilePdf    size={'80px'} borderRadius={'10px'}  color='red'    /> */}
+                        <Image  src={`${BASE_URL}/stream_preview/${val._id}`}    width={'95%'} height={'150px'} mb={'5px'}         />
                         <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{val.metadata?.name}</Text>
                         </VStack>
                        </HStack>
