@@ -2308,12 +2308,10 @@ router.get('/stream_preview/:id'  , async function(req , res){
         }
 
         const file = files[0];
-        res.set({
-          'Content-Type': file.metadata.type || 'application/octet-stream',
-          'Content-Disposition': `inline; filename="${file.filename}"`
-        });
+        const downstream = previewbucket.openDownloadStream(new ObjectId(id));
+       
       
-        const downstream = previewbucket.openDownloadStream(id);
+       
      
         downstream.on('error', (err) => {
          console.error('Error while streaming:', err);
@@ -2325,6 +2323,12 @@ router.get('/stream_preview/:id'  , async function(req , res){
        downstream.on('end', () => {
          console.log('✅ Successfully streamed file:', file.filename);
        });
+
+       res.set({
+        'Content-Type': file.metadata.type || 'application/octet-stream',
+        'Content-Disposition': `inline; filename="${file.filename}"`
+      });
+
         downstream.pipe(res);
       }
       catch(err){
