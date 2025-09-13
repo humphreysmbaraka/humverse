@@ -2520,7 +2520,10 @@ return;
                        
                        <Text>{sendpreverror}</Text>}
                        <Button   mt={'10px'} onClick={send_previews} padding={'5px'} colorScheme='purple' borderRadius={'10px'} >SELECT FILE(S) 
-                       {sendingpreviews}&& <Spinner       width={'20px'} height={'20px'} color='white'          />
+                       {sendingpreviews  
+                       
+                       && <Spinner       width={'20px'} height={'20px'} color='white'          />
+}
                         </Button>
 
 
