@@ -1129,11 +1129,11 @@ return;
                             // setselectedrequest(obj);
                         }}  width={'100%'} p={'2px'} h={'35px'} borderBottomColor={'white'} borderBottomWidth={'1px'} justifyContent={'space-around'} overflowx={'auto'} css={{ '&::-webkit-scrollbar': { display:'none' ,  scrollbarWidth: '1px' }}}  backgroundColor={val.selected?'gray.800':'transparent'} >
                             <Avatar  objectFit={'contain'} width={'25px'} height={'25px'} borderRadius={'50%'}  src={val.client.picture?`${BASE_URL}/profile_pic/${val.client.picture}`: undefined} name={val.client.username} />
-                            <Text color={'white'}   >{val.client.username}</Text>
-                            <Text color={'white'}   >{val.createdAt.slice(0 , 10)}</Text>
-                            <Text color={'white'}   >{val.createdAt.slice(11 , 16)}</Text>
-                            <Text color={'green'} p={'2px'}  >{val.updated?'UPDATED':''}</Text>
-                            <Text color={val.accepted&&!val.initiated&&!val.cancelled&&!val.rejected?'green':val.accepted&&val.initiated&&!val.cancelled&&!val.rejected?'purple':val.rejected?'red':val.cancelled?'orange':'green'}   >{val.accepted&&!val.initiated&&!val.cancelled&&!val.rejected?'ACCEPTED':val.accepted&&val.initiated&&!val.cancelled&&!val.rejected?'INITIATED':val.rejected?'REJECTED':(val.cancelled && !val.cancelinfo.compensated)?'CANCELLED':(val.cancelled && val.cancelinfo.compensated)?'compensated':'NEW'}</Text>
+                            <Text color={'white'} fontSize={'x-small'}  fontWeight={'light'} >{val.client.username}</Text>
+                            <Text color={'white'} fontSize={'x-small'}  fontWeight={'light'}  >{val.createdAt.slice(0 , 10)}</Text>
+                            <Text color={'white'} fontSize={'x-small'}  fontWeight={'light'}  >{val.createdAt.slice(11 , 16)}</Text>
+                            <Text color={'green'} p={'2px'}  fontSize={'x-small'}  fontWeight={'light'}  >{val.updated?'UPDATED':''}</Text>
+                            <Text color={val.accepted&&!val.initiated&&!val.cancelled&&!val.rejected?'green':val.accepted&&val.initiated&&!val.cancelled&&!val.rejected?'purple':val.rejected?'red':val.cancelled?'orange':'green'} fontSize={'x-small'}  fontWeight={'light'}  >{val.accepted&&!val.initiated&&!val.cancelled&&!val.rejected?'ACCEPTED':val.accepted&&val.initiated&&!val.cancelled&&!val.rejected?'INITIATED':val.rejected?'REJECTED':(val.cancelled && !val.cancelinfo.compensated)?'CANCELLED':(val.cancelled && val.cancelinfo.compensated)?'compensated':'NEW'}</Text>
                             {/* <Text color={val.received?'green':'orange'} >{val.received?'Received':'not yet received'}</Text>
                             <Text color={val.initiated?'green.500':'orange'} >{val.initiated?'Initiated':'not yet initiated'}</Text>
                             <Text color={val.rejected?'red':'green'}  >{val.rejected?'rejected':'not rejected'}</Text>
