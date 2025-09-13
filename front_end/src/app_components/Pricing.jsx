@@ -522,23 +522,23 @@ function Pricing() {
                     <Tbody>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Within 24 hours</Td>
-                        <Td color="white" fontSize={['xs', 'sm', 'md']}>10% of total</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>10% of deposit</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>After initial designs</Td>
-                        <Td color="white" fontSize={['xs', 'sm', 'md']}>25% of total</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>25% of deposit</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>After core build</Td>
-                        <Td color="white" fontSize={['xs', 'sm', 'md']}>50% of total</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>50% of deposit</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Major functionality complete</Td>
-                        <Td color="white" fontSize={['xs', 'sm', 'md']}>75% of total</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>100% of deposit</Td>
                       </Tr>
                       <Tr>
                         <Td color="white" fontSize={['xs', 'sm', 'md']}>Near completion</Td>
-                        <Td color="white" fontSize={['xs', 'sm', 'md']}>100% of total</Td>
+                        <Td color="white" fontSize={['xs', 'sm', 'md']}>80% of total</Td>
                       </Tr>
                     </Tbody>
                   </Table>

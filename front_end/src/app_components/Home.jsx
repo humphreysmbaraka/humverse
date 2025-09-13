@@ -31,7 +31,7 @@ function Home() {
         md: "45%" 
     });
 
-
+   
 
     const fetchdata = async function(){
         try{

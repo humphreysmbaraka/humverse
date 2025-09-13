@@ -30,6 +30,7 @@ function View_Product() {
     const navigate = useNavigate();
     const [wanttocancel, setwanttocancel] = useState(false);
     const [wanttouncancel, setwanttouncancel] = useState(false);
+    const [previewinfos , setpreviewinfos] = useState([]); 
 
     const [cancelling, setcancelling] = useState(false);
     const [cancelerror, setcancelerror] = useState(null);
@@ -41,7 +42,45 @@ function View_Product() {
     const isTablet = useBreakpointValue({ base: true, md: true, lg: false });
 
 
+    const get_preview_infos = async function(){
+        try{
+          if(product.previews.length == 0){
+            return;
+          }
+          else{
+           const prevs =  product.previews.map(function(val , ind){
+                return(
+                    new Promise(async function(res , rej){
+                        try{
+                            const previnfo = await fetch(`${BASE_URL}/get_preview_info/v${val}`);
+                            if(previnfo.ok){
+                            const infos = await previnfo.json();
+                            const info = infos.file;
+                            res(info);
+                            }
+                            else{
+                                const infos = await previnfo.json();
+                                rej(infos.message)
+                            }
+                        }
+                        catch(err){
+                            console.log('error fetching preview info' , err);
+                            rej(err);
+                        }
+                       
+                    })
+                )
+            })
 
+            const informations = await Promise.all(prevs);
+            setpreviewinfos(informations);
+
+          }
+        }
+        catch(err){
+            console.log('could not get preview infos' , err);
+        }
+    }
 
     const getattachmentinfos = async function(val){
         try{
@@ -848,7 +887,7 @@ function View_Product() {
                                 }
                             </HStack>
 
-                            <Text color={'white'} fontSize={{ base: "md", md: "larger" }} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'}  >PROGRESS</Text>
+                            {/* <Text color={'white'} fontSize={{ base: "md", md: "larger" }} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'}  >PROGRESS</Text>
                             <HStack width={'98%'} padding={'4px'} flexWrap={'wrap'} alignItems={'center'} justifyContent={{ base: "center", md: "flex-start" }} >
                                 <VStack minHeight={'200px'} width={{ base: "100%", md: "23%" }} flexWrap={'wrap'} borderRadius={'10px'} borderWidth={'0.5px'} borderColor={'white'} alignItems={'center'} p={'4px'}  >
                                     <Text color={'white'} fontSize={{ base: "md", md: "larger" }} fontWeight={'light'} alignSelf={'flex-start'} textAlign={'left'}  >FEATURES</Text>
@@ -873,11 +912,22 @@ function View_Product() {
                                         </Text>
                                     </Text>
                                 </VStack>
-                            </HStack>
+                            </HStack> */}
 
                             <Text color={'white'} fontSize={{ base: "md", md: "larger" }} fontWeight={'bold'} alignSelf={'flex-start'} textAlign={'left'}  >PREVIEWS</Text>
-                            <Text color={'white'} fontSize={'xs'} alignSelf={'flex-start'} textAlign={'left'}  >DATE</Text>
+                            {/* <Text color={'white'} fontSize={'xs'} alignSelf={'flex-start'} textAlign={'left'}  >DATE</Text> */}
+                           {(product.previews?.length > 0)  &&  
+                           
+                            product.previews.map(function(val , indd){
+                                <VStack width={{ base: "45%", md: "23%" }} borderRadius={'10px'}   >
+                                {/* <Image width={'99%'} height={'200px'} /> */}
+                                <Image    width={'100%'}  height={'200px'}    src={`${BASE_URL}/stream_preview/${product.previews[ind]}`}     />
 
+                                <Text fontSize={'xx-small'} color={'white'} width={'90%'} isTruncated={true} textAlign={'center'}   >{previewinfos[ind].metadata.name}</Text>
+                            </VStack>
+                            })
+                           
+                           }
                             <HStack width={'98%'} padding={'4px'} flexWrap={'wrap'} alignItems={'center'} gap={'20px'} justifyContent={{ base: "center", md: "flex-start" }} >
                                 <VStack width={{ base: "45%", md: "23%" }} borderRadius={'10px'}   >
                                     <Image width={'99%'} height={'200px'} />
