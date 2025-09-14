@@ -24,7 +24,7 @@ function Socket_provider({children}) {
     const [previewsreceived , setpreviewsreceived] = useState(false);
     const [cancelaccepted , setcancelaccepted] = useState(false);
     const [compensationevent , setcompensationevent] = useState(null)
-    cont [clientedit , setclientedit] = useState(false);
+    const [clientedit , setclientedit] = useState(false);
     
 
 
