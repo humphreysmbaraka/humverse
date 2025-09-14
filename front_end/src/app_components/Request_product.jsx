@@ -94,7 +94,8 @@ function Make_request() {
               setsubmittingerror(false);
               console.log('request sent successfully');
               const data = await upload.json();
-              socket.current.emit('editt_request' , data.request , function(){
+              const req = data.request;
+              socket.current.emit('editt_request' , req , function(){
                 console.log('edit request has been received');
               })
               navigate('/main');
@@ -124,7 +125,8 @@ function Make_request() {
               setsubmitting(false);
               setsubmittingerror(false);
               const data = await upload.json();
-              socket.current.emit('edit_request' , data , function(){
+              const req = data.request;
+              socket.current.emit('edit_request' , req , function(){
                 console.log('edit request has been received');
               })
               navigate('/main');

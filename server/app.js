@@ -87,6 +87,13 @@ io.on('connection' , function(socket){
     callback();
   })
 
+
+  socket.on('edit_request' , function(data , callback){
+    console.log('editted request...' , data);
+    socket.to(`${data.client}`).emit('request_editted');
+    callback();
+  })
+
   socket.on('cancel_request' , function(data , callback){
     console.log('cancelled request...' , data);
     socket.to('admins').emit('request_cancelled');
@@ -95,7 +102,7 @@ io.on('connection' , function(socket){
 
 
 
-  socket.on('request_rejected' , function(data , callback){
+  socket.on('client_request_rejected' , function(data , callback){
     console.log('request rejected...' , data);
     socket.to(`${data.client}`).emit('request_rejected');
     callback();

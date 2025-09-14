@@ -24,6 +24,7 @@ function Socket_provider({children}) {
     const [previewsreceived , setpreviewsreceived] = useState(false);
     const [cancelaccepted , setcancelaccepted] = useState(false);
     const [compensationevent , setcompensationevent] = useState(null)
+    cont [clientedit , setclientedit] = useState(false);
     
 
 
@@ -112,6 +113,21 @@ function Socket_provider({children}) {
               }
               catch(err){
                 console.log('error handling request editted event' ,err)
+              }
+            })
+
+
+            socket.on('client_request_editted' , async function(){
+              try{
+                trigger_notification('REQUEST HAS BEEN EDITTED' , 'you just editted a request' , squares , `https://humverse.dev`  )
+
+               setclientedit(true);
+               setTimeout(() => {
+                 setclientedit(false);
+               }, 3000);     
+              }
+              catch(err){
+                console.log('error handling client editted request  event' ,err)
               }
             })
              
@@ -292,7 +308,7 @@ function Socket_provider({children}) {
 
 
   return (
-   <socketcontext.Provider  value={{socket:socketref , socketconnected , requestreceived , requestupdated , requestcancelled , requestrejected , requestredeemed , requestuncancelled ,requestaccepted , previewsreceived ,cancelaccepted , compensationevent}}>
+   <socketcontext.Provider  value={{socket:socketref , socketconnected , requestreceived , requestupdated , requestcancelled , requestrejected , requestredeemed , requestuncancelled ,requestaccepted , previewsreceived ,cancelaccepted , compensationevent , clientedit}}>
    {children}
    </socketcontext.Provider>
   )
