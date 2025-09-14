@@ -52,7 +52,7 @@ function View_Product() {
                 return(
                     new Promise(async function(res , rej){
                         try{
-                            const previnfo = await fetch(`${BASE_URL}/get_preview_info/v${val}`);
+                            const previnfo = await fetch(`${BASE_URL}/get_preview_info/${val}`);
                             if(previnfo.ok){
                             const infos = await previnfo.json();
                             const info = infos.file;
