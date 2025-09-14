@@ -80,7 +80,7 @@ function View_Product() {
             })
 
             const informations = await Promise.all(prevs);
-            console.log('neeewwww infooooooosssssss' , informations);
+            // console.log('neeewwww infooooooosssssss' , informations);
             setpreviewinfos(informations.filter(Boolean));
 
           }
@@ -940,7 +940,7 @@ function View_Product() {
                  {(product.previews.length > 0) && 
                  
                  
-                 <HStack  borderWidth={'1px'} borderColor={'white'}  width={'98%'} minHeight={'450px'} padding={'4px'} flexWrap={'wrap'} alignItems={'center'} gap={'20px'} justifyContent={{ base: "center", md: "flex-start" }} >
+                 <HStack    width={'98%'}  padding={'4px'} flexWrap={'wrap'} alignItems={'center'} gap={'20px'} justifyContent={{ base: "center", md: "flex-start" }} >
 
                            {(previewinfos.length > 0)  && 
 
