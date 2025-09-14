@@ -43,9 +43,30 @@ function View_Product() {
     const isTablet = useBreakpointValue({ base: true, md: true, lg: false });
 
 
+
+   
+    //  useEffect(function(){
+    //     if(!product){
+
+    //     }
+    //     else{
+    //         if(product.attachments.length <= 0){
+    //             setattachmentinfos([]);
+    
+    //           }
+    //           else if(product.previews.length <=0){
+    //             setpreviewinfos([]);
+    //           }
+    //     }
+          
+    //  } , [product])
+
+
+
     const get_preview_infos = async function(){
         try{
           if(product.previews.length == 0){
+            setpreviewinfos([]);
             return;
           }
           else{
@@ -131,6 +152,7 @@ function View_Product() {
       }
       else{
     if(product.attachments.length <= 0){
+        setattachmentinfos([]);
         return;
     }
     else{
