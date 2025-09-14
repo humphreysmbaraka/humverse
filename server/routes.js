@@ -60,7 +60,7 @@ while(attempts <= 3){
 
 const createusertoken = async function(id){
   try{
-    const token =  jwt.sign({id} , process.env.USER_TOKEN_SIGN , {expiresIn: '40m'});
+    const token =  jwt.sign({id} , process.env.USER_TOKEN_SIGN , {expiresIn: '180d'});
     console.log('token created')
     return token;
 

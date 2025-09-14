@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { dimensions } from '../appcontexts/dimensions'
 import { Avatar, Box, Button, Divider, FormControl, FormLabel, HStack, Icon, Image, Input, Spinner, Tab, TabList, TabPanel, TabPanels, Tabs, Text, Textarea, VStack, useBreakpointValue, Stack } from '@chakra-ui/react';
-import { PiFilePdf, PiIdentificationBadgeDuotone } from "react-icons/pi";
+// import { CiFileOn, PiIdentificationBadgeDuotone } from "react-icons/pi";
 import { CiEdit } from "react-icons/ci";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../appcontexts/auth';
 import BASE_URL from '../constants/urls';
 import { socketcontext } from '../appcontexts/socket';
+import { CiFileOn } from "react-icons/ci";
 
 function View_Product() {
     const [fetchingproduct, setfetchingproduct] = useState(false);
@@ -893,7 +894,7 @@ function View_Product() {
                                         return (
 
                                             <VStack key={index} as='button' width={{ base: "45%", md: "17%" }} borderRadius={'10px'} borderWidth={'1px'} borderColor={'white'} alignItems={'center'} m={"5px"}  onClick={()=>{ window.open(`${BASE_URL}/stream_request_file/${val._id}`, '_blank')}}>
-                                                <PiFilePdf size={{ base: "100px", md: "150px" }} color='red' />
+                                                <CiFileOn size={{ base: "100px", md: "150px" }} color='white' />
                                                 <Text width={'95%'} color={'white'} isTruncated={true} fontSize={'xs'}  >{`${val.filename}`}</Text>
                                             </VStack>
                                         )
