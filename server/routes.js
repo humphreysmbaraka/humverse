@@ -1494,6 +1494,7 @@ router.patch('/edit_request'  , memstorage.array('attachments' , 20) ,  async fu
       request.email =  email;
       request.attachments = attachment_ids;
       request.updated = true;
+      request.update_seen = false
       // const newrequest = new Request({
       //   client:user ,  type , description , timeunit , timequantity , names , number , email , attachments:[...attachment_ids]
       // })
@@ -1516,6 +1517,8 @@ router.patch('/edit_request'  , memstorage.array('attachments' , 20) ,  async fu
       request.number = number;
       request.email =  email;
       request.attachments = [];
+      request.updated = true;
+      request.update_seen = false
       // const newrequest = new Request({
       //   client:user ,  type , description , timeunit , timequantity , names , number , email 
       // })

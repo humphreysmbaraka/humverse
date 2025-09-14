@@ -35,7 +35,7 @@ function Contacts() {
          <Text fontSize={'large'} color={'white'} fontWeight={'bold'} >0740458924</Text>
        </Box>
 
-       <Box  mt={'10px'} mb={'10px'} h={'200px'}  bg={'gray.800'}  borderRadius={'15px'} display={'flex'} flexDirection={'column'} gap={'10px'} p={'5px'} >
+       <Box  mt={'10px'} mb={'10px'} h={'300px'}  bg={'gray.800'}  borderRadius={'15px'} display={'flex'} flexDirection={'column'}  alignItems={'center'} justifyContent={'space-evenly'}  gap={'10px'} p={'5px'} >
         <Text fontSize={'medium'} color={'white'}  >E-Mail</Text>
          <Text fontSize={'large'} color={'white'} fontWeight={'bold'} >humversedevs@gmail.com</Text>
 

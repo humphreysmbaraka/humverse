@@ -13,7 +13,7 @@ import { AuthContext } from '../appcontexts/auth';
 import { socketcontext } from '../appcontexts/socket';
 
 
-
+updates
 
 function New_Requests() {
     const {winwidth , winheight} = useContext(dimensions);
@@ -302,6 +302,7 @@ function New_Requests() {
                 console.log('could not view updates' , err);
             }
         }
+        view_updates();
     } , [selectedrequest])
 
   
