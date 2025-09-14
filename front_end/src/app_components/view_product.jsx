@@ -15,7 +15,7 @@ function View_Product() {
     const { winwidth, winheight } = useContext(dimensions);
     const location = useLocation();
     const { loggedin, admin, user } = useContext(AuthContext);
-    const { socket, requestrejected, requestredeemed, requestaccepted, previewsreceived , cancelaccepted , compensationevent } = useContext(socketcontext);
+    const { socket, requestrejected, requestredeemed, requestaccepted, previewsreceived , cancelaccepted , compensationevent ,clientedit } = useContext(socketcontext);
     const product_id = location.state.request._id;
     const [product, setproduct] = useState(null);
     const [attachments ,setattachments ] = useState(null);
@@ -296,6 +296,25 @@ function View_Product() {
 
 
 
+
+
+    useEffect(function () {
+        let timer;
+        if ( clientedit) {
+            timer = setTimeout(function () {
+                getrequest();
+
+            }, 1000)
+        }
+        else {
+
+        }
+
+        return () => clearTimeout(timer);
+    }, [clientedit]);
+
+
+   
 
    
 
