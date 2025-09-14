@@ -947,9 +947,9 @@ function View_Product() {
                           previewinfos.map(function(val , ind){
                              console.log('preview display infooo' , val);
                                      return(
-                            <VStack    onClick={()=>{window.open(`${BASE_URL}/stream_preview/${val._id}` ,  '_blank')}}   width={{ base: "45%", md: "23%" }} p={'4px'} borderRadius={'10px'} height={'225px'}  >
+                            <VStack    onClick={()=>{window.open(`${BASE_URL}/stream_preview/${val._id}` ,  '_blank')}}   width={{ base: "85%", md: "23%" }} p={'4px'} borderRadius={'10px'}  >
                                 {/* <Image width={'99%'} height={'200px'} /> */}
-                                <Image    width={'100%'}  height={'200px'}    src={`${BASE_URL}/stream_preview/${val._id}`}     />
+                                <Image    width={'100%'}  height={{base:'200px' , md:'200px'}}    src={`${BASE_URL}/stream_preview/${val._id}`}     />
 
                                 <Text fontSize={'xx-small'} color={'white'} width={'90%'} isTruncated={true} textAlign={'center'}   >{val.metadata?.name}</Text>
                             </VStack>

@@ -367,7 +367,7 @@ function New_Requests() {
                  })
 
                  const reqinfos = await  Promise.all(infos);
-                 console.log('ATTACHMENT INFOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOS' , reqinfos);
+                //  console.log('ATTACHMENT INFOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOS' , reqinfos);
                  setattachmentinfos(reqinfos);
               //    return Promise.all(infos);
   
@@ -429,7 +429,7 @@ function New_Requests() {
                  })
 
                  const reqinfos = await  Promise.all(infos);
-                 console.log('PREVIEW INFOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO' , reqinfos)
+                //  console.log('PREVIEW INFOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO' , reqinfos)
                  setpreviewsinfos(reqinfos);
               //    return Promise.all(infos);
   
@@ -569,9 +569,9 @@ function New_Requests() {
             const items = new FormData();
             items.append('id' , selectedrequest._id);
             items.append('user_id' , user._id);
-            previews.forEach(function(val , index){
-                items.append('files' , val)
-            })
+            // previews.forEach(function(val , index){
+                items.append('files' , file)
+            // })
             const send = await fetch(`${BASE_URL}/send_preview` , {
                 method:'POST',
                 credentials:'include',
