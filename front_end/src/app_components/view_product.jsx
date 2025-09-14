@@ -81,7 +81,7 @@ function View_Product() {
 
             const informations = await Promise.all(prevs);
             console.log('neeewwww infooooooosssssss' , informations);
-            setpreviewinfos(informations);
+            setpreviewinfos(informations.filter(Boolean));
 
           }
         }
@@ -89,6 +89,17 @@ function View_Product() {
             console.log('could not get preview infos' , err);
         }
     }
+
+
+
+    useEffect(function(){
+       if(!product){
+        return;
+       }
+       else{
+        get_preview_infos();
+       }
+    } , [product])
 
     const getattachmentinfos = async function(val){
         try{
