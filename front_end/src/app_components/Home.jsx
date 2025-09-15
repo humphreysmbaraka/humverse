@@ -350,11 +350,17 @@ useEffect(function(){
                                             DURATION : <Text as={'span'} fontSize={'small'} fontWeight={'bold'}>{`${val.timequantity} ${val.timeunit}`}</Text>
                                         </Text>
                                        
-                                        {( val.updateD && !val.update_seen)&&
+                                        {( val.updated && !val.update_seen)&&
                                         
-                                           <Text as={'span'} fontSize={'small'} color={'green'} fontWeight={'bold'}>{'UPDATED'}</Text>
+                                           <Text  fontSize={'small'} color={'green'} fontWeight={'bold'}>{'UPDATED'}</Text>
                                    
                                         }
+
+                                      {( !val.updated && val.update_seen)&&
+                                        
+                                        <Text  fontSize={'small'} color={'orange'} fontWeight={'bold'}>{'UPDATE SEEN'}</Text>
+                                
+                                     }
                                     </VStack>
                                 </HStack>
                             )
