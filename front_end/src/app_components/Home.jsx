@@ -349,9 +349,12 @@ useEffect(function(){
                                         <Text fontSize={'medium'} fontWeight={'bold'}>
                                             DURATION : <Text as={'span'} fontSize={'small'} fontWeight={'bold'}>{`${val.timequantity} ${val.timeunit}`}</Text>
                                         </Text>
-                                        <Text fontSize={'medium'} fontWeight={'bold'}>
-                                            previews : <Text as={'span'} fontSize={'small'} fontWeight={'bold'}>{val.previews.length}</Text>
-                                        </Text>
+                                       
+                                        {( val.updateD && !val.update_seen)&&
+                                        
+                                           <Text as={'span'} fontSize={'small'} color={'green'} fontWeight={'bold'}>{'UPDATED'}</Text>
+                                   
+                                        }
                                     </VStack>
                                 </HStack>
                             )

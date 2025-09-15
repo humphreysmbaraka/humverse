@@ -20,6 +20,7 @@ const twilio = require('twilio')(process.env.TWILIO_SID , process.env.TWILIO_AUT
 
 
 
+
 const app = express();
 app.use(express.json());
 const router = express.Router();
@@ -1563,7 +1564,7 @@ router.patch('/edit_request'  , memstorage.array('attachments' , 20) ,  async fu
 
 
 
-router.patch('/view_updates/:id'   , async function(){
+router.patch('/view_updates/:id'   , async function(req , res){
   try{
     const id = req.params.id
     const request = await Request.findOne({_id:new ObjectId(id)});
