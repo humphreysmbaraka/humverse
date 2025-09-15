@@ -18,7 +18,7 @@ const Transaction = require('./configs/schemas/transaction');
 const { Readable } = require('stream');
 const twilio = require('twilio')(process.env.TWILIO_SID , process.env.TWILIO_AUTH_TOKEN);
 
-fetch_homedata
+
 
 const app = express();
 app.use(express.json());
