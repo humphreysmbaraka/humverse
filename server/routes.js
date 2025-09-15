@@ -18,7 +18,7 @@ const Transaction = require('./configs/schemas/transaction');
 const { Readable } = require('stream');
 const twilio = require('twilio')(process.env.TWILIO_SID , process.env.TWILIO_AUTH_TOKEN);
 
-
+fetch_homedata
 
 const app = express();
 app.use(express.json());
@@ -653,7 +653,10 @@ router.get('/fetch_homedata/:id' ,  async function(req , res){
     try{
       console.log('gettting user info');
       const id = req.params.id
-       const user = await User.findOne({_id:id}).populate('requests');
+       const user = await User.findOne({_id:id}).populate({
+        path:'requests',
+        options:{sort:{updatedAt:-1}}
+       });
        if(user){
           // console.log(user);
           return res.status(200).json({error:false , message:'user_found' , data:user})
@@ -676,7 +679,7 @@ router.get('/fetch_homedata/:id' ,  async function(req , res){
 router.get('/get_requests' ,  async function(req , res){
   try{
       console.log('fetching requests...');
-      const requests = await Request.find({}).populate('client');
+      const requests = await Request.find({}).populate('client').sort({updatedAt:-1});
       if(requests.length > 0){
         // console.log('found requests' , requests);
         return res.status(200).json({error:false , requests:requests , message:'fetched requests'});
