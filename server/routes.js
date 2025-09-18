@@ -92,7 +92,7 @@ async function sendMessage(receiver , message) {
   }
 }
 
-sendSMS();
+
 
 
 const createusertoken = async function(id){
