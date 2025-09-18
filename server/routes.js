@@ -32,32 +32,68 @@ const router = express.Router();
 
 // SEND TWILIO MESSAGE FUNCTION
 
-const sendMessage = async function(receiver , message , attempts = 1){
+// const sendMessage = async function(receiver , message , attempts = 1){
 
-while(attempts <= 3){
-  try{
-     if(!receiver.startsWith('+254')){
-      receiver =  `+254${receiver.slice(1)}`
-     }
-    const sms = await twilio.messages.create({
-      from:process.env.TWILIO_NUMBER,
-      to:receiver,
-      body:message
-    })
-    console.log('MESSAGE SENT SUCCESSFULLY');
-    return sms
-      }
-      catch(err){
+// while(attempts <= 3){
+//   try{
+//      if(!receiver.startsWith('+254')){
+//       receiver =  `+254${receiver.slice(1)}`
+//      }
+//     const sms = await twilio.messages.create({
+//       from:process.env.TWILIO_NUMBER,
+//       to:receiver,
+//       body:message
+//     })
+//     console.log('MESSAGE SENT SUCCESSFULLY');
+//     return sms
+//       }
+//       catch(err){
       
-        console.log(`attempt ${attempts} : error sending mesage , retrying.....` , err);
-        attempts +=1
-        if(attempts >3){
-          console.log('failed to send message after retrying 3 times' , err);
-          return null
-        }
-      }
+//         console.log(`attempt ${attempts} : error sending mesage , retrying.....` , err);
+//         attempts +=1
+//         if(attempts >3){
+//           console.log('failed to send message after retrying 3 times' , err);
+//           return null
+//         }
+//       }
+// }
+// }
+
+
+
+// sms.js
+// Example: Send SMS with Mobitech using fetch
+
+// If using Node < 18, uncomment this line
+// const fetch = require("node-fetch");
+
+async function sendMessage(receiver , message) {
+  const url = "https://quicksms.advantasms.com/api/services/sendsms/";
+
+  const payload = {
+    api_key:process.env.MOBITECH_KEY,     // from Mobitech dashboard
+    username:process.env.MOBITECH_USERNAME,   // your Mobitech username
+    sender_id:MOBITECH_SENDER_ID,       // or 40001, 1501, etc.
+    message:message,
+    phone: [`${receiver}`]      // recipient number(s)
+  };
+
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+    console.log("SMS Response:", data);
+  } catch (error) {
+    console.error("Error sending SMS:", error);
+  }
 }
-}
+
+sendSMS();
+
 
 const createusertoken = async function(id){
   try{
