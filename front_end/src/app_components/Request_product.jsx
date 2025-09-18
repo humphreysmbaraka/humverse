@@ -336,9 +336,12 @@ function Make_request() {
                 fontSize={{ base: 'xs', md: 'small' }} >
           <option style={{color:'black'}} value={'website'} >website</option>
           <option style={{color:'black'}} value={'web app'} >web app</option>
+          <option style={{color:'black'}} value={'web app and phone app'} >web app & phone app</option>
           <option style={{color:'black'}} value={'API'} >API</option>
           <option style={{color:'black'}} value={'phone app'} >phone app</option>
-          <option style={{color:'black'}} value={'AI product'} >AI product</option>
+          <option style={{color:'black'}} value={'AI product (for phone app)'} >AI product(for phone app)</option>
+          <option style={{color:'black'}} value={'AI product (for web app)'} >AI product(for web app)</option>
+          <option style={{color:'black'}} value={'AI product (for phone and web app)'} >AI product(for phone and web app)</option>
           <option style={{color:'black'}} value={'mixed'}>a mixture of the categories</option>
           {/* <option style={{color:'black'}} value={'complex ai agent'}>AI agent that can perform defined tasks , eg edit videos , ocuments , etc</option> */}
         </Select>
