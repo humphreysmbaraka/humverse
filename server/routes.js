@@ -73,7 +73,7 @@ async function sendMessage(receiver , message) {
   const payload = {
     api_key:process.env.MOBITECH_KEY,     // from Mobitech dashboard
     username:process.env.MOBITECH_USERNAME,   // your Mobitech username
-    sender_id:MOBITECH_SENDER_ID,       // or 40001, 1501, etc.
+    sender_id:process.env.MOBITECH_SENDER_ID,       // or 40001, 1501, etc.
     message:message,
     phone: [`${receiver}`]      // recipient number(s)
   };
